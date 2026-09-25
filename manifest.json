@@ -1,0 +1,28 @@
+{
+  "name": "Personal Library Manager & Spine Studio",
+  "short_name": "Spine Studio",
+  "description": "Catalog your personal library and print calibrated A4 spine labels — completely in your browser.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f4efe4",
+  "theme_color": "#1a2332",
+  "categories": ["books", "productivity", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Crect%20width='512'%20height='512'%20fill='%23253b6e'/%3E%3Cg%20fill='none'%20stroke='%23f4efe4'%20stroke-width='20'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='128'%20y='96'%20width='256'%20height='320'%20rx='16'/%3E%3Cline%20x1='176'%20y1='176'%20x2='336'%20y2='176'/%3E%3Cline%20x1='176'%20y1='240'%20x2='304'%20y2='240'/%3E%3Cline%20x1='176'%20y1='304'%20x2='288'%20y2='304'/%3E%3C/g%3E%3C/svg%3E",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Crect%20width='512'%20height='512'%20fill='%23253b6e'/%3E%3Cg%20fill='none'%20stroke='%23f4efe4'%20stroke-width='20'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='128'%20y='96'%20width='256'%20height='320'%20rx='16'/%3E%3Cline%20x1='176'%20y1='176'%20x2='336'%20y2='176'/%3E%3Cline%20x1='176'%20y1='240'%20x2='304'%20y2='240'/%3E%3Cline%20x1='176'%20y1='304'%20x2='288'%20y2='304'/%3E%3C/g%3E%3C/svg%3E",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
