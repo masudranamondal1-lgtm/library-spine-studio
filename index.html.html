@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Spine Label Generator & Print Studio</title>
+  <style>
+    /* =========================================================
+       RESET & BASE STYLES
+       ========================================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary: #1e3a8a;
+      --primary-dark: #0f172a;
+      --accent: #2563eb;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --success: #10b981;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* =========================================================
+       APP NAVIGATION & LAYOUT (Screen Only)
+       ========================================================= */
+    header.app-header {
+      background: #0f172a;
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .app-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .app-brand h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .app-brand span.badge {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #93c5fd;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button.btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease-in-out;
+    }
+
+    button.btn-primary {
+      background-color: #2563eb;
+      color: #fff;
+    }
+    button.btn-primary:hover {
+      background-color: #1d4ed8;
+    }
+
+    button.btn-outline {
+      background-color: transparent;
+      border-color: #475569;
+      color: #cbd5e1;
+    }
+    button.btn-outline:hover {
+      background-color: #1e293b;
+      color: #fff;
+    }
+
+    button.btn-success {
+      background-color: #059669;
+      color: #fff;
+    }
+    button.btn-success:hover {
+      background-color: #047857;
+    }
+
+    .app-container {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    /* Left Control Sidebar */
+    aside.control-sidebar {
+      width: 440px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .tab-group {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 12px;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    label.field-label {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+
+    input[type="text"], select, textarea {
+      width: 100%;
+      padding: 7px 10px;
+      font-size: 0.82rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 5px;
+      background-color: #fff;
+      color: #0f172a;
+      outline: none;
+      font-family: inherit;
+    }
+
+    input[type="text"]:focus, select:focus, textarea:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .form-group {
+      flex: 1;
+      margin-bottom: 10px;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Right Preview Pane */
+    main.preview-area {
+      flex: 1;
+      min-width: 0;
+      background: #94a3b8;
+      border-radius: 8px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: auto;
+      max-height: calc(100vh - 100px);
+    }
+
+    .preview-statusbar {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(4px);
+      color: #f8fafc;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      display: flex;
+      gap: 18px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+
+    /* =========================================================
+       PRINT SHEET SPECIFICATIONS (A4 Portrait)
+       ========================================================= */
+    .sheet-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .a4-sheet {
+      width: 210mm;
+      height: 297mm;
+      background-color: #ffffff;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      padding: 10mm 9mm 8mm 9mm;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .sheet-page-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 1.5px solid #0f172a;
+      padding-bottom: 2mm;
+      margin-bottom: 3mm;
+    }
+
+    .sheet-page-banner h2 {
+      font-size: 11pt;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: #0f172a;
+    }
+
+    .sheet-page-banner span {
+      font-size: 7.5pt;
+      color: #475569;
+      font-weight: 600;
+    }
+
+    .sheet-footer {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 2mm;
+      font-size: 7.5pt;
+      color: #64748b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* =========================================================
+       LABEL LAYOUTS: A4 3-UP GRID (Avery 5160 Equivalent)
+       ========================================================= */
+    .grid-3x10 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 25.2mm;
+      column-gap: 3.5mm;
+      row-gap: 2.2mm;
+      width: 100%;
+    }
+
+    /* Style 1: Standard Card */
+    .label-card {
+      border: 1px dashed #94a3b8;
+      border-radius: 4px;
+      padding: 2.2mm 2.8mm;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .label-card.show-cutline {
+      border: 1px dashed #94a3b8 !important;
+    }
+    .label-card.hide-cutline {
+      border: 1px solid transparent !important;
+    }
+
+    .label-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3.5px;
+      background: var(--accent-bar-color, #1e3a8a);
+    }
+
+    .l-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 0.8px solid #e2e8f0;
+      padding-bottom: 1.5px;
+      margin-bottom: 1.5px;
+    }
+
+    .l-call {
+      font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+      font-size: 8.4pt;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .l-item {
+      font-size: 6.8pt;
+      font-weight: 700;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 0.5px 3px;
+      border-radius: 2px;
+    }
+
+    .l-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      line-height: 1.15;
+      padding: 1px 0;
+    }
+
+    .l-title {
+      font-size: 8pt;
+      font-weight: 700;
+      color: #1e293b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .l-vol {
+      font-size: 7.2pt;
+      font-weight: 700;
+      color: #b45309;
+      margin-top: 0.5px;
+    }
+
+    .l-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 7.2pt;
+      color: #475569;
+      padding-top: 1.5px;
+      border-top: 0.5px solid #f8fafc;
+    }
+
+    .l-auth {
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 65%;
+    }
+
+    .l-shelf {
+      font-weight: 700;
+      color: #0369a1;
+      background: #e0f2fe;
+      padding: 0.5px 4px;
+      border-radius: 3px;
+      font-size: 6.8pt;
+      white-space: nowrap;
+    }
+
+    /* Style 2: Pure Spine Stack (Dewey/Call Number Focused) */
+    .label-stack {
+      display: flex;
+      flex-direction: row;
+      border: 1px dashed #94a3b8;
+      border-radius: 4px;
+      background: #fff;
+      padding: 2mm;
+      gap: 3mm;
+      align-items: center;
+    }
+    
+    .stack-call-box {
+      background: #0f172a;
+      color: #fff;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: monospace;
+      font-size: 8pt;
+      font-weight: 800;
+      line-height: 1.2;
+      text-align: center;
+      min-width: 55px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .stack-meta {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1px;
+    }
+
+    /* Barcode pseudo simulation */
+    .barcode-bar {
+      height: 4.5mm;
+      width: 100%;
+      background: repeating-linear-gradient(
+        90deg,
+        #1e293b,
+        #1e293b 1px,
+        transparent 1px,
+        transparent 2.5px,
+        #1e293b 2.5px,
+        #1e293b 4px,
+        transparent 4px,
+        transparent 5px
+      );
+      margin-top: 1.5px;
+      opacity: 0.85;
+    }
+
+    /* =========================================================
+       PRINT MEDIA RULE CALIBRATION
+       ========================================================= */
+    @media print {
+      body {
+        background: transparent !important;
+        padding: 0 !important;
+      }
+      header.app-header, aside.control-sidebar, .preview-statusbar {
+        display: none !important;
+      }
+      main.preview-area {
+        background: transparent !important;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+      .sheet-wrapper {
+        gap: 0 !important;
+      }
+      .a4-sheet {
+        box-shadow: none !important;
+        margin: 0 !important;
+        border: none !important;
+        page-break-after: always;
+        break-after: page;
+        height: 297mm;
+        width: 210mm;
+      }
+      .a4-sheet:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Header -->
+  <header class="app-header">
+    <div class="app-brand">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-0.5-0.05"/>
+        <path d="M6 2v20"/>
+        <path d="M10 7h6"/>
+        <path d="M10 11h4"/>
+      </svg>
+      <h1>Library Spine Label Generator</h1>
+      <span class="badge">A4 30-Up Print Studio</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline" id="loadSampleBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        Reset to My Catalog (22)
+      </button>
+      <button class="btn btn-primary" onclick="window.print()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / Save as PDF
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="app-container">
+
+    <!-- Left Controls Panel -->
+    <aside class="control-sidebar">
+      
+      <!-- Import / Add Card -->
+      <div class="card">
+        <div class="tab-group">
+          <button class="tab-btn active" onclick="switchTab('tab-paste')">Paste Sheet Data</button>
+          <button class="tab-btn" onclick="switchTab('tab-quick')">Quick Add 1 Book</button>
+        </div>
+
+        <!-- Tab 1: Paste CSV / TSV -->
+        <div id="tab-paste" class="tab-content active">
+          <label class="field-label" for="pasteInput">Copy-Paste from your Catalog (Columns A to J):</label>
+          <textarea id="pasteInput" rows="4" placeholder="Paste rows directly from Excel or Google Sheets (Item, Call No, Type, Genre, Title, Volume, Author, Shelf)..."></textarea>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+            <span style="font-size:0.72rem; color:var(--text-muted)">Tab or Comma separated</span>
+            <button class="btn btn-success" style="padding:5px 12px; font-size:0.75rem;" id="parseBtn">Populate Labels</button>
+          </div>
+        </div>
+
+        <!-- Tab 2: Single Book Add -->
+        <div id="tab-quick" class="tab-content">
+          <div class="form-row">
+            <div class="form-group" style="flex:1;">
+              <label class="field-label">Type</label>
+              <select id="qType">
+                <option value="FIC">Fiction (FIC)</option>
+                <option value="NF">Non-Fiction (NF)</option>
+                <option value="POE">Poetry (POE)</option>
+                <option value="DRA">Drama (DRA)</option>
+                <option value="REF">Reference (REF)</option>
+                <option value="GRA">Graphic Novel (GRA)</option>
+              </select>
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label class="field-label">Genre</label>
+              <select id="qGenre">
+                <option value="LIT">Literature (LIT)</option>
+                <option value="HIS">History (HIS)</option>
+                <option value="PHI">Philosophy (PHI)</option>
+                <option value="SCI">Science & Tech (SCI)</option>
+                <option value="POL">Politics (POL)</option>
+                <option value="BIO">Biography (BIO)</option>
+                <option value="ESS">Essays (ESS)</option>
+                <option value="THR">Thriller (THR)</option>
+                <option value="REL">Religion (REL)</option>
+                <option value="ART">Art & Cinema (ART)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="field-label">Book Title</label>
+            <input type="text" id="qTitle" placeholder="e.g. Sapiens">
+          </div>
+          <div class="form-row">
+            <div class="form-group" style="flex:2;">
+              <label class="field-label">Author (First & Surname)</label>
+              <input type="text" id="qAuthor" placeholder="e.g. Yuval Noah Harari">
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label class="field-label">Volume (Opt.)</label>
+              <input type="text" id="qVol" placeholder="Vol 1">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" style="flex:1;">
+              <label class="field-label">Shelf Location</label>
+              <input type="text" id="qShelf" placeholder="Shelf A1">
+            </div>
+            <div class="form-group" style="flex:1; align-self: flex-end;">
+              <button class="btn btn-primary" style="width:100%; justify-content:center;" id="addBookBtn">+ Add Book</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Label Design & Options Card -->
+      <div class="card">
+        <div class="card-title">
+          <span>Sticker Formatting</span>
+          <span style="font-size:0.75rem; color:#2563eb;" id="labelCountBadge">0 Labels</span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="field-label">Label Template Style</label>
+            <select id="templateStyle" onchange="renderSheets()">
+              <option value="standard">Standard Detailed Card (30-Up A4)</option>
+              <option value="stacked">Library Call-Block + Barcode</option>
+              <option value="minimal">Minimal Spine Strip (Vertical)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="field-label">Category Color Accent</label>
+            <select id="colorAccent" onchange="renderSheets()">
+              <option value="type">Color by Book Type (FIC/NF/POE)</option>
+              <option value="navy">Classic Navy (#1e3a8a)</option>
+              <option value="mono">Monochrome (Black & White)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card-title" style="margin-top:8px;">Visible Elements</div>
+        <div class="options-grid">
+          <label class="checkbox-label">
+            <input type="checkbox" id="optShelf" checked onchange="renderSheets()"> Shelf Location Badge
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="optItem" checked onchange="renderSheets()"> Accession # Tag
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="optBarcode" onchange="renderSheets()"> Decorative Barcode
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="optCutline" checked onchange="renderSheets()"> Dashed Cut Guides
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="optFillBlanks" checked onchange="renderSheets()"> Fill Page with Spares
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="optAuthorLastOnly" onchange="renderSheets()"> Author Surname Only
+          </label>
+        </div>
+
+        <div style="margin-top:14px; display:flex; gap:8px;">
+          <button class="btn btn-outline" style="flex:1; font-size:0.75rem; justify-content:center; color:#ef4444; border-color:#fca5a5;" id="clearListBtn">Clear All</button>
+          <button class="btn btn-outline" style="flex:1; font-size:0.75rem; justify-content:center;" onclick="addBlankSpares(5)">+ 5 Blank Spares</button>
+        </div>
+      </div>
+
+      <!-- Printing Guidelines -->
+      <div class="card" style="background:#f1f5f9; border-color:#cbd5e1;">
+        <div class="card-title" style="font-size:0.78rem; margin-bottom:6px;">Printing Instructions for Stickers</div>
+        <ul style="font-size:0.74rem; color:#475569; padding-left:16px; line-height:1.45;">
+          <li>Select <strong>Paper size: A4</strong> in the print prompt.</li>
+          <li>Set <strong>Margins: None</strong> (or Custom: 0mm).</li>
+          <li>Ensure <strong>Background graphics</strong> is checked.</li>
+          <li>Fits standard <strong>70mm × 25.4mm</strong> (3 columns × 10 rows) adhesive labels.</li>
+        </ul>
+      </div>
+
+    </aside>
+
+    <!-- Right Live Interactive Preview -->
+    <main class="preview-area">
+      
+      <div class="preview-statusbar">
+        <span>📄 Paper: <strong>A4 Portrait</strong></span>
+        <span>🏷️ Capacity: <strong>30 Stickers / Page</strong></span>
+        <span id="pageCountStatus">Sheets: <strong>1</strong></span>
+      </div>
+
+      <div class="sheet-wrapper" id="sheetContainer">
+        <!-- Rendered A4 Sheets will be injected here -->
+      </div>
+
+    </main>
+
+  </div>
+
+  <script>
+    // Initial catalog dataset based on user's 22 physical books
+    const initialCatalog = [
+      { call: "FIC-LIT-TAG-001-Vol1", item: "001", title: "Rabindra Rachanabali", vol: "Vol 1", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-002-Vol2", item: "002", title: "Rabindra Rachanabali", vol: "Vol 2", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-003-Vol3", item: "003", title: "Rabindra Rachanabali", vol: "Vol 3", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-004-Vol4", item: "004", title: "Rabindra Rachanabali", vol: "Vol 4", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-005-Vol5", item: "005", title: "Rabindra Rachanabali", vol: "Vol 5", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-006-Vol6", item: "006", title: "Rabindra Rachanabali", vol: "Vol 6", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-007-Vol7", item: "007", title: "Rabindra Rachanabali", vol: "Vol 7", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-008-Vol8", item: "008", title: "Rabindra Rachanabali", vol: "Vol 8", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-009-Vol9", item: "009", title: "Rabindra Rachanabali", vol: "Vol 9", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-010-Vol10", item: "010", title: "Rabindra Rachanabali", vol: "Vol 10", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-011-Vol11", item: "011", title: "Rabindra Rachanabali", vol: "Vol 11", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-012-Vol12", item: "012", title: "Rabindra Rachanabali", vol: "Vol 12", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-013-Vol13", item: "013", title: "Rabindra Rachanabali", vol: "Vol 13", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-014-Vol14", item: "014", title: "Rabindra Rachanabali", vol: "Vol 14", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-015-Vol15", item: "015", title: "Rabindra Rachanabali", vol: "Vol 15", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-016-Vol16", item: "016", title: "Rabindra Rachanabali", vol: "Vol 16", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-017-Vol17", item: "017", title: "Rabindra Rachanabali", vol: "Vol 17", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "FIC-LIT-TAG-018-Vol18", item: "018", title: "Rabindra Rachanabali", vol: "Vol 18", auth: "Rabindranath Tagore", shelf: "Shelf A1", type: "FIC" },
+      { call: "NF-HIS-HAR-019", item: "019", title: "Sapiens: A Brief History of Humankind", vol: "", auth: "Yuval Noah Harari", shelf: "Shelf B1", type: "NF" },
+      { call: "FIC-LIT-HER-020", item: "020", title: "Dune", vol: "", auth: "Frank Herbert", shelf: "Shelf A2", type: "FIC" },
+      { call: "POE-LIT-ELI-021", item: "021", title: "The Waste Land and Other Poems", vol: "", auth: "T.S. Eliot", shelf: "Shelf C1", type: "POE" },
+      { call: "FIC-LIT-LEE-022", item: "022", title: "To Kill a Mockingbird", vol: "", auth: "Harper Lee", shelf: "Shelf A1", type: "FIC" }
+    ];
+
+    let books = JSON.parse(JSON.stringify(initialCatalog));
+
+    // Tab switcher
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    // Type Color Mapping
+    function getTypeColor(type) {
+      const mode = document.getElementById('colorAccent').value;
+      if (mode === 'navy') return '#1e3a8a';
+      if (mode === 'mono') return '#0f172a';
+      
+      switch ((type || '').toUpperCase()) {
+        case 'FIC': return '#2563eb'; // Blue
+        case 'NF':  return '#059669'; // Emerald
+        case 'POE': return '#9333ea'; // Purple
+        case 'DRA': return '#ea580c'; // Amber
+        case 'REF': return '#475569'; // Slate
+        case 'GRA': return '#e11d48'; // Rose
+        default:    return '#1e3a8a';
+      }
+    }
+
+    function extractSurname(fullname) {
+      if (!fullname) return '';
+      const parts = fullname.trim().split(/\s+/);
+      return parts[parts.length - 1];
+    }
+
+    // Render A4 sheets
+    function renderSheets() {
+      const container = document.getElementById('sheetContainer');
+      container.innerHTML = '';
+
+      const style = document.getElementById('templateStyle').value;
+      const showShelf = document.getElementById('optShelf').checked;
+      const showItem = document.getElementById('optItem').checked;
+      const showBarcode = document.getElementById('optBarcode').checked;
+      const showCutline = document.getElementById('optCutline').checked;
+      const fillBlanks = document.getElementById('optFillBlanks').checked;
+      const authorLastOnly = document.getElementById('optAuthorLastOnly').checked;
+
+      // Prepare list with blanks if requested to complete 30-grid
+      let renderList = [...books];
+      if (fillBlanks) {
+        const remainder = renderList.length % 30;
+        if (remainder !== 0) {
+          const toAdd = 30 - remainder;
+          for (let i = 0; i < toAdd; i++) {
+            renderList.push({ isPlaceholder: true });
+          }
+        } else if (renderList.length === 0) {
+          for (let i = 0; i < 30; i++) renderList.push({ isPlaceholder: true });
+        }
+      }
+
+      const totalPages = Math.ceil(renderList.length / 30) || 1;
+      document.getElementById('labelCountBadge').innerText = `${books.length} Labels`;
+      document.getElementById('pageCountStatus').innerHTML = `Sheets: <strong>${totalPages}</strong>`;
+
+      for (let p = 0; p < totalPages; p++) {
+        const sheet = document.createElement('section');
+        sheet.className = 'a4-sheet';
+
+        const pageItems = renderList.slice(p * 30, (p + 1) * 30);
+
+        // Header
+        const header = document.createElement('div');
+        header.className = 'sheet-page-banner';
+        header.innerHTML = `
+          <div>
+            <h2>Book Spine Labels (A4 Sticker Sheet)</h2>
+            <span>30 Labels (3 × 10 Grid) • 70mm × 25.4mm standard • Format: [Type]-[Genre]-[Author]-[ID]</span>
+          </div>
+          <span style="font-family:monospace; background:#f1f5f9; padding:2px 6px; border-radius:3px;">PAGE ${p + 1} OF ${totalPages}</span>
+        `;
+        sheet.appendChild(header);
+
+        // Grid
+        const grid = document.createElement('div');
+        grid.className = 'grid-3x10';
+
+        pageItems.forEach((b, idx) => {
+          const cutClass = showCutline ? 'show-cutline' : 'hide-cutline';
+
+          if (b.isPlaceholder) {
+            const blank = document.createElement('div');
+            blank.className = `label-card ${cutClass}`;
+            blank.style.setProperty('--accent-bar-color', '#cbd5e1');
+            blank.style.background = '#fafafa';
+            blank.innerHTML = `
+              <div style="height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#94a3b8; font-size:6.8pt; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">
+                <span>+ Spare Label</span>
+                <span style="font-size:5.8pt; color:#cbd5e1;">(Manual / Extra Entry)</span>
+              </div>
+            `;
+            grid.appendChild(blank);
+            return;
+          }
+
+          const accentColor = getTypeColor(b.type);
+          const authorDisplay = authorLastOnly ? extractSurname(b.auth) : b.auth;
+
+          if (style === 'stacked') {
+            // Stacked Block Style
+            const card = document.createElement('div');
+            card.className = `label-stack ${cutClass}`;
+            card.innerHTML = `
+              <div class="stack-call-box" style="background:${accentColor}">
+                <span>${b.call.split('-').slice(0, 2).join('-')}</span>
+                <span>${b.call.split('-').slice(2).join('-')}</span>
+              </div>
+              <div class="stack-meta">
+                <div style="font-size:7.6pt; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${b.title}</div>
+                <div style="font-size:6.8pt; color:#475569; display:flex; justify-content:space-between;">
+                  <span>${authorDisplay}</span>
+                  ${showShelf && b.shelf ? `<strong style="color:${accentColor}">${b.shelf}</strong>` : ''}
+                </div>
+                ${showBarcode ? '<div class="barcode-bar"></div>' : ''}
+              </div>
+            `;
+            grid.appendChild(card);
+          } else if (style === 'minimal') {
+            // Minimal Vertical Style
+            const card = document.createElement('div');
+            card.className = `label-card ${cutClass}`;
+            card.style.setProperty('--accent-bar-color', accentColor);
+            card.innerHTML = `
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="l-call" style="font-size:9pt;">${b.call}</span>
+                ${showItem ? `<span class="l-item">#${b.item}</span>` : ''}
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; font-size:7.2pt; color:#475569;">
+                <span style="font-weight:700; color:#1e293b; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:65%;">${b.title}</span>
+                ${showShelf && b.shelf ? `<span class="l-shelf">${b.shelf}</span>` : ''}
+              </div>
+            `;
+            grid.appendChild(card);
+          } else {
+            // Standard Card (Default)
+            const card = document.createElement('div');
+            card.className = `label-card ${cutClass}`;
+            card.style.setProperty('--accent-bar-color', accentColor);
+            card.innerHTML = `
+              <div class="l-head">
+                <span class="l-call">${b.call}</span>
+                ${showItem ? `<span class="l-item">#${b.item}</span>` : ''}
+              </div>
+              <div class="l-body">
+                <span class="l-title">${b.title}</span>
+                ${b.vol ? `<span class="l-vol">${b.vol}</span>` : ''}
+                ${showBarcode ? '<div class="barcode-bar"></div>' : ''}
+              </div>
+              <div class="l-foot">
+                <span class="l-auth">${authorDisplay}</span>
+                ${showShelf && b.shelf ? `<span class="l-shelf">${b.shelf}</span>` : ''}
+              </div>
+            `;
+            grid.appendChild(card);
+          }
+        });
+
+        sheet.appendChild(grid);
+
+        // Footer
+        const footer = document.createElement('div');
+        footer.className = 'sheet-footer';
+        footer.innerHTML = `
+          <span>Personal Library Collection • Book Spine Accession Labels</span>
+          <span>Align base 1.5&#34; from bottom of spine</span>
+          <span>Sheet ${p + 1} of ${totalPages}</span>
+        `;
+        sheet.appendChild(footer);
+
+        container.appendChild(sheet);
+      }
+    }
+
+    // Add 1 Book Manually
+    document.getElementById('addBookBtn').addEventListener('click', () => {
+      const type = document.getElementById('qType').value;
+      const genre = document.getElementById('qGenre').value;
+      const title = document.getElementById('qTitle').value.trim();
+      const author = document.getElementById('qAuthor').value.trim();
+      const vol = document.getElementById('qVol').value.trim();
+      const shelf = document.getElementById('qShelf').value.trim() || 'Shelf A1';
+
+      if (!title || !author) {
+        alert('Please enter both Book Title and Author Name.');
+        return;
+      }
+
+      const nextNum = books.length + 1;
+      const numStr = String(nextNum).padStart(3, '0');
+      const surname = extractSurname(author).toUpperCase().substring(0, 3);
+      const volTag = vol ? `-${vol.replace(/\s+/g, '')}` : '';
+      const call = `${type}-${genre}-${surname}-${numStr}${volTag}`;
+
+      books.push({
+        call,
+        item: numStr,
+        title,
+        vol,
+        auth: author,
+        shelf,
+        type
+      });
+
+      // Clear fields
+      document.getElementById('qTitle').value = '';
+      document.getElementById('qVol').value = '';
+
+      renderSheets();
+    });
+
+    // Parse CSV / TSV directly from Excel/Sheets
+    document.getElementById('parseBtn').addEventListener('click', () => {
+      const raw = document.getElementById('pasteInput').value.trim();
+      if (!raw) {
+        alert('Please paste rows from your spreadsheet first.');
+        return;
+      }
+
+      const lines = raw.split(/\r?\n/);
+      let imported = 0;
+
+      lines.forEach(line => {
+        if (!line.trim()) return;
+        // Split by tab or comma
+        const cols = line.includes('\t') ? line.split('\t') : line.split(',');
+        
+        // Handle common formats
+        if (cols.length >= 5) {
+          // Check if header row
+          if (cols[0].toLowerCase().includes('item') || cols[4].toLowerCase().includes('title')) return;
+
+          const item = (cols[0] || '').trim().replace(/^0+/, '').padStart(3, '0') || String(books.length + 1).padStart(3, '0');
+          const call = (cols[1] || '').trim();
+          const title = (cols[4] || cols[2] || '').trim();
+          const vol = (cols[5] || '').trim();
+          const auth = (cols[6] || cols[3] || '').trim();
+          const shelf = (cols[9] || cols[cols.length - 1] || 'Shelf A1').trim();
+          const typeMatch = call.match(/^([A-Z]{2,3})-/);
+          const type = typeMatch ? typeMatch[1] : 'FIC';
+
+          if (title) {
+            books.push({
+              call: call || `LIB-GEN-${item}`,
+              item,
+              title,
+              vol,
+              auth,
+              shelf,
+              type
+            });
+            imported++;
+          }
+        }
+      });
+
+      if (imported > 0) {
+        document.getElementById('pasteInput').value = '';
+        renderSheets();
+      } else {
+        alert('Could not detect valid book columns. Make sure you copy rows containing Title and Call Number.');
+      }
+    });
+
+    // Add extra blank stickers
+    function addBlankSpares(count) {
+      for (let i = 0; i < count; i++) {
+        books.push({ isPlaceholder: true });
+      }
+      renderSheets();
+    }
+
+    // Clear list
+    document.getElementById('clearListBtn').addEventListener('click', () => {
+      if (confirm('Clear all labels from preview?')) {
+        books = [];
+        renderSheets();
+      }
+    });
+
+    // Reset to initial catalog
+    document.getElementById('loadSampleBtn').addEventListener('click', () => {
+      books = JSON.parse(JSON.stringify(initialCatalog));
+      renderSheets();
+    });
+
+    // Initial render
+    renderSheets();
+  </script>
+</body>
+</html>
