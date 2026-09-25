@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Personal Library Manager & Spine Studio — catalog, filter, and print A4 spine labels for your personal library.">
   <meta name="color-scheme" content="light dark">
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1a2332" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0c0f16" media="(prefers-color-scheme: dark)">
@@ -13,24 +12,15 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Spine Studio">
-  
+
   <script>
     (function () {
       var THEME_KEY = 'plm_theme_choice_v1';
       var choice = 'system';
-      try {
-        choice = localStorage.getItem(THEME_KEY) || 'system';
-      } catch (e) { /* localStorage unavailable */ }
-
+      try { choice = localStorage.getItem(THEME_KEY) || 'system'; } catch (e) {}
       var prefersDark = false;
-      try {
-        prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      } catch (e) { /* matchMedia unavailable */ }
-
-      var active = choice === 'system'
-        ? (prefersDark ? 'dark' : 'light')
-        : choice;
-
+      try { prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches; } catch (e) {}
+      var active = choice === 'system' ? (prefersDark ? 'dark' : 'light') : choice;
       var root = document.documentElement;
       root.setAttribute('data-theme', active);
       root.setAttribute('data-theme-choice', choice);
@@ -38,65 +28,49 @@
   </script>
 
   <title>Personal Library Manager & Spine Studio</title>
-
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 
   <style>
-    /* =========================================================
-       THEME TOKENS — LIGHT (default)
-       ========================================================= */
-    :root,
-    [data-theme="light"] {
+    :root, [data-theme="light"] {
       color-scheme: light;
-
       --bg: #f4efe4;
       --bg-elevated: #ebe4d3;
       --surface: #fffdf8;
       --surface-alt: #f8f3e8;
       --surface-raised: #ffffff;
-
       --text: #22262e;
       --text-soft: #454b58;
       --text-muted: #6e7585;
       --text-faint: #98a0ae;
       --text-inverse: #f4efe4;
-
       --border: #dcd4c2;
       --border-strong: #b8ae99;
       --border-subtle: #ebe4d3;
-
       --primary: #253b6e;
       --primary-hover: #1c2e56;
       --primary-soft: #e4eaf6;
       --primary-text: #ffffff;
-
       --accent: #b85c38;
       --accent-hover: #9c4a2b;
       --accent-soft: #f3ddd2;
-
       --success: #34745b;
       --success-soft: #dceee5;
       --success-border: #b0dbc4;
       --success-text: #1e5a38;
-
       --warning: #a86b24;
       --warning-soft: #f6e5c4;
       --warning-border: #e6d29e;
       --warning-text: #74540a;
-
       --danger: #a84242;
       --danger-soft: #f3dada;
       --danger-border: #e4b4b4;
       --danger-text: #832020;
-
       --info: #2a6f8f;
       --info-soft: #e0eff5;
       --info-border: #aed4e2;
       --info-text: #1a4a62;
-
       --focus: #b8741e;
       --focus-ring: rgba(37, 59, 110, 0.20);
-
       --header-bg: #1a2332;
       --header-text: #f4efe4;
       --header-muted: #8fa8c9;
@@ -106,11 +80,9 @@
       --header-btn-hover-bg: #2a3145;
       --header-tag-bg: #252f42;
       --header-tag-text: #c5cdd9;
-
       --table-stripe: #faf6ec;
       --table-hover: #ebdfca;
       --table-header-bg: #f0ead9;
-
       --print-ink: #1a1f2e;
       --print-ink-soft: #3d475c;
       --print-ink-muted: #6b7488;
@@ -119,68 +91,52 @@
       --print-surface-alt: #faf9f7;
       --print-info: #2a6f8f;
       --print-info-soft: #e6f2f7;
-
       --shadow-sm: 0 1px 3px rgba(34, 38, 46, 0.06);
       --shadow-md: 0 4px 16px rgba(34, 38, 46, 0.10);
       --shadow-sheet: 0 4px 24px rgba(34, 38, 46, 0.16);
-
       --theme-transition: background-color 0.22s ease, color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
     }
 
-    /* =========================================================
-       THEME TOKENS — DARK
-       ========================================================= */
     [data-theme="dark"] {
       color-scheme: dark;
-
       --bg: #12161d;
       --bg-elevated: #171c25;
       --surface: #1a202c;
       --surface-alt: #1f2634;
       --surface-raised: #232b3a;
-
       --text: #e6e4dd;
       --text-soft: #b2b6c1;
       --text-muted: #868f9e;
       --text-faint: #5b6577;
       --text-inverse: #12161d;
-
       --border: #2e3746;
       --border-strong: #47506080;
       --border-subtle: #262d3a;
-
       --primary: #8fa9e0;
       --primary-hover: #a8bcf0;
       --primary-soft: #26334f;
       --primary-text: #0f141c;
-
       --accent: #e28b68;
       --accent-hover: #f09e7c;
       --accent-soft: #3c2822;
-
       --success: #7cc39e;
       --success-soft: #1d3a2e;
       --success-border: #2e5443;
       --success-text: #a9e0c2;
-
       --warning: #e0b06a;
       --warning-soft: #3a2d1a;
       --warning-border: #55431f;
       --warning-text: #f0cd8a;
-
       --danger: #eb8c8c;
       --danger-soft: #3a2020;
       --danger-border: #5a2e2e;
       --danger-text: #f5b0b0;
-
       --info: #7db8d4;
       --info-soft: #1b2f3a;
       --info-border: #2e4858;
       --info-text: #a5d4e5;
-
       --focus: #e5b570;
       --focus-ring: rgba(143, 169, 224, 0.28);
-
       --header-bg: #0c0f16;
       --header-text: #e6e4dd;
       --header-muted: #7a90b3;
@@ -190,28 +146,21 @@
       --header-btn-hover-bg: #1f2634;
       --header-tag-bg: #1f2634;
       --header-tag-text: #b2b6c1;
-
       --table-stripe: #1c2330;
       --table-hover: #262f40;
       --table-header-bg: #1a202c;
-
       --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
       --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
       --shadow-sheet: 0 4px 24px rgba(0, 0, 0, 0.6);
     }
 
-    /* =========================================================
-       GLOBAL DESIGN TOKENS (theme-independent)
-       ========================================================= */
     :root {
       --radius: 6px;
       --radius-sm: 4px;
-
       --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
       --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
       --font-bengali: "Noto Sans Bengali", "SolaimanLipi", "Kalpurush", sans-serif;
-
       --fs-body: 1rem;
       --fs-small: 0.9375rem;
       --fs-label: 0.9375rem;
@@ -226,21 +175,8 @@
       :root { --theme-transition: none; }
     }
 
-    /* =========================================================
-       RESET & BASE
-       ========================================================= */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      font-size: 16px;
-      -webkit-text-size-adjust: 100%;
-      scroll-behavior: smooth;
-    }
-
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
     body {
       font-family: var(--font-ui);
       font-size: var(--fs-body);
@@ -257,29 +193,15 @@
     input, select, textarea { font: inherit; }
     table { border-collapse: collapse; width: 100%; }
     [hidden] { display: none !important; }
-
-    :focus-visible {
-      outline: 2px solid var(--focus);
-      outline-offset: 2px;
-    }
+    :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
     .skip-link {
-      position: absolute;
-      left: -9999px;
-      top: 0;
-      z-index: 999;
-      padding: 10px 18px;
-      background: var(--primary);
-      color: var(--primary-text);
-      font-weight: 600;
-      font-size: var(--fs-body);
-      border-radius: 0 0 var(--radius) 0;
+      position: absolute; left: -9999px; top: 0; z-index: 999;
+      padding: 10px 18px; background: var(--primary); color: var(--primary-text);
+      font-weight: 600; font-size: var(--fs-body); border-radius: 0 0 var(--radius) 0;
     }
     .skip-link:focus { left: 0; }
 
-    /* =========================================================
-       APP LAYOUT
-       ========================================================= */
     .app-shell {
       display: grid;
       grid-template-rows: auto 1fr;
@@ -287,7 +209,6 @@
       min-height: 100dvh;
     }
 
-    /* ---------- HEADER ---------- */
     .app-header {
       background: var(--header-bg);
       color: var(--header-text);
@@ -304,249 +225,110 @@
       transition: var(--theme-transition);
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .brand-mark {
-      width: 32px;
-      height: 32px;
-      flex-shrink: 0;
-      color: var(--header-muted);
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
-
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand-mark { width: 32px; height: 32px; flex-shrink: 0; color: var(--header-muted); }
+    .brand-text { display: flex; flex-direction: column; min-width: 0; }
     .brand-text strong {
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: var(--header-text);
+      font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--header-text);
     }
-
     .brand-text small {
-      font-size: 0.8rem;
-      color: var(--header-muted);
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
+      font-size: 0.8rem; color: var(--header-muted);
+      letter-spacing: 0.03em; text-transform: uppercase;
     }
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+    .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
-    /* ---------- BUTTONS ---------- */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 10px 18px;
-      min-height: 44px;
-      border-radius: var(--radius-sm);
-      font-size: var(--fs-small);
-      font-weight: 600;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 10px 18px; min-height: 44px;
+      border-radius: var(--radius-sm); font-size: var(--fs-small); font-weight: 600;
       border: 1px solid transparent;
       transition: background 0.12s, border-color 0.12s, color 0.12s;
-      white-space: nowrap;
-      line-height: 1.2;
+      white-space: nowrap; line-height: 1.2;
     }
-
     .btn svg { flex-shrink: 0; }
-
-    .btn-primary {
-      background: var(--primary);
-      color: var(--primary-text);
-      border-color: var(--primary);
-    }
-    .btn-primary:hover {
-      background: var(--primary-hover);
-      border-color: var(--primary-hover);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--header-btn-text);
-      border-color: var(--header-btn-border);
-    }
-    .btn-outline:hover {
-      background: var(--header-btn-hover-bg);
-      color: var(--header-text);
-    }
-
-    .btn-ghost {
-      background: var(--surface);
-      color: var(--text-soft);
-      border-color: var(--border);
-    }
-    .btn-ghost:hover {
-      background: var(--surface-alt);
-      border-color: var(--border-strong);
-      color: var(--text);
-    }
-
-    .btn-success {
-      background: var(--success);
-      color: #ffffff;
-      border-color: var(--success);
-    }
-    .btn-success:hover {
-      background: var(--success-text);
-      border-color: var(--success-text);
-    }
-
-    .btn-danger {
-      background: var(--surface);
-      color: var(--danger);
-      border-color: var(--danger-border);
-    }
-    .btn-danger:hover {
-      background: var(--danger-soft);
-    }
-
-    /* Support button */
+    .btn-primary { background: var(--primary); color: var(--primary-text); border-color: var(--primary); }
+    .btn-primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+    .btn-outline { background: transparent; color: var(--header-btn-text); border-color: var(--header-btn-border); }
+    .btn-outline:hover { background: var(--header-btn-hover-bg); color: var(--header-text); }
+    .btn-ghost { background: var(--surface); color: var(--text-soft); border-color: var(--border); }
+    .btn-ghost:hover { background: var(--surface-alt); border-color: var(--border-strong); color: var(--text); }
+    .btn-success { background: var(--success); color: #ffffff; border-color: var(--success); }
+    .btn-success:hover { background: var(--success-text); border-color: var(--success-text); }
+    .btn-danger { background: var(--surface); color: var(--danger); border-color: var(--danger-border); }
+    .btn-danger:hover { background: var(--danger-soft); }
     .btn-support {
       background: linear-gradient(135deg, #b85c38 0%, #8a4128 100%);
-      color: #ffffff;
-      border-color: #8a4128;
-      font-weight: 700;
+      color: #ffffff; border-color: #8a4128; font-weight: 700;
     }
-    .btn-support:hover {
-      background: linear-gradient(135deg, #c96844 0%, #9a4a30 100%);
-      border-color: #9a4a30;
-    }
+    .btn-support:hover { background: linear-gradient(135deg, #c96844 0%, #9a4a30 100%); border-color: #9a4a30; }
+    .btn-sm { padding: 8px 14px; min-height: 40px; font-size: var(--fs-meta); }
 
-    /* ---------- DONATION MODAL ---------- */
-        .donate-dialog {
-      border: none;
-      border-radius: 14px;
-      padding: 0;
-      max-width: 700px;      /* ← changed from 620px (or 540px) */
-      width: calc(100vw - 32px);
-      background: var(--surface);
-      color: var(--text);
+    .donate-dialog {
+      border: none; border-radius: 14px; padding: 0;
+      max-width: 700px; width: calc(100vw - 32px);
+      background: var(--surface); color: var(--text);
       box-shadow: var(--shadow-md), 0 24px 64px rgba(0, 0, 0, 0.35);
-      overflow: hidden;
-      position: relative;
+      overflow: hidden; position: relative;
     }
-
     .donate-dialog::backdrop {
       background: rgba(10, 14, 20, 0.55);
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
     }
-
     .donate-inner { padding: 32px 28px 26px; }
-
     .donate-close {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-      background: transparent;
-      color: var(--text-muted);
-      border: none;
-      transition: background 0.12s, color 0.12s;
-      cursor: pointer;
+      position: absolute; top: 12px; right: 12px;
+      width: 36px; height: 36px; display: flex;
+      align-items: center; justify-content: center;
+      border-radius: 8px; background: transparent;
+      color: var(--text-muted); border: none;
+      transition: background 0.12s, color 0.12s; cursor: pointer;
     }
     .donate-close:hover { background: var(--surface-alt); color: var(--text); }
-
     .donate-title {
-      font-family: var(--font-serif);
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      line-height: 1.2;
+      font-family: var(--font-serif); font-size: 1.6rem; font-weight: 700;
+      color: var(--text); margin-bottom: 8px;
+      display: flex; align-items: center; gap: 12px; line-height: 1.2;
     }
     .donate-title .donate-emoji { font-size: 1.8rem; line-height: 1; }
-
     .donate-subtitle {
-      font-size: var(--fs-small);
-      color: var(--text-muted);
-      margin-bottom: 20px;
-      line-height: 1.55;
+      font-size: var(--fs-small); color: var(--text-muted);
+      margin-bottom: 20px; line-height: 1.55;
     }
-
     .donate-qr-block {
-      display: flex;
-      align-items: center; 
-      gap: 20px;
-      padding: 20px;
-      background: var(--surface-alt);
+      display: flex; align-items: center; gap: 20px;
+      padding: 20px; background: var(--surface-alt);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 16px;
+      border-radius: 12px; margin-bottom: 16px;
     }
-        .donate-qr-block img {
-      width: 260px;
-      height: 260px;
-      object-fit: contain;
-      border-radius: 10px;
-      background: #ffffff;
-      padding: 10px;
-      border: 1px solid var(--border);
-      flex-shrink: 0;
+    .donate-qr-block img {
+      width: 260px; height: 260px; object-fit: contain;
+      border-radius: 10px; background: #ffffff;
+      padding: 10px; border: 1px solid var(--border); flex-shrink: 0;
     }
     .donate-qr-copy { min-width: 0; flex: 1; }
     .donate-qr-copy strong {
-      display: block;
-      font-size: var(--fs-small);
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 4px;
+      display: block; font-size: var(--fs-small); font-weight: 700;
+      color: var(--text); margin-bottom: 4px;
     }
     .donate-qr-copy code {
-      display: inline-block;
-      font-family: var(--font-mono);
-      font-size: var(--fs-small);  /* ← was var(--fs-meta) */
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 8px 12px;           /* ← was 6px 10px */
-      color: var(--text);
-      margin-top: 4px;
-      word-break: break-all;
-      max-width: 100%;
+      display: inline-block; font-family: var(--font-mono);
+      font-size: var(--fs-body); background: var(--surface);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 10px 14px; color: var(--text);
+      margin-top: 6px; word-break: break-all; max-width: 100%;
     }
     .donate-qr-copy small {
-      display: block;
-      font-size: var(--fs-micro);
-      color: var(--text-muted);
-      margin-top: 8px;
-      line-height: 1.45;
+      display: block; font-size: var(--fs-micro);
+      color: var(--text-muted); margin-top: 8px; line-height: 1.45;
     }
-
     .donate-note {
-      font-size: var(--fs-meta);
-      color: var(--text-muted);
-      text-align: center;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-      line-height: 1.5;
+      font-size: var(--fs-meta); color: var(--text-muted);
+      text-align: center; padding-top: 16px;
+      border-top: 1px solid var(--border); line-height: 1.5;
     }
-
     @media (max-width: 520px) {
       .donate-title { font-size: 1.35rem; }
       .donate-inner { padding: 26px 20px 22px; }
@@ -554,53 +336,28 @@
       .donate-qr-copy code { width: 100%; text-align: center; }
     }
 
-    .btn-sm {
-      padding: 8px 14px;
-      min-height: 40px;
-      font-size: var(--fs-meta);
-    }
-
-    /* ---------- THEME SWITCHER ---------- */
     .theme-switcher {
-      display: inline-flex;
-      align-items: stretch;
+      display: inline-flex; align-items: stretch;
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--header-border);
-      border-radius: 8px;
-      padding: 2px;
-      gap: 2px;
+      border-radius: 8px; padding: 2px; gap: 2px;
       transition: var(--theme-transition);
     }
-
     .theme-switcher button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 6px 10px;
-      min-height: 36px;
-      background: transparent;
-      color: var(--header-btn-text);
-      border: none;
-      border-radius: 6px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      transition: background 0.14s, color 0.14s;
-      white-space: nowrap;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 6px; padding: 6px 10px; min-height: 36px;
+      background: transparent; color: var(--header-btn-text);
+      border: none; border-radius: 6px;
+      font-size: 0.78rem; font-weight: 600;
+      transition: background 0.14s, color 0.14s; white-space: nowrap;
     }
-
-    .theme-switcher button:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--header-text);
-    }
-
+    .theme-switcher button:hover { background: rgba(255, 255, 255, 0.08); color: var(--header-text); }
     .theme-switcher button[aria-pressed="true"] {
       background: rgba(255, 255, 255, 0.14);
       color: var(--header-text);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.10);
     }
 
-    /* ---------- MAIN LAYOUT ---------- */
     .app-body {
       display: grid;
       grid-template-columns: 400px 1fr;
@@ -629,7 +386,6 @@
       transition: var(--theme-transition);
     }
 
-    /* ---------- PANELS ---------- */
     .panel {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -638,933 +394,721 @@
       box-shadow: var(--shadow-sm);
       transition: var(--theme-transition);
     }
-
     .panel-head {
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 14px;
+      gap: 10px; margin-bottom: 14px;
     }
-
     .panel-head h2 {
-      font-size: 0.95rem;
-      font-weight: 700;
+      font-size: 0.95rem; font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-soft);
+      letter-spacing: 0.05em; color: var(--text-soft);
     }
-
     .panel-head .count-badge {
-      font-size: var(--fs-meta);
-      font-weight: 700;
-      color: var(--primary);
-      background: var(--primary-soft);
-      padding: 4px 10px;
-      border-radius: 999px;
+      font-size: var(--fs-meta); font-weight: 700;
+      color: var(--primary); background: var(--primary-soft);
+      padding: 4px 10px; border-radius: 999px;
     }
 
-    /* ---------- FORM CONTROLS ---------- */
     .field { margin-bottom: 14px; }
-
     .field label {
-      display: block;
-      font-size: var(--fs-label);
-      font-weight: 600;
-      color: var(--text-soft);
-      margin-bottom: 6px;
+      display: block; font-size: var(--fs-label);
+      font-weight: 600; color: var(--text-soft); margin-bottom: 6px;
     }
-
     .field input[type="text"],
     .field input[type="url"],
     .field input[type="search"],
     .field input[type="file"],
     .field select,
     .field textarea {
-      width: 100%;
-      padding: 10px 12px;
-      min-height: 44px;
-      font-size: var(--fs-body);
-      border: 1px solid var(--border);
+      width: 100%; padding: 10px 12px; min-height: 44px;
+      font-size: var(--fs-body); border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      background: var(--surface-raised);
-      color: var(--text);
+      background: var(--surface-raised); color: var(--text);
       outline: none;
       transition: border-color 0.12s, box-shadow 0.12s, background 0.22s, color 0.22s;
     }
-
-    .field input::placeholder,
-    .field textarea::placeholder { color: var(--text-faint); }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
+    .field input::placeholder, .field textarea::placeholder { color: var(--text-faint); }
+    .field input:focus, .field select:focus, .field textarea:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px var(--focus-ring);
     }
-
     .field textarea {
-      resize: vertical;
-      min-height: 88px;
-      font-family: var(--font-mono);
-      font-size: 0.9rem;
-      line-height: 1.5;
+      resize: vertical; min-height: 88px;
+      font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.5;
     }
-
     .field-row { display: flex; gap: 12px; }
     .field-row .field { flex: 1; }
 
-    .check-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px 14px;
-    }
-
+    .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
     .check-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: var(--fs-small);
-      font-weight: 500;
-      color: var(--text-soft);
-      cursor: pointer;
-      user-select: none;
-      min-height: 28px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: var(--fs-small); font-weight: 500;
+      color: var(--text-soft); cursor: pointer;
+      user-select: none; min-height: 28px;
     }
-
     .check-label input[type="checkbox"] {
       accent-color: var(--primary);
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
+      width: 18px; height: 18px; flex-shrink: 0;
     }
 
-    /* ---------- TABS ---------- */
     .tabs {
-      display: flex;
-      gap: 2px;
+      display: flex; gap: 2px;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 14px;
-      flex-wrap: wrap;
+      margin-bottom: 14px; flex-wrap: wrap;
     }
-
     .tab {
-      padding: 10px 14px;
-      font-size: var(--fs-small);
-      font-weight: 600;
-      color: var(--text-muted);
-      background: none;
-      border: none;
+      padding: 10px 14px; font-size: var(--fs-small);
+      font-weight: 600; color: var(--text-muted);
+      background: none; border: none;
       border-bottom: 2px solid transparent;
       margin-bottom: -1px;
-      transition: color 0.12s, border-color 0.12s;
-      min-height: 44px;
+      transition: color 0.12s, border-color 0.12s; min-height: 44px;
     }
-
     .tab:hover { color: var(--text); }
-    .tab.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-
+    .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* ---------- SYNC STATUS ---------- */
     .sync-status {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: var(--radius-sm);
-      font-size: var(--fs-small);
-      font-weight: 600;
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px; border-radius: var(--radius-sm);
+      font-size: var(--fs-small); font-weight: 600;
       border: 1px solid transparent;
       transition: var(--theme-transition);
     }
-
-    .sync-status .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .sync-status .sync-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-    }
-
+    .sync-status .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .sync-status .sync-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
     .sync-status .sync-meta strong {
-      font-size: var(--fs-small);
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: var(--fs-small); font-weight: 700;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-
     .sync-status .sync-meta small {
-      font-size: var(--fs-meta);
-      font-weight: 500;
-      opacity: 0.85;
+      font-size: var(--fs-meta); font-weight: 500; opacity: 0.85;
     }
-
-    .sync-online {
-      background: var(--success-soft);
-      border-color: var(--success-border);
-      color: var(--success-text);
-    }
+    .sync-online { background: var(--success-soft); border-color: var(--success-border); color: var(--success-text); }
     .sync-online .dot { background: var(--success); }
-
-    .sync-fetching {
-      background: var(--warning-soft);
-      border-color: var(--warning-border);
-      color: var(--warning-text);
-    }
-    .sync-fetching .dot {
-      background: var(--warning);
-      animation: pulse 1.2s infinite;
-    }
-
-    .sync-offline {
-      background: var(--danger-soft);
-      border-color: var(--danger-border);
-      color: var(--danger-text);
-    }
+    .sync-fetching { background: var(--warning-soft); border-color: var(--warning-border); color: var(--warning-text); }
+    .sync-fetching .dot { background: var(--warning); animation: pulse 1.2s infinite; }
+    .sync-offline { background: var(--danger-soft); border-color: var(--danger-border); color: var(--danger-text); }
     .sync-offline .dot { background: var(--danger); }
-
-    .sync-local {
-      background: var(--info-soft);
-      border-color: var(--info-border);
-      color: var(--info-text);
-    }
+    .sync-local { background: var(--info-soft); border-color: var(--info-border); color: var(--info-text); }
     .sync-local .dot { background: var(--info); }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
-    /* ---------- SOURCE TAG ---------- */
     .source-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 6px 12px;
-      border-radius: 999px;
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.8rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      padding: 6px 12px; border-radius: 999px;
       background: var(--header-tag-bg);
       border: 1px solid var(--header-border);
       color: var(--header-tag-text);
       transition: var(--theme-transition);
     }
 
-    /* ---------- TOOLBAR ---------- */
     .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: flex-end;
-      margin-bottom: 14px;
+      display: flex; flex-wrap: wrap; gap: 12px;
+      align-items: flex-end; margin-bottom: 14px;
     }
-
-    .toolbar .field {
-      margin-bottom: 0;
-      flex: 1 1 160px;
-      min-width: 140px;
-    }
-
+    .toolbar .field { margin-bottom: 0; flex: 1 1 160px; min-width: 140px; }
     .toolbar .field label { font-size: var(--fs-meta); }
-
-    .toolbar .field input,
-    .toolbar .field select {
-      font-size: var(--fs-small);
-      padding: 9px 12px;
-      min-height: 42px;
+    .toolbar .field input, .toolbar .field select {
+      font-size: var(--fs-small); padding: 9px 12px; min-height: 42px;
     }
-
     .search-field { flex: 2 1 260px; }
 
     .stats-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px 20px;
-      font-size: var(--fs-meta);
-      color: var(--text-muted);
-      margin-bottom: 12px;
-      padding: 10px 14px;
-      background: var(--surface-alt);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      transition: var(--theme-transition);
+      display: flex; flex-wrap: wrap; gap: 8px 20px;
+      font-size: var(--fs-meta); color: var(--text-muted);
+      margin-bottom: 12px; padding: 10px 14px;
+      background: var(--surface-alt); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); transition: var(--theme-transition);
     }
+    .stats-bar strong { color: var(--text); font-weight: 700; }
 
-    .stats-bar strong {
-      color: var(--text);
-      font-weight: 700;
-    }
-
-    /* ---------- TABLE ---------- */
     .table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--surface);
+      overflow-x: auto; border: 1px solid var(--border);
+      border-radius: var(--radius); background: var(--surface);
       transition: var(--theme-transition);
     }
-
-    .catalog-table {
-      width: 100%;
-      min-width: 820px;
-      font-size: var(--fs-small);
-    }
-
+    .catalog-table { width: 100%; min-width: 820px; font-size: var(--fs-small); }
     .catalog-table thead {
       background: var(--table-header-bg);
-      position: sticky;
-      top: 0;
-      z-index: 5;
+      position: sticky; top: 0; z-index: 5;
     }
-
     .catalog-table th {
-      text-align: left;
-      padding: 12px 14px;
-      font-size: var(--fs-micro);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      text-align: left; padding: 12px 14px;
+      font-size: var(--fs-micro); font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.05em;
       color: var(--text-muted);
       border-bottom: 2px solid var(--border);
-      white-space: nowrap;
-      cursor: pointer;
-      user-select: none;
+      white-space: nowrap; cursor: pointer; user-select: none;
       transition: var(--theme-transition);
     }
-
     .catalog-table th:hover { color: var(--primary); }
-
     .catalog-table th .sort-arrow {
-      display: inline-block;
-      margin-left: 5px;
-      font-size: 0.72rem;
-      opacity: 0.5;
+      display: inline-block; margin-left: 5px;
+      font-size: 0.72rem; opacity: 0.5;
     }
-
-    .catalog-table th.sort-active .sort-arrow {
-      opacity: 1;
-      color: var(--primary);
-    }
-
+    .catalog-table th.sort-active .sort-arrow { opacity: 1; color: var(--primary); }
     .catalog-table td {
-      padding: 11px 14px;
-      border-bottom: 1px solid var(--border-subtle);
-      vertical-align: top;
-      max-width: 280px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      color: var(--text);
+      padding: 11px 14px; border-bottom: 1px solid var(--border-subtle);
+      vertical-align: top; max-width: 280px;
+      overflow: hidden; text-overflow: ellipsis;
+      white-space: nowrap; color: var(--text);
     }
-
     .catalog-table tbody tr:nth-child(even) { background: var(--table-stripe); }
     .catalog-table tbody tr:hover { background: var(--table-hover); }
-
     .catalog-table .cell-call {
-      font-family: var(--font-mono);
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--primary);
+      font-family: var(--font-mono); font-size: 0.9rem;
+      font-weight: 700; color: var(--primary);
     }
-
-    .catalog-table .cell-title {
-      font-weight: 600;
-      color: var(--text);
-    }
-
+    .catalog-table .cell-title { font-weight: 600; color: var(--text); }
     .catalog-table .cell-muted { color: var(--text-muted); }
     .catalog-table .lang-bn { font-family: var(--font-bengali); }
 
-    .empty-state {
-      text-align: center;
-      padding: 56px 24px;
-      color: var(--text-muted);
-    }
+    .empty-state { text-align: center; padding: 56px 24px; color: var(--text-muted); }
+    .empty-state svg { margin: 0 auto 16px; opacity: 0.4; width: 56px; height: 56px; color: var(--text-muted); }
+    .empty-state h3 { font-size: var(--fs-heading); font-weight: 700; color: var(--text-soft); margin-bottom: 8px; }
+    .empty-state p { font-size: var(--fs-small); max-width: 400px; margin: 0 auto 20px; line-height: 1.5; }
 
-    .empty-state svg {
-      margin: 0 auto 16px;
-      opacity: 0.4;
-      width: 56px;
-      height: 56px;
-      color: var(--text-muted);
-    }
-
-    .empty-state h3 {
-      font-size: var(--fs-heading);
-      font-weight: 700;
-      color: var(--text-soft);
-      margin-bottom: 8px;
-    }
-
-    .empty-state p {
-      font-size: var(--fs-small);
-      max-width: 400px;
-      margin: 0 auto 20px;
-      line-height: 1.5;
-    }
-
-    /* ---------- PREVIEW ---------- */
     .preview-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 14px; margin-bottom: 16px; flex-wrap: wrap;
     }
+    .preview-header h2 { font-size: var(--fs-heading); font-weight: 700; color: var(--text); }
+    .preview-meta { font-size: var(--fs-meta); color: var(--text-muted); }
+    .sheet-scroll { display: flex; flex-direction: column; gap: 28px; align-items: center; }
 
-    .preview-header h2 {
-      font-size: var(--fs-heading);
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .preview-meta {
-      font-size: var(--fs-meta);
-      color: var(--text-muted);
-    }
-
-    .sheet-scroll {
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-      align-items: center;
-    }
-
-    /* ---------- A4 SHEET (paper) ---------- */
     .a4-sheet {
-      width: 210mm;
-      height: 297mm;
-      background: #ffffff;
-      color: var(--print-ink);
+      width: 210mm; height: 297mm;
+      background: #ffffff; color: var(--print-ink);
       box-shadow: var(--shadow-sheet);
       padding: 10mm 9mm 8mm 9mm;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
-      flex-shrink: 0;
-      transition: box-shadow 0.22s ease;
+      display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+      flex-shrink: 0; transition: box-shadow 0.22s ease;
     }
-
     .sheet-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
+      display: flex; align-items: flex-end; justify-content: space-between;
       border-bottom: 1.5px solid var(--print-ink);
-      padding-bottom: 2mm;
-      margin-bottom: 3mm;
-      flex-shrink: 0;
+      padding-bottom: 2mm; margin-bottom: 3mm; flex-shrink: 0;
     }
-
     .sheet-header h3 {
-      font-size: 11pt;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: -0.01em;
-      color: var(--print-ink);
+      font-size: 11pt; font-weight: 800;
+      text-transform: uppercase; letter-spacing: -0.01em; color: var(--print-ink);
     }
-
     .sheet-header span {
-      font-size: 7.5pt;
-      color: var(--print-ink-muted);
-      font-weight: 600;
-      font-family: var(--font-mono);
+      font-size: 7.5pt; color: var(--print-ink-muted);
+      font-weight: 600; font-family: var(--font-mono);
     }
-
     .sheet-footer {
       border-top: 1px solid var(--print-border);
-      padding-top: 2mm;
-      margin-top: 3mm;
-      font-size: 7.5pt;
-      color: var(--print-ink-muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding-top: 2mm; margin-top: 3mm;
+      font-size: 7.5pt; color: var(--print-ink-muted);
+      display: flex; justify-content: space-between; align-items: center;
       flex-shrink: 0;
     }
-
     .label-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 25.4mm;
-      column-gap: 3.5mm;
-      row-gap: 2.2mm;
-      flex: 1;
-      align-content: start;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 25.4mm; column-gap: 3.5mm;
+      row-gap: 2.2mm; flex: 1; align-content: start;
     }
 
-    /* ---------- LABELS ---------- */
     .label {
-      position: relative;
-      overflow: hidden;
-      background: #ffffff;
-      color: var(--print-ink);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      position: relative; overflow: hidden;
+      background: #ffffff; color: var(--print-ink);
+      display: flex; flex-direction: column; justify-content: space-between;
       padding: 1.6mm 2.2mm;
       border: 1px dashed var(--print-border-strong);
       border-radius: 2px;
     }
-
     .label.no-cutline { border-color: transparent; }
-
     .label::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: var(--label-accent, var(--primary));
+      content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px; background: var(--label-accent, var(--primary));
     }
-
-    .label.spare {
-      background: var(--print-surface-alt);
-      justify-content: center;
-      align-items: center;
-    }
-
+    .label.spare { background: var(--print-surface-alt); justify-content: center; align-items: center; }
     .label.spare::before { display: none; }
-
     .label.spare .spare-text {
-      font-size: 7pt;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--print-ink-muted);
-      text-align: center;
+      font-size: 7pt; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--print-ink-muted); text-align: center;
     }
-
     .label.spare .spare-sub {
-      font-size: 6pt;
-      color: var(--print-border-strong);
-      text-transform: none;
-      letter-spacing: 0;
-      font-weight: 500;
-      margin-top: 1px;
+      font-size: 6pt; color: var(--print-border-strong);
+      text-transform: none; letter-spacing: 0; font-weight: 500; margin-top: 1px;
     }
-
     .l-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 4px;
-      border-bottom: 0.5px solid var(--print-border);
-      padding-bottom: 0.8mm;
-      margin-bottom: 0.8mm;
-      min-width: 0;
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 4px; border-bottom: 0.5px solid var(--print-border);
+      padding-bottom: 0.8mm; margin-bottom: 0.8mm; min-width: 0;
     }
-
     .l-call {
-      font-family: var(--font-mono);
-      font-size: 8pt;
-      font-weight: 800;
-      color: var(--print-ink);
-      letter-spacing: -0.01em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      min-width: 0;
+      font-family: var(--font-mono); font-size: 8pt; font-weight: 800;
+      color: var(--print-ink); letter-spacing: -0.01em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
     }
-
     .l-item {
-      font-size: 6.4pt;
-      font-weight: 700;
-      color: var(--print-ink-muted);
-      background: var(--print-surface-alt);
-      padding: 0.5px 3px;
-      border-radius: 2px;
-      white-space: nowrap;
-      flex-shrink: 0;
+      font-size: 6.4pt; font-weight: 700; color: var(--print-ink-muted);
+      background: var(--print-surface-alt); padding: 0.5px 3px;
+      border-radius: 2px; white-space: nowrap; flex-shrink: 0;
     }
-
     .l-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 0;
-      line-height: 1.15;
+      flex: 1; display: flex; flex-direction: column;
+      justify-content: center; min-height: 0; line-height: 1.15;
     }
-
     .l-title {
-      font-size: 7.6pt;
-      font-weight: 700;
-      color: var(--print-ink);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 7.6pt; font-weight: 700; color: var(--print-ink);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-
     .l-author {
-      font-size: 6.6pt;
-      color: var(--print-ink-soft);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 6.6pt; color: var(--print-ink-soft);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-
-    .l-vol {
-      font-size: 6.4pt;
-      font-weight: 700;
-      color: #8a5c00;
-      white-space: nowrap;
-    }
-
+    .l-vol { font-size: 6.4pt; font-weight: 700; color: #8a5c00; white-space: nowrap; }
     .l-foot {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 4px;
-      border-top: 0.5px solid var(--print-border);
-      padding-top: 0.8mm;
-      min-width: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 4px; border-top: 0.5px solid var(--print-border);
+      padding-top: 0.8mm; min-width: 0;
     }
-
     .l-shelf {
-      font-size: 6.2pt;
-      font-weight: 700;
-      color: var(--print-info);
-      background: var(--print-info-soft);
-      padding: 0.5px 4px;
-      border-radius: 2px;
-      white-space: nowrap;
-      flex-shrink: 0;
+      font-size: 6.2pt; font-weight: 700; color: var(--print-info);
+      background: var(--print-info-soft); padding: 0.5px 4px;
+      border-radius: 2px; white-space: nowrap; flex-shrink: 0;
     }
-
     .l-lang {
-      font-size: 6pt;
-      color: var(--print-ink-muted);
+      font-size: 6pt; color: var(--print-ink-muted);
       font-family: var(--font-bengali);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
-    /* Library block template */
     .label-block {
-      display: grid;
-      grid-template-columns: 40% 1fr;
-      gap: 1.6mm;
-      padding: 1.6mm;
+      display: grid; grid-template-columns: 40% 1fr;
+      gap: 1.6mm; padding: 1.6mm;
       border: 1px dashed var(--print-border-strong);
-      border-radius: 2px;
-      background: #ffffff;
-      color: var(--print-ink);
-      overflow: hidden;
+      border-radius: 2px; background: #ffffff;
+      color: var(--print-ink); overflow: hidden;
     }
-
     .label-block.no-cutline { border-color: transparent; }
-
     .block-call {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center; text-align: center;
       background: var(--label-accent, var(--print-ink));
-      color: #ffffff;
-      border-radius: 2px;
-      padding: 1.2mm 0.8mm;
-      font-family: var(--font-mono);
-      font-size: 6.6pt;
-      font-weight: 800;
-      line-height: 1.15;
-      overflow: hidden;
-      word-break: break-all;
+      color: #ffffff; border-radius: 2px;
+      padding: 1.2mm 0.8mm; font-family: var(--font-mono);
+      font-size: 6.6pt; font-weight: 800; line-height: 1.15;
+      overflow: hidden; word-break: break-all;
     }
-
-    .block-call span {
-      display: block;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
+    .block-call span { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
     .block-meta {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 0.8mm;
-      min-width: 0;
-      overflow: hidden;
+      display: flex; flex-direction: column; justify-content: center;
+      gap: 0.8mm; min-width: 0; overflow: hidden;
     }
-
     .block-title {
-      font-size: 7.2pt;
-      font-weight: 700;
-      color: var(--print-ink);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 7.2pt; font-weight: 700; color: var(--print-ink);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-
     .block-author {
-      font-size: 6.4pt;
-      color: var(--print-ink-soft);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 6.4pt; color: var(--print-ink-soft);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-
     .block-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 3px;
+      display: flex; justify-content: space-between;
+      align-items: center; gap: 3px;
     }
-
     .block-bottom .l-shelf { font-size: 6pt; }
 
-    /* Minimal spine template */
     .label-strip {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 0.8mm;
-      padding: 1.6mm 2.2mm;
+      display: flex; flex-direction: column; justify-content: center;
+      gap: 0.8mm; padding: 1.6mm 2.2mm;
       border: 1px dashed var(--print-border-strong);
       border-left: 3px solid var(--label-accent, var(--primary));
-      border-radius: 2px;
-      background: #ffffff;
-      color: var(--print-ink);
-      overflow: hidden;
+      border-radius: 2px; background: #ffffff;
+      color: var(--print-ink); overflow: hidden;
     }
-
-    .label-strip.no-cutline {
-      border-color: transparent;
-      border-left-color: var(--label-accent, var(--primary));
-    }
-
+    .label-strip.no-cutline { border-color: transparent; border-left-color: var(--label-accent, var(--primary)); }
     .strip-call {
-      font-family: var(--font-mono);
-      font-size: 8.2pt;
-      font-weight: 800;
-      color: var(--print-ink);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.1;
+      font-family: var(--font-mono); font-size: 8.2pt; font-weight: 800;
+      color: var(--print-ink); white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis; line-height: 1.1;
     }
-
     .strip-title {
-      font-size: 6.8pt;
-      font-weight: 600;
-      color: var(--print-ink-soft);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.1;
+      font-size: 6.8pt; font-weight: 600; color: var(--print-ink-soft);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.1;
     }
-
     .strip-foot {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 4px;
-      font-size: 6pt;
-      color: var(--print-ink-muted);
-      min-width: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 4px; font-size: 6pt; color: var(--print-ink-muted); min-width: 0;
     }
-
     .strip-foot .l-shelf { font-size: 5.8pt; }
-
     .strip-foot .strip-author {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      min-width: 0;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
     }
 
-    /* Decorative barcode */
     .barcode {
-      height: 2.6mm;
-      width: 100%;
+      height: 2.6mm; width: 100%;
       background: repeating-linear-gradient(
         90deg,
-        var(--print-ink) 0,
-        var(--print-ink) 0.5px,
-        transparent 0.5px,
-        transparent 1.3px,
-        var(--print-ink) 1.3px,
-        var(--print-ink) 2px,
-        transparent 2px,
-        transparent 2.8px,
-        var(--print-ink) 2.8px,
-        var(--print-ink) 3.4px,
-        transparent 3.4px,
-        transparent 4.2px
+        var(--print-ink) 0, var(--print-ink) 0.5px,
+        transparent 0.5px, transparent 1.3px,
+        var(--print-ink) 1.3px, var(--print-ink) 2px,
+        transparent 2px, transparent 2.8px,
+        var(--print-ink) 2.8px, var(--print-ink) 3.4px,
+        transparent 3.4px, transparent 4.2px
       );
-      opacity: 0.78;
-      border-radius: 1px;
-      flex-shrink: 0;
+      opacity: 0.78; border-radius: 1px; flex-shrink: 0;
     }
-
     .l-barcode { margin: 0.6mm 0; }
     .block-barcode { margin-top: 0.6mm; }
     .strip-barcode { margin: 0.4mm 0; }
 
-    /* ---------- DIAGNOSTICS ---------- */
     .diagnostics { font-size: var(--fs-small); }
-
     .diagnostics summary {
-      cursor: pointer;
-      font-weight: 700;
-      font-size: var(--fs-small);
-      color: var(--text-soft);
-      padding: 6px 0;
-      list-style: none;
+      cursor: pointer; font-weight: 700; font-size: var(--fs-small);
+      color: var(--text-soft); padding: 6px 0; list-style: none;
     }
-
     .diagnostics summary::-webkit-details-marker { display: none; }
-
     .diagnostics summary::before {
-      content: "▸ ";
-      display: inline-block;
-      transition: transform 0.15s;
+      content: "▸ "; display: inline-block; transition: transform 0.15s;
     }
-
     .diagnostics[open] summary::before { transform: rotate(90deg); }
-
-    .diag-table {
-      width: 100%;
-      font-size: var(--fs-meta);
-      margin-top: 8px;
-    }
-
-    .diag-table td {
-      padding: 4px 6px;
-      vertical-align: top;
-    }
-
+    .diag-table { width: 100%; font-size: var(--fs-meta); margin-top: 8px; }
+    .diag-table td { padding: 4px 6px; vertical-align: top; }
     .diag-table td:first-child {
-      font-weight: 600;
-      color: var(--text-muted);
-      white-space: nowrap;
-      width: 110px;
+      font-weight: 600; color: var(--text-muted);
+      white-space: nowrap; width: 110px;
     }
-
     .diag-table td:last-child {
-      font-family: var(--font-mono);
-      font-size: var(--fs-micro);
-      color: var(--text-soft);
-      word-break: break-all;
+      font-family: var(--font-mono); font-size: var(--fs-micro);
+      color: var(--text-soft); word-break: break-all;
     }
 
-    /* ---------- TOASTS ---------- */
     .toast-region {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 300;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-width: 380px;
-      pointer-events: none;
+      position: fixed; bottom: 20px; right: 20px; z-index: 300;
+      display: flex; flex-direction: column; gap: 10px;
+      max-width: 380px; pointer-events: none;
     }
-
     .toast {
-      pointer-events: auto;
-      background: var(--surface-raised);
-      color: var(--text);
-      padding: 14px 18px;
-      border-radius: var(--radius);
-      font-size: var(--fs-small);
-      box-shadow: var(--shadow-md);
-      border: 1px solid var(--border);
+      pointer-events: auto; background: var(--surface-raised);
+      color: var(--text); padding: 14px 18px;
+      border-radius: var(--radius); font-size: var(--fs-small);
+      box-shadow: var(--shadow-md); border: 1px solid var(--border);
       border-left: 4px solid var(--primary);
-      animation: toast-in 0.2s ease-out;
-      transition: var(--theme-transition);
+      animation: toast-in 0.2s ease-out; transition: var(--theme-transition);
     }
-
     .toast.toast-error { border-left-color: var(--danger); }
     .toast.toast-success { border-left-color: var(--success); }
-
     @keyframes toast-in {
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ---------- RESPONSIVE ---------- */
-    @media (max-width: 1100px) {
-      .app-body { grid-template-columns: 1fr; }
-      .sidebar {
-        max-height: none;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-        overflow-y: visible;
+    /* ========== SCANNER MODAL ========== */
+    .scan-dialog {
+      border: none; border-radius: 14px; padding: 0;
+      max-width: 640px; width: calc(100vw - 24px);
+      background: var(--surface); color: var(--text);
+      box-shadow: var(--shadow-md), 0 24px 64px rgba(0, 0, 0, 0.4);
+      overflow: hidden; position: relative;
+    }
+    .scan-dialog::backdrop {
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .scan-inner { padding: 24px; }
+    .scan-header {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 16px;
+    }
+    .scan-header h2 {
+      font-family: var(--font-serif); font-size: 1.4rem;
+      font-weight: 700; color: var(--text);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .scan-close {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px; background: transparent;
+      color: var(--text-muted); border: none;
+      transition: background 0.12s, color 0.12s; cursor: pointer;
+    }
+    .scan-close:hover { background: var(--surface-alt); color: var(--text); }
+
+    .scan-video-wrap {
+      position: relative;
+      width: 100%; aspect-ratio: 4 / 3;
+      background: #000; border-radius: 12px;
+      overflow: hidden; margin-bottom: 16px;
+    }
+    .scan-video-wrap video {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    .scan-overlay {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .scan-frame {
+      width: 78%; height: 42%;
+      border: 3px solid var(--accent);
+      border-radius: 12px;
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.42);
+      position: relative;
+    }
+    .scan-frame::before,
+    .scan-frame::after {
+      content: ""; position: absolute; width: 24px; height: 24px;
+      border: 3px solid var(--accent);
+    }
+    .scan-frame::before {
+      top: -3px; left: -3px;
+      border-right: none; border-bottom: none;
+      border-top-left-radius: 12px;
+    }
+    .scan-frame::after {
+      bottom: -3px; right: -3px;
+      border-left: none; border-top: none;
+      border-bottom-right-radius: 12px;
+    }
+    .scan-hint {
+      position: absolute; bottom: 16px; left: 0; right: 0;
+      text-align: center; color: #fff;
+      font-size: var(--fs-meta); font-weight: 600;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+      padding: 0 20px;
+    }
+    .scan-status {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px; border-radius: var(--radius-sm);
+      background: var(--surface-alt); border: 1px solid var(--border);
+      font-size: var(--fs-small); color: var(--text-soft);
+      margin-bottom: 14px;
+    }
+    .scan-status .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--info); flex-shrink: 0;
+    }
+    .scan-status.scan-active .dot { background: var(--success); animation: pulse 1.2s infinite; }
+    .scan-status.scan-error .dot { background: var(--danger); }
+
+    .scan-result {
+      padding: 16px; background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm); margin-bottom: 14px;
+    }
+    .scan-result h3 {
+      font-size: var(--fs-small); font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--text-muted); margin-bottom: 12px;
+    }
+    .scan-result .form-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px; margin-bottom: 8px;
+    }
+    .scan-result .form-row label {
+      display: block; font-size: var(--fs-micro);
+      font-weight: 600; color: var(--text-muted); margin-bottom: 3px;
+    }
+    .scan-result .form-row input {
+      width: 100%; padding: 8px 10px; font-size: var(--fs-small);
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--surface); color: var(--text);
+    }
+    .scan-result .form-row input:focus {
+      border-color: var(--primary); outline: none;
+      box-shadow: 0 0 0 2px var(--focus-ring);
+    }
+    .scan-actions {
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .scan-actions .btn { flex: 1; justify-content: center; min-width: 120px; }
+
+    /* Scanner is mobile-only: hidden on desktop */
+    #btnOpenScanner {
+      display: none !important;
+    }
+    @media (max-width: 768px) {
+      #btnOpenScanner {
+        display: inline-flex !important;
       }
-      .main-pane {
-        max-height: none;
-        overflow-y: visible;
+    }
+    /* Safety net: hide the entire scanner dialog on desktop */
+    @media (min-width: 769px) {
+      .scan-dialog {
+        display: none !important;
+      }
+      .scan-dialog::backdrop {
+        display: none !important;
+        background: transparent !important;
       }
     }
 
+    .scan-manual {
+      display: flex; gap: 8px;
+      padding-top: 16px; margin-top: 4px;
+      border-top: 1px solid var(--border);
+    }
+    .scan-manual input { flex: 1; }
+    .scan-manual button { flex-shrink: 0; }
+
+    @media (max-width: 520px) {
+      .scan-inner { padding: 18px; }
+      .scan-header h2 { font-size: 1.15rem; }
+      .scan-result .form-row { grid-template-columns: 1fr; }
+    }
+
+    /* ========== RESPONSIVE (Desktop Adjustments) ========== */
+    @media (max-width: 1100px) {
+      .app-body { grid-template-columns: 1fr; }
+      .sidebar {
+        max-height: none; border-right: none;
+        border-bottom: 1px solid var(--border);
+        overflow-y: visible;
+      }
+      .main-pane { max-height: none; overflow-y: visible; }
+    }
     @media (max-width: 720px) {
       .theme-switcher button .theme-label { display: none; }
       .theme-switcher button { padding: 6px 9px; min-height: 36px; }
     }
-
     @media (max-width: 640px) {
       .app-header { padding: 10px 14px; }
       .brand-text strong { font-size: 0.95rem; }
       .brand-text small { font-size: 0.72rem; }
-
       .header-actions .btn span { display: none; }
       .header-actions .btn { padding: 10px 12px; }
-
-      .sidebar { padding: 14px; }
-      .main-pane { padding: 14px; }
-
       .toolbar .field { flex: 1 1 100%; }
-
       .a4-sheet {
-        width: 100%;
-        height: auto;
-        padding: 4mm;
-        box-shadow: none;
-        border: 1px solid var(--border);
+        width: 100%; height: auto; padding: 4mm;
+        box-shadow: none; border: 1px solid var(--border);
       }
-
       .label-grid {
         grid-auto-rows: 24mm;
-        column-gap: 2.5mm;
-        row-gap: 2.5mm;
+        column-gap: 2.5mm; row-gap: 2.5mm;
       }
-
       .catalog-table { font-size: var(--fs-meta); min-width: 760px; }
       .catalog-table td { padding: 9px 12px; }
       .catalog-table th { padding: 10px 12px; }
     }
-
-    @media (max-width: 380px) {
+    @media (max-width: 480px) {
       .brand-text small { display: none; }
+      .source-tag { display: none; }
+    }
+    @media (max-width: 380px) {
       .stats-bar { font-size: var(--fs-micro); }
       .catalog-table { font-size: var(--fs-micro); }
     }
-
-    /* ---------- PRINT ---------- */
-    @page {
-      size: A4 portrait;
-      margin: 0;
+    @media (max-width: 360px) {
+      .mobile-nav button .tab-label { font-size: 0.58rem; }
+      .mobile-nav button svg { width: 20px; height: 20px; }
     }
+
+    /* ========== MOBILE NAVIGATION (Bottom Tabs) ========== */
+    .mobile-nav { display: none; }
+
+    @media (max-width: 768px) {
+      body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+
+      .mobile-nav {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        height: 72px;
+        padding-bottom: env(safe-area-inset-bottom);
+        background: var(--header-bg);
+        border-top: 1px solid var(--header-border);
+        z-index: 250;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.20);
+      }
+      .mobile-nav button {
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        gap: 3px; background: transparent; border: none;
+        color: var(--header-btn-text);
+        font-size: 0.7rem; font-weight: 600;
+        padding: 6px 2px; min-height: 56px;
+        transition: color 0.14s, background 0.14s;
+        position: relative;
+      }
+      .mobile-nav button svg {
+        width: 24px; height: 24px;
+        transition: color 0.14s;
+      }
+      .mobile-nav button.active {
+        color: var(--accent);
+      }
+      .mobile-nav button.active svg {
+        color: var(--accent);
+      }
+      .mobile-nav button:active {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .mobile-nav button .tab-label {
+        font-size: 0.68rem;
+        letter-spacing: 0.02em;
+      }
+
+      /* View switching */
+      .app-body {
+        display: block !important;
+        min-height: calc(100vh - 56px - 72px);
+        min-height: calc(100dvh - 56px - 72px);
+      }
+
+      .sidebar,
+      .main-pane {
+        max-height: none !important;
+        overflow-y: auto !important;
+        height: auto;
+      }
+
+      /* Mobile view visibility */
+      body[data-mobile-view="catalog"] .sidebar { display: none; }
+      body[data-mobile-view="catalog"] .main-pane { display: block; }
+      body[data-mobile-view="catalog"] .catalog-section { display: block; }
+      body[data-mobile-view="catalog"] .preview-section { display: none; }
+
+      body[data-mobile-view="preview"] .sidebar { display: none; }
+      body[data-mobile-view="preview"] .main-pane { display: block; }
+      body[data-mobile-view="preview"] .catalog-section { display: none; }
+      body[data-mobile-view="preview"] .preview-section { display: block; }
+
+      body[data-mobile-view="add"] .main-pane { display: none; }
+      body[data-mobile-view="add"] .sidebar { display: block; }
+      body[data-mobile-view="add"] .sidebar .panel:not(.panel-add-only) { display: none; }
+      body[data-mobile-view="add"] .sidebar .panel-add-only { display: block; }
+
+      body[data-mobile-view="data"] .main-pane { display: none; }
+      body[data-mobile-view="data"] .sidebar { display: block; }
+      body[data-mobile-view="data"] .sidebar .panel { display: block; }
+
+      /* Adjust padding for mobile bottom nav */
+      .main-pane,
+      .sidebar {
+        padding: 14px;
+        padding-bottom: calc(14px + env(safe-area-inset-bottom));
+      }
+
+      /* Larger touch targets on mobile */
+      .toolbar .field input,
+      .toolbar .field select {
+        min-height: 44px;
+        font-size: var(--fs-body);
+      }
+
+      /* When catalog view: table takes full width */
+      body[data-mobile-view="catalog"] .catalog-table {
+        min-width: 100%;
+        font-size: var(--fs-meta);
+      }
+    }
+
+    /* ========== PRINT ========== */
+    @page { size: A4 portrait; margin: 0; }
 
     @media print {
       html, body {
@@ -1575,34 +1119,23 @@
         width: 210mm;
         font-size: 11pt;
       }
-
-      .app-header,
-      .sidebar,
-      .preview-header,
-      .toolbar,
-      .stats-bar,
-      .table-wrap,
-      .toast-region,
-      .donate-dialog,
-      .donate-dialog::backdrop,
-      .no-print {
+      .app-header, .sidebar, .preview-header, .toolbar,
+      .stats-bar, .table-wrap, .toast-region,
+      .donate-dialog, .donate-dialog::backdrop,
+      .scan-dialog, .scan-dialog::backdrop,
+      .mobile-nav, .no-print {
         display: none !important;
       }
-
       .app-body { display: block !important; }
-
       .main-pane {
         padding: 0 !important;
         max-height: none !important;
         overflow: visible !important;
         background: #ffffff !important;
       }
-
-      .sheet-scroll {
-        display: block !important;
-        gap: 0 !important;
-      }
-
+      .catalog-section { display: none !important; }
+      .preview-section { display: block !important; }
+      .sheet-scroll { display: block !important; gap: 0 !important; }
       .a4-sheet {
         width: 210mm !important;
         height: 297mm !important;
@@ -1617,41 +1150,28 @@
         overflow: hidden;
         background: #ffffff !important;
       }
-
-      .a4-sheet:last-child {
-        page-break-after: auto;
-        break-after: auto;
-      }
-
+      .a4-sheet:last-child { page-break-after: auto; break-after: auto; }
       .label-grid {
         grid-auto-rows: 25.4mm;
-        column-gap: 3.5mm;
-        row-gap: 2.2mm;
+        column-gap: 3.5mm; row-gap: 2.2mm;
       }
-
-      .label,
-      .label-block,
-      .label-strip {
-        break-inside: avoid;
-        page-break-inside: avoid;
+      .label, .label-block, .label-strip {
+        break-inside: avoid; page-break-inside: avoid;
       }
-
       * {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
       }
-
       .label.no-cutline,
       .label-block.no-cutline,
       .label-strip.no-cutline {
         border-color: transparent !important;
       }
-
       .barcode { opacity: 0.9 !important; }
     }
   </style>
 </head>
-<body>
+<body data-mobile-view="catalog">
 
   <a class="skip-link" href="#main-content">Skip to catalog</a>
 
@@ -1672,7 +1192,7 @@
       </div>
       <div class="header-actions">
         <span class="source-tag" id="sourceTag" title="Current data source">Local Sample</span>
-        
+
         <button class="btn btn-outline btn-sm" id="btnInstall" type="button" title="Install as app" hidden>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -1681,19 +1201,12 @@
           </svg>
           <span>Install</span>
         </button>
-        
+
         <div class="theme-switcher" role="group" aria-label="Color theme">
           <button type="button" data-theme-choice="light" title="Light theme" aria-label="Light theme">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="4"/>
-              <path d="M12 2v2"/>
-              <path d="M12 20v2"/>
-              <path d="M4.93 4.93l1.41 1.41"/>
-              <path d="M17.66 17.66l1.41 1.41"/>
-              <path d="M2 12h2"/>
-              <path d="M20 12h2"/>
-              <path d="M6.34 17.66l-1.41 1.41"/>
-              <path d="M19.07 4.93l-1.41 1.41"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
             </svg>
             <span class="theme-label">Light</span>
           </button>
@@ -1706,8 +1219,7 @@
           <button type="button" data-theme-choice="system" title="System theme" aria-label="Follow system theme">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="2" y="3" width="20" height="14" rx="2"/>
-              <path d="M8 21h8"/>
-              <path d="M12 17v4"/>
+              <path d="M8 21h8M12 17v4"/>
             </svg>
             <span class="theme-label">Auto</span>
           </button>
@@ -1717,18 +1229,23 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-            <path d="M12 7v6"/>
-            <path d="M9 10h6"/>
+            <path d="M12 7v6M9 10h6"/>
           </svg>
           <span>Buy me a book</span>
         </button>
 
         <button class="btn btn-outline btn-sm" id="btnRefresh" type="button" title="Force sync now">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/>
+          </svg>
           <span>Sync</span>
         </button>
         <button class="btn btn-primary btn-sm" id="btnPrint" type="button" title="Print or save as PDF">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polyline points="6 9 6 2 18 2 18 9"/>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+            <rect x="6" y="14" width="12" height="8"/>
+          </svg>
           <span>Print</span>
         </button>
       </div>
@@ -1746,6 +1263,86 @@
           </div>
         </div>
 
+        <div class="panel panel-add-only">
+          <div class="panel-head">
+            <h2>Add a Book</h2>
+          </div>
+
+          <button class="btn btn-primary btn-sm" id="btnOpenScanner" type="button" style="width:100%; margin-bottom:14px; min-height:48px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 7V5a2 2 0 0 1 2-2h2"/>
+              <path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+              <path d="M21 17v2a2 2 0 0 1-2 2h-2"/>
+              <path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+              <line x1="7" y1="12" x2="17" y2="12"/>
+            </svg>
+            📷 Scan ISBN with Camera
+          </button>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="mType">Type</label>
+              <select id="mType">
+                <option value="">—</option>
+                <option value="Fiction (FIC)">Fiction (FIC)</option>
+                <option value="Non-Fiction (NF)">Non-Fiction (NF)</option>
+                <option value="Poetry (POE)">Poetry (POE)</option>
+                <option value="Drama (DRA)">Drama (DRA)</option>
+                <option value="Reference (REF)">Reference (REF)</option>
+                <option value="Graphic Novel (GRA)">Graphic Novel (GRA)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="mGenre">Genre</label>
+              <select id="mGenre">
+                <option value="">—</option>
+                <option value="Literature (LIT)">Literature (LIT)</option>
+                <option value="History (HIS)">History (HIS)</option>
+                <option value="Philosophy (PHI)">Philosophy (PHI)</option>
+                <option value="Science & Tech (SCI)">Science & Tech (SCI)</option>
+                <option value="Politics (POL)">Politics (POL)</option>
+                <option value="Essays (ESS)">Essays (ESS)</option>
+                <option value="Biography / Memoir (BIO)">Biography / Memoir (BIO)</option>
+                <option value="Mystery / Thriller (THR)">Mystery / Thriller (THR)</option>
+                <option value="Religion & Mythology (REL)">Religion & Mythology (REL)</option>
+                <option value="Art & Cinema (ART)">Art & Cinema (ART)</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="mTitle">Title <span style="color:var(--danger);">*</span></label>
+            <input type="text" id="mTitle" placeholder="Book title" autocomplete="off">
+          </div>
+          <div class="field-row">
+            <div class="field" style="flex:2;">
+              <label for="mAuthor">Author</label>
+              <input type="text" id="mAuthor" placeholder="Author name" autocomplete="off">
+            </div>
+            <div class="field" style="flex:1;">
+              <label for="mVolume">Volume</label>
+              <input type="text" id="mVolume" placeholder="Vol 1" autocomplete="off">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="mLanguage">Language</label>
+              <input type="text" id="mLanguage" placeholder="English" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="mStatus">Status</label>
+              <input type="text" id="mStatus" placeholder="Reading" autocomplete="off">
+            </div>
+          </div>
+          <div class="field">
+            <label for="mShelf">Shelf Location</label>
+            <input type="text" id="mShelf" placeholder="Shelf A1" autocomplete="off">
+          </div>
+          <button class="btn btn-success btn-sm" id="btnAddManual" type="button" style="width:100%;">Add to Catalog</button>
+          <p style="font-size:var(--fs-meta); color:var(--text-muted); margin-top:8px;">
+            Manual entries are local only. They are not written back to Google Sheets.
+          </p>
+        </div>
+
         <div class="panel">
           <div class="panel-head">
             <h2>Data Source</h2>
@@ -1754,12 +1351,11 @@
           <div class="tabs" role="tablist" aria-label="Data source">
             <button class="tab active" id="tabCloudBtn" role="tab" aria-selected="true" aria-controls="tabCloud" type="button">Google Sheets</button>
             <button class="tab" id="tabFileBtn" role="tab" aria-selected="false" aria-controls="tabFile" type="button">Local File</button>
-            <button class="tab" id="tabManualBtn" role="tab" aria-selected="false" aria-controls="tabManual" type="button">Manual</button>
           </div>
 
           <div class="tab-panel active" id="tabCloud" role="tabpanel" aria-labelledby="tabCloudBtn">
             <div class="field">
-              <label for="sheetUrl">Google Sheets URL (published or standard)</label>
+              <label for="sheetUrl">Google Sheets URL</label>
               <input type="url" id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/..." autocomplete="off" spellcheck="false">
             </div>
             <div class="field-row">
@@ -1783,76 +1379,15 @@
               <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv">
             </div>
             <div id="dropZone" style="border:2px dashed var(--border); border-radius:var(--radius); padding:22px 18px; text-align:center; font-size:var(--fs-small); color:var(--text-muted); cursor:pointer; transition:border-color 0.15s, background 0.15s;">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 8px; opacity:0.5;" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 8px; opacity:0.5;" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
               Drag & drop a file here, or click to browse
             </div>
             <p style="font-size:var(--fs-meta); color:var(--text-muted); margin-top:8px;">
               Files are processed entirely in your browser. Nothing is uploaded.
-            </p>
-          </div>
-
-          <div class="tab-panel" id="tabManual" role="tabpanel" aria-labelledby="tabManualBtn">
-            <div class="field-row">
-              <div class="field">
-                <label for="mType">Type</label>
-                <select id="mType">
-                  <option value="">—</option>
-                  <option value="Fiction (FIC)">Fiction (FIC)</option>
-                  <option value="Non-Fiction (NF)">Non-Fiction (NF)</option>
-                  <option value="Poetry (POE)">Poetry (POE)</option>
-                  <option value="Drama (DRA)">Drama (DRA)</option>
-                  <option value="Reference (REF)">Reference (REF)</option>
-                  <option value="Graphic Novel (GRA)">Graphic Novel (GRA)</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="mGenre">Genre</label>
-                <select id="mGenre">
-                  <option value="">—</option>
-                  <option value="Literature (LIT)">Literature (LIT)</option>
-                  <option value="History (HIS)">History (HIS)</option>
-                  <option value="Philosophy (PHI)">Philosophy (PHI)</option>
-                  <option value="Science & Tech (SCI)">Science & Tech (SCI)</option>
-                  <option value="Politics (POL)">Politics (POL)</option>
-                  <option value="Essays (ESS)">Essays (ESS)</option>
-                  <option value="Biography / Memoir (BIO)">Biography / Memoir (BIO)</option>
-                  <option value="Mystery / Thriller (THR)">Mystery / Thriller (THR)</option>
-                  <option value="Religion & Mythology (REL)">Religion & Mythology (REL)</option>
-                  <option value="Art & Cinema (ART)">Art & Cinema (ART)</option>
-                </select>
-              </div>
-            </div>
-            <div class="field">
-              <label for="mTitle">Title <span style="color:var(--danger);">*</span></label>
-              <input type="text" id="mTitle" placeholder="Book title" autocomplete="off">
-            </div>
-            <div class="field-row">
-              <div class="field" style="flex:2;">
-                <label for="mAuthor">Author</label>
-                <input type="text" id="mAuthor" placeholder="Author name" autocomplete="off">
-              </div>
-              <div class="field" style="flex:1;">
-                <label for="mVolume">Volume</label>
-                <input type="text" id="mVolume" placeholder="Vol 1" autocomplete="off">
-              </div>
-            </div>
-            <div class="field-row">
-              <div class="field">
-                <label for="mLanguage">Language</label>
-                <input type="text" id="mLanguage" placeholder="English" autocomplete="off">
-              </div>
-              <div class="field">
-                <label for="mStatus">Status</label>
-                <input type="text" id="mStatus" placeholder="Reading" autocomplete="off">
-              </div>
-            </div>
-            <div class="field">
-              <label for="mShelf">Shelf Location</label>
-              <input type="text" id="mShelf" placeholder="Shelf A1" autocomplete="off">
-            </div>
-            <button class="btn btn-success btn-sm" id="btnAddManual" type="button" style="width:100%;">Add to Catalog</button>
-            <p style="font-size:var(--fs-meta); color:var(--text-muted); margin-top:8px;">
-              Manual entries are local only. They are not written back to Google Sheets.
             </p>
           </div>
         </div>
@@ -1924,7 +1459,7 @@
 
       <main class="main-pane" id="main-content">
 
-        <section aria-label="Catalog">
+        <section class="catalog-section" aria-label="Catalog">
           <div class="panel" style="margin-bottom:20px;">
             <div class="panel-head">
               <h2>Catalog</h2>
@@ -2009,7 +1544,7 @@
           </div>
         </section>
 
-        <section aria-label="Print preview">
+        <section class="preview-section" aria-label="Print preview">
           <div class="preview-header">
             <h2>Print Preview — A4 30-Up</h2>
             <div class="preview-meta" id="previewMeta">Sheet 1 of 1 · 30 labels per page · 70×25.4 mm</div>
@@ -2021,10 +1556,8 @@
     </div>
   </div>
 
-  <!-- BUY ME A BOOK MODAL -->
   <dialog class="donate-dialog" id="donateDialog" aria-labelledby="donateTitle">
     <div class="donate-inner">
-
       <button class="donate-close" id="btnDonateClose" type="button" aria-label="Close donation dialog">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <line x1="18" y1="6" x2="6" y2="18"/>
@@ -2044,10 +1577,7 @@
       </p>
 
       <div class="donate-qr-block">
-        <img src="upi-qr.png"
-             alt="UPI QR code — scan with any UPI app to donate"
-             loading="lazy">
-
+        <img src="upi-qr.png" alt="UPI QR code — scan with any UPI app to donate" loading="lazy">
         <div class="donate-qr-copy">
           <strong>Scan to donate via UPI</strong>
           <code>masudranamandal-1@okicici</code>
@@ -2059,9 +1589,115 @@
         No pressure at all — the app stays free either way.
         If you'd rather not donate, sharing the project with another book lover is equally appreciated.
       </p>
-
     </div>
   </dialog>
+
+  <!-- ==================== SCANNER MODAL (mobile-only) ==================== -->
+  <dialog class="scan-dialog" id="scanDialog" aria-labelledby="scanTitle">
+    <div class="scan-inner">
+      <div class="scan-header">
+        <h2 id="scanTitle">
+          <span aria-hidden="true">📷</span> Scan Book ISBN
+        </h2>
+        <button class="scan-close" id="btnScanClose" type="button" aria-label="Close scanner">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="scan-video-wrap">
+        <video id="scanVideo" autoplay playsinline muted></video>
+        <div class="scan-overlay">
+          <div class="scan-frame"></div>
+          <div class="scan-hint">Point your camera at the book's barcode</div>
+        </div>
+      </div>
+
+      <div class="scan-status" id="scanStatus">
+        <span class="dot"></span>
+        <span id="scanStatusText">Ready to scan</span>
+      </div>
+
+      <div class="scan-result" id="scanResult" hidden>
+        <h3>Book Found</h3>
+        <div class="form-row">
+          <div>
+            <label for="scanTitleField">Title</label>
+            <input type="text" id="scanTitleField" readonly>
+          </div>
+          <div>
+            <label for="scanAuthorField">Author</label>
+            <input type="text" id="scanAuthorField" readonly>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label for="scanIsbnField">ISBN</label>
+            <input type="text" id="scanIsbnField" readonly>
+          </div>
+          <div>
+            <label for="scanPublisherField">Publisher</label>
+            <input type="text" id="scanPublisherField" readonly>
+          </div>
+        </div>
+        <div class="scan-actions" style="margin-top:12px;">
+          <button class="btn btn-ghost btn-sm" id="btnScanAgain" type="button">Scan Again</button>
+          <button class="btn btn-success btn-sm" id="btnScanAdd" type="button">Add to Catalog</button>
+        </div>
+      </div>
+
+      <div class="scan-manual">
+        <input type="text" id="manualIsbn" placeholder="Or type ISBN manually (e.g. 9780140449136)" inputmode="numeric" autocomplete="off">
+        <button class="btn btn-primary btn-sm" id="btnManualIsbn" type="button">Lookup</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ==================== MOBILE NAV ==================== -->
+  <nav class="mobile-nav no-print" aria-label="Mobile navigation">
+    <button type="button" data-mobile-tab="catalog" class="active" aria-label="Catalog">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+      </svg>
+      <span class="tab-label">Catalog</span>
+    </button>
+    <button type="button" data-mobile-tab="scan" aria-label="Scan book">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 7V5a2 2 0 0 1 2-2h2"/>
+        <path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+        <path d="M21 17v2a2 2 0 0 1-2 2h-2"/>
+        <path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+        <line x1="7" y1="12" x2="17" y2="12"/>
+      </svg>
+      <span class="tab-label">Scan</span>
+    </button>
+    <button type="button" data-mobile-tab="add" aria-label="Add a book">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="16"/>
+        <line x1="8" y1="12" x2="16" y2="12"/>
+      </svg>
+      <span class="tab-label">Add</span>
+    </button>
+    <button type="button" data-mobile-tab="preview" aria-label="Print preview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="6" y="14" width="12" height="8"/>
+        <polyline points="6 9 6 2 18 2 18 9"/>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+      </svg>
+      <span class="tab-label">Preview</span>
+    </button>
+    <button type="button" data-mobile-tab="data" aria-label="Data and settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.82 1.03 1.51 1.09H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      <span class="tab-label">Data</span>
+    </button>
+  </nav>
 
   <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="false"></div>
 
@@ -2070,36 +1706,34 @@
     'use strict';
 
     /* =======================================================================
-       1. CONFIGURATION
+       CONFIGURATION
        ======================================================================= */
-
     const CONFIG = {
       POLL_INTERVAL_MS: 12000,
       CACHE_KEY: 'plm_spine_studio_cache_v1',
       PREFS_KEY: 'plm_spine_studio_prefs_v1',
       THEME_KEY: 'plm_theme_choice_v1',
+      MOBILE_VIEW_KEY: 'plm_mobile_view_v1',
       SAMPLE_CATALOG_URL:
         'https://docs.google.com/spreadsheets/d/1AjXwZNXzc-aSkwQSXzJIwWLJ7BXtkkTHIhR5MFHv88g/export?format=csv&gid=1225430138',
       LABELS_PER_PAGE: 30,
       LABEL_WIDTH_MM: 70,
       LABEL_HEIGHT_MM: 25.4,
-      SPARE_LABEL_TEXT: '+ Spare Label'
+      SPARE_LABEL_TEXT: '+ Spare Label',
+      GOOGLE_BOOKS_API: 'https://www.googleapis.com/books/v1/volumes',
+      SCAN_INTERVAL_MS: 350,
+      MOBILE_BREAKPOINT: 768
     };
 
     const TYPE_COLORS = {
-      'FIC': '#2c4a7c',
-      'NF':  '#2d7a4f',
-      'POE': '#6b4c8a',
-      'DRA': '#a85c1a',
-      'REF': '#5a6270',
-      'GRA': '#a83232',
+      'FIC': '#2c4a7c', 'NF': '#2d7a4f', 'POE': '#6b4c8a',
+      'DRA': '#a85c1a', 'REF': '#5a6270', 'GRA': '#a83232',
       'DEFAULT': '#2c4a7c'
     };
 
     /* =======================================================================
-       2. STATE
+       STATE
        ======================================================================= */
-
     const State = {
       records: [],
       filtered: [],
@@ -2114,13 +1748,13 @@
       isFetching: false,
       filters: { search: '', type: '', genre: '', language: '', status: '', shelf: '' },
       sortKey: 'itemNo',
-      sortDir: 'asc'
+      sortDir: 'asc',
+      mobileView: 'catalog'
     };
 
     /* =======================================================================
-       3. DOM REFERENCES
+       DOM
        ======================================================================= */
-
     const $ = (sel, root) => (root || document).querySelector(sel);
     const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
 
@@ -2128,26 +1762,21 @@
       sourceTag: $('#sourceTag'),
       btnRefresh: $('#btnRefresh'),
       btnPrint: $('#btnPrint'),
-
+      btnInstall: $('#btnInstall'),
+      btnOpenScanner: $('#btnOpenScanner'),
       syncStatus: $('#syncStatus'),
       syncLabel: $('#syncLabel'),
       syncDetail: $('#syncDetail'),
-
       tabCloudBtn: $('#tabCloudBtn'),
       tabFileBtn: $('#tabFileBtn'),
-      tabManualBtn: $('#tabManualBtn'),
       tabCloud: $('#tabCloud'),
       tabFile: $('#tabFile'),
-      tabManual: $('#tabManual'),
-
       sheetUrl: $('#sheetUrl'),
       sheetName: $('#sheetName'),
       btnConnect: $('#btnConnect'),
       pollIntervalLabel: $('#pollIntervalLabel'),
-
       fileInput: $('#fileInput'),
       dropZone: $('#dropZone'),
-
       mType: $('#mType'),
       mGenre: $('#mGenre'),
       mTitle: $('#mTitle'),
@@ -2157,7 +1786,6 @@
       mStatus: $('#mStatus'),
       mShelf: $('#mShelf'),
       btnAddManual: $('#btnAddManual'),
-
       templateSelect: $('#templateSelect'),
       colorModeSelect: $('#colorModeSelect'),
       optShelf: $('#optShelf'),
@@ -2166,11 +1794,9 @@
       optSpare: $('#optSpare'),
       optItemTag: $('#optItemTag'),
       labelCount: $('#labelCount'),
-
       btnLoadSample: $('#btnLoadSample'),
       btnClearCache: $('#btnClearCache'),
       btnClearCatalog: $('#btnClearCatalog'),
-
       diagSource: $('#diagSource'),
       diagUrl: $('#diagUrl'),
       diagLastSync: $('#diagLastSync'),
@@ -2178,7 +1804,6 @@
       diagHash: $('#diagHash'),
       diagParser: $('#diagParser'),
       diagError: $('#diagError'),
-
       searchInput: $('#searchInput'),
       filterType: $('#filterType'),
       filterGenre: $('#filterGenre'),
@@ -2195,114 +1820,87 @@
       catalogBody: $('#catalogBody'),
       catalogTable: $('#catalogTable'),
       emptyState: $('#emptyState'),
-
       sheetContainer: $('#sheetContainer'),
       previewMeta: $('#previewMeta'),
-
-      toastRegion: $('#toastRegion')
+      toastRegion: $('#toastRegion'),
+      // Scanner
+      scanDialog: $('#scanDialog'),
+      scanVideo: $('#scanVideo'),
+      scanStatus: $('#scanStatus'),
+      scanStatusText: $('#scanStatusText'),
+      scanResult: $('#scanResult'),
+      scanTitleField: $('#scanTitleField'),
+      scanAuthorField: $('#scanAuthorField'),
+      scanIsbnField: $('#scanIsbnField'),
+      scanPublisherField: $('#scanPublisherField'),
+      btnScanClose: $('#btnScanClose'),
+      btnScanAgain: $('#btnScanAgain'),
+      btnScanAdd: $('#btnScanAdd'),
+      manualIsbn: $('#manualIsbn'),
+      btnManualIsbn: $('#btnManualIsbn')
     };
 
     /* =======================================================================
-       4. UTILITIES
+       UTILITIES
        ======================================================================= */
-
     function escapeHtml(str) {
       if (str == null) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
-
-    function safeText(str) {
-      if (str == null) return '';
-      return String(str).trim();
-    }
-
+    function safeText(str) { return str == null ? '' : String(str).trim(); }
     function truncate(str, max) {
       const s = safeText(str);
-      if (s.length <= max) return s;
-      return s.slice(0, max - 1) + '…';
+      return s.length <= max ? s : s.slice(0, max - 1) + '…';
     }
-
     function debounce(fn, ms) {
-      let timer;
-      return function (...args) {
-        clearTimeout(timer);
-        timer = setTimeout(() => fn.apply(this, args), ms);
-      };
+      let t; return function (...a) { clearTimeout(t); t = setTimeout(() => fn.apply(this, a), ms); };
     }
-
     function nowTimeString() {
-      const d = new Date();
-      const pad = n => String(n).padStart(2, '0');
-      return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+      const d = new Date(); const p = n => String(n).padStart(2, '0');
+      return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
     }
-
     function nowISOString() { return new Date().toISOString(); }
-
     function formatTimestamp(iso) {
       if (!iso) return 'Never';
       try {
-        const d = new Date(iso);
-        const pad = n => String(n).padStart(2, '0');
-        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+        const d = new Date(iso); const p = n => String(n).padStart(2, '0');
+        return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
       } catch { return 'Invalid date'; }
     }
-
     function showToast(message, type) {
-      const toast = document.createElement('div');
-      toast.className = 'toast' + (type ? ' toast-' + type : '');
-      toast.textContent = message;
-      el.toastRegion.appendChild(toast);
+      const t = document.createElement('div');
+      t.className = 'toast' + (type ? ' toast-' + type : '');
+      t.textContent = message;
+      el.toastRegion.appendChild(t);
       setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transition = 'opacity 0.25s';
-        setTimeout(() => toast.remove(), 300);
+        t.style.opacity = '0';
+        t.style.transition = 'opacity 0.25s';
+        setTimeout(() => t.remove(), 300);
       }, 3600);
     }
 
     /* =======================================================================
-       5. THEME MANAGEMENT
+       THEME
        ======================================================================= */
-
     const Theme = {
       mq: window.matchMedia('(prefers-color-scheme: dark)'),
-
-      getChoice() {
-        return document.documentElement.getAttribute('data-theme-choice') || 'system';
-      },
-
+      getChoice() { return document.documentElement.getAttribute('data-theme-choice') || 'system'; },
       apply(choice) {
-        const active = choice === 'system'
-          ? (this.mq.matches ? 'dark' : 'light')
-          : choice;
-
+        const active = choice === 'system' ? (this.mq.matches ? 'dark' : 'light') : choice;
         document.documentElement.setAttribute('data-theme', active);
         document.documentElement.setAttribute('data-theme-choice', choice);
-
         try { localStorage.setItem(CONFIG.THEME_KEY, choice); } catch (e) {}
-
         $$('[data-theme-choice]').forEach(btn => {
           const isActive = btn.getAttribute('data-theme-choice') === choice;
           btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
         });
       },
-
       init() {
         this.apply(this.getChoice());
-
         $$('[data-theme-choice]').forEach(btn => {
-          btn.addEventListener('click', () => {
-            this.apply(btn.getAttribute('data-theme-choice'));
-          });
+          btn.addEventListener('click', () => this.apply(btn.getAttribute('data-theme-choice')));
         });
-
-        const handleChange = () => {
-          if (this.getChoice() === 'system') this.apply('system');
-        };
+        const handleChange = () => { if (this.getChoice() === 'system') this.apply('system'); };
         if (typeof this.mq.addEventListener === 'function') {
           this.mq.addEventListener('change', handleChange);
         } else if (typeof this.mq.addListener === 'function') {
@@ -2312,47 +1910,66 @@
     };
 
     /* =======================================================================
-       6. GOOGLE SHEETS URL RESOLVER
+       MOBILE VIEW SWITCHER
        ======================================================================= */
+    function setMobileView(view) {
+      State.mobileView = view;
+      document.body.setAttribute('data-mobile-view', view);
+      $$('[data-mobile-tab]').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-mobile-tab') === view);
+      });
+      try { localStorage.setItem(CONFIG.MOBILE_VIEW_KEY, view); } catch (e) {}
+      if (window.innerWidth <= CONFIG.MOBILE_BREAKPOINT) window.scrollTo(0, 0);
+    }
 
+    function initMobileNav() {
+      try {
+        const saved = localStorage.getItem(CONFIG.MOBILE_VIEW_KEY);
+        if (saved) State.mobileView = saved;
+      } catch (e) {}
+      document.body.setAttribute('data-mobile-view', State.mobileView);
+
+      // Sync the "active" class on initial load
+      $$('[data-mobile-tab]').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-mobile-tab') === State.mobileView);
+      });
+
+      $$('[data-mobile-tab]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tab = btn.getAttribute('data-mobile-tab');
+          if (tab === 'scan') {
+            openScanner();
+            return;
+          }
+          setMobileView(tab);
+        });
+      });
+    }
+
+    /* =======================================================================
+       GOOGLE SHEETS URL RESOLVER
+       ======================================================================= */
     function resolveGoogleSheetUrl(input, sheetName) {
-      if (!input || typeof input !== 'string') {
-        throw new Error('Please enter a Google Sheets URL.');
-      }
-
+      if (!input || typeof input !== 'string') throw new Error('Please enter a Google Sheets URL.');
       let url = input.trim();
 
       if (/^[a-zA-Z0-9_-]{20,}$/.test(url) && !url.includes('/')) {
         const sid = url;
         const sheet = sheetName ? encodeURIComponent(sheetName) : 'Sheet1';
-        return {
-          url: `https://docs.google.com/spreadsheets/d/${sid}/gviz/tq?tqx=out:csv&sheet=${sheet}`,
-          sheetName: sheetName || 'Sheet1',
-          kind: 'gviz'
-        };
+        return { url: `https://docs.google.com/spreadsheets/d/${sid}/gviz/tq?tqx=out:csv&sheet=${sheet}`, sheetName: sheetName || 'Sheet1', kind: 'gviz' };
       }
 
       if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
-
       let parsed;
-      try { parsed = new URL(url); }
-      catch { throw new Error('The URL could not be parsed. Please check it and try again.'); }
+      try { parsed = new URL(url); } catch { throw new Error('The URL could not be parsed.'); }
+      if (!parsed.hostname.includes('docs.google.com')) throw new Error('Only Google Sheets URLs are supported.');
 
-      if (!parsed.hostname.includes('docs.google.com')) {
-        throw new Error('Only Google Sheets URLs are supported for cloud sync.');
-      }
+      const path = parsed.pathname, params = parsed.searchParams;
 
-      const path = parsed.pathname;
-      const params = parsed.searchParams;
-
-      if (path.includes('/export') && params.get('format') === 'csv') {
-        return { url, sheetName: sheetName || '', kind: 'export' };
-      }
+      if (path.includes('/export') && params.get('format') === 'csv') return { url, sheetName: sheetName || '', kind: 'export' };
 
       if (path.includes('/pub') && !path.includes('/pubhtml')) {
-        if (params.get('output') === 'csv') {
-          return { url, sheetName: sheetName || '', kind: 'pub' };
-        }
+        if (params.get('output') === 'csv') return { url, sheetName: sheetName || '', kind: 'pub' };
         const sep = url.includes('?') ? '&' : '?';
         return { url: `${url}${sep}output=csv`, sheetName: sheetName || '', kind: 'pub' };
       }
@@ -2365,29 +1982,22 @@
 
       const idMatch = path.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
       if (idMatch) {
-        const sid = idMatch[1];
-        const gid = params.get('gid');
+        const sid = idMatch[1], gid = params.get('gid');
         const sheet = sheetName || (gid ? `gid:${gid}` : 'Sheet1');
-        const gvizUrl = `https://docs.google.com/spreadsheets/d/${sid}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheet)}`;
-        return { url: gvizUrl, sheetName: sheet, kind: 'gviz' };
+        return { url: `https://docs.google.com/spreadsheets/d/${sid}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheet)}`, sheetName: sheet, kind: 'gviz' };
       }
 
-      throw new Error('Unrecognized Google Sheets URL. Supported formats: /pubhtml, /pub, /edit, or a spreadsheet ID.');
+      throw new Error('Unrecognized Google Sheets URL.');
     }
 
     /* =======================================================================
-       7. CSV PARSER
+       CSV PARSER
        ======================================================================= */
-
     function parseCSV(text) {
       if (!text) return [];
       if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
-
-      const rows = [];
-      let row = [], field = '', inQuotes = false, i = 0;
-      const len = text.length;
-
-      while (i < len) {
+      const rows = []; let row = [], field = '', inQuotes = false, i = 0;
+      while (i < text.length) {
         const ch = text[i];
         if (inQuotes) {
           if (ch === '"') {
@@ -2401,53 +2011,37 @@
             if (text[i + 1] === '\n') i++;
             row.push(field); field = ''; rows.push(row); row = []; i++;
           }
-          else if (ch === '\n') {
-            row.push(field); field = ''; rows.push(row); row = []; i++;
-          }
+          else if (ch === '\n') { row.push(field); field = ''; rows.push(row); row = []; i++; }
           else { field += ch; i++; }
         }
       }
-
       if (field !== '' || row.length > 0) { row.push(field); rows.push(row); }
       return rows.filter(r => r.some(c => c.trim() !== ''));
     }
 
     /* =======================================================================
-       8. HEADER NORMALIZATION
+       HEADER NORMALIZATION
        ======================================================================= */
-
     const HEADER_MAP = {
       'item no.': 'itemNo', 'item no': 'itemNo', 'itemno': 'itemNo', 'item': 'itemNo', 'no.': 'itemNo',
       'accession / call number': 'callNumber', 'accession/call number': 'callNumber',
       'call number': 'callNumber', 'call no.': 'callNumber', 'callno': 'callNumber',
       'digital call no.': 'callNumber', 'digital call number': 'callNumber',
-      'type': 'type',
-      'genre': 'genre',
-      'book title': 'title', 'title': 'title',
+      'type': 'type', 'genre': 'genre', 'book title': 'title', 'title': 'title',
       'volume no.': 'volume', 'volume': 'volume', 'vol': 'volume',
       'author name': 'author', 'author': 'author',
       'language': 'language', 'lang': 'language',
       'notes / status': 'status', 'notes/status': 'status', 'status': 'status', 'reading status': 'status',
       'shelf location': 'shelf', 'shelf': 'shelf', 'location': 'shelf'
     };
-
-    function normalizeHeaderKey(header) {
-      const key = safeText(header).toLowerCase().replace(/\s+/g, ' ').trim();
+    function normalizeHeaderKey(h) {
+      const key = safeText(h).toLowerCase().replace(/\s+/g, ' ').trim();
       return HEADER_MAP[key] || null;
     }
-
-    function normalizeHeaders(headerRow) { return headerRow.map(h => normalizeHeaderKey(h)); }
-
-    /* =======================================================================
-       9. RECORD NORMALIZATION
-       ======================================================================= */
+    function normalizeHeaders(row) { return row.map(normalizeHeaderKey); }
 
     function normalizeRecord(raw, headerMap) {
-      const rec = {
-        itemNo: '', callNumber: '', type: '', genre: '', title: '',
-        volume: '', author: '', language: '', status: '', shelf: ''
-      };
-
+      const rec = { itemNo: '', callNumber: '', type: '', genre: '', title: '', volume: '', author: '', language: '', status: '', shelf: '' };
       headerMap.forEach((key, idx) => {
         if (!key) return;
         const val = safeText(raw[idx]);
@@ -2456,14 +2050,11 @@
         else if (key === 'callNumber') rec.callNumber = val;
         else rec[key] = val;
       });
-
       return rec;
     }
-
     function validateRecord(rec) { return !!(rec.title || rec.callNumber); }
-
-    function finalizeRecords(rawRecords) {
-      return rawRecords.filter(validateRecord).map((rec, idx) => {
+    function finalizeRecords(raw) {
+      return raw.filter(validateRecord).map((rec, idx) => {
         if (!rec.itemNo) rec.itemNo = String(idx + 1).padStart(3, '0');
         if (!rec.callNumber) rec.callNumber = '—';
         return rec;
@@ -2471,9 +2062,8 @@
     }
 
     /* =======================================================================
-       10. FILE PARSERS
+       FILE PARSERS
        ======================================================================= */
-
     function parseExcelFile(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -2482,36 +2072,24 @@
           try {
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, { type: 'array' });
-
             let sheetName = workbook.SheetNames.find(n => n.toLowerCase() === 'catalog');
-            if (!sheetName) {
-              sheetName = workbook.SheetNames.find(n => {
-                const ws = workbook.Sheets[n];
-                if (!ws) return false;
-                const ref = ws['!ref'];
-                return ref && ref !== 'A1:A1';
-              }) || workbook.SheetNames[0];
-            }
-            if (!sheetName) throw new Error('No readable worksheet found in this workbook.');
+            if (!sheetName) sheetName = workbook.SheetNames.find(n => {
+              const ws = workbook.Sheets[n];
+              if (!ws) return false;
+              const ref = ws['!ref'];
+              return ref && ref !== 'A1:A1';
+            }) || workbook.SheetNames[0];
+            if (!sheetName) throw new Error('No readable worksheet found.');
 
             const worksheet = workbook.Sheets[sheetName];
-            const rows = XLSX.utils.sheet_to_json(worksheet, {
-              header: 1, defval: '', raw: false, dateNF: 'yyyy-mm-dd'
-            });
-
-            if (!rows || rows.length < 2) {
-              throw new Error('The worksheet "' + sheetName + '" does not contain a header and at least one data row.');
-            }
-
-            const headerRow = rows[0];
-            const headerMap = normalizeHeaders(headerRow);
-
+            const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '', raw: false, dateNF: 'yyyy-mm-dd' });
+            if (!rows || rows.length < 2) throw new Error('The worksheet does not contain a header and data.');
+            const headerMap = normalizeHeaders(rows[0]);
             if (!headerMap.includes('title') && !headerMap.includes('callNumber')) {
-              throw new Error('The worksheet "' + sheetName + '" does not look like a library catalog. Expected columns such as "Book Title" or "Accession / Call Number".');
+              throw new Error('The worksheet does not look like a library catalog.');
             }
-
-            const rawRecords = rows.slice(1).map(r => normalizeRecord(r, headerMap));
-            resolve({ records: finalizeRecords(rawRecords), parser: 'excel', sheetName, headerMap });
+            const records = finalizeRecords(rows.slice(1).map(r => normalizeRecord(r, headerMap)));
+            resolve({ records, parser: 'excel', sheetName, headerMap });
           } catch (err) { reject(err); }
         };
         reader.readAsArrayBuffer(file);
@@ -2524,20 +2102,14 @@
         reader.onerror = () => reject(new Error('The file could not be read.'));
         reader.onload = (e) => {
           try {
-            const text = e.target.result;
-            const rows = parseCSV(text);
-            if (rows.length < 2) {
-              throw new Error('The CSV file does not contain a header and at least one data row.');
-            }
-            const headerRow = rows[0];
-            const headerMap = normalizeHeaders(headerRow);
-
+            const rows = parseCSV(e.target.result);
+            if (rows.length < 2) throw new Error('The CSV file does not contain a header and data.');
+            const headerMap = normalizeHeaders(rows[0]);
             if (!headerMap.includes('title') && !headerMap.includes('callNumber')) {
-              throw new Error('The CSV file does not look like a library catalog. Expected columns such as "Book Title" or "Call Number".');
+              throw new Error('The CSV file does not look like a library catalog.');
             }
-
-            const rawRecords = rows.slice(1).map(r => normalizeRecord(r, headerMap));
-            resolve({ records: finalizeRecords(rawRecords), parser: 'csv', sheetName: '(CSV file)', headerMap });
+            const records = finalizeRecords(rows.slice(1).map(r => normalizeRecord(r, headerMap)));
+            resolve({ records, parser: 'csv', sheetName: '(CSV file)', headerMap });
           } catch (err) { reject(err); }
         };
         reader.readAsText(file, 'UTF-8');
@@ -2545,21 +2117,18 @@
     }
 
     /* =======================================================================
-       11. DATASET HASHING
+       HASHING
        ======================================================================= */
-
     function calculateDatasetHash(records) {
       const sorted = [...records].sort((a, b) => {
         const ka = (a.itemNo || '') + '|' + (a.callNumber || '') + '|' + (a.title || '');
         const kb = (b.itemNo || '') + '|' + (b.callNumber || '') + '|' + (b.title || '');
         return ka.localeCompare(kb);
       });
-
       const str = JSON.stringify(sorted.map(r => ({
         i: r.itemNo, c: r.callNumber, t: r.title, a: r.author, v: r.volume,
         l: r.language, s: r.status, sh: r.shelf, ty: r.type, g: r.genre
       })));
-
       let hash = 0x811c9dc5;
       for (let i = 0; i < str.length; i++) {
         hash ^= str.charCodeAt(i);
@@ -2569,9 +2138,8 @@
     }
 
     /* =======================================================================
-       12. CACHE MANAGER
+       CACHE
        ======================================================================= */
-
     const Cache = {
       save() {
         try {
@@ -2615,32 +2183,27 @@
     };
 
     /* =======================================================================
-       13. GOOGLE SHEETS FETCHING & SYNC
+       GOOGLE SHEETS SYNC
        ======================================================================= */
-
     async function fetchCSV(url) {
-      const res = await fetch(url, {
-        method: 'GET', mode: 'cors', cache: 'no-cache',
-        headers: { 'Accept': 'text/csv, text/plain, */*' }
-      });
-      if (!res.ok) throw new Error(`Google Sheets returned HTTP ${res.status} (${res.statusText}).`);
+      const res = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache', headers: { 'Accept': 'text/csv, text/plain, */*' } });
+      if (!res.ok) throw new Error(`HTTP ${res.status} (${res.statusText})`);
       const text = await res.text();
       if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
-        throw new Error('The server returned an HTML page instead of CSV. The sheet may not be published to the web.');
+        throw new Error('The server returned HTML instead of CSV.');
       }
       return text;
     }
 
     function parseCSVToRecords(csvText) {
       const rows = parseCSV(csvText);
-      if (rows.length < 2) throw new Error('The fetched sheet does not contain a header and at least one data row.');
-      const headerRow = rows[0];
-      const headerMap = normalizeHeaders(headerRow);
+      if (rows.length < 2) throw new Error('The fetched sheet does not contain data.');
+      const headerMap = normalizeHeaders(rows[0]);
       if (!headerMap.includes('title') && !headerMap.includes('callNumber')) {
-        throw new Error('The fetched sheet does not look like a library catalog. Expected columns such as "Book Title" or "Accession / Call Number".');
+        throw new Error('The fetched sheet does not look like a library catalog.');
       }
-      const rawRecords = rows.slice(1).map(r => normalizeRecord(r, headerMap));
-      return { records: finalizeRecords(rawRecords), parser: 'google-sheets-csv', headerMap };
+      const records = finalizeRecords(rows.slice(1).map(r => normalizeRecord(r, headerMap)));
+      return { records, parser: 'google-sheets-csv', headerMap };
     }
 
     async function syncFromGoogle() {
@@ -2651,7 +2214,6 @@
         const csvText = await fetchCSV(State.sourceUrl);
         const { records, parser } = parseCSVToRecords(csvText);
         const newHash = calculateDatasetHash(records);
-
         if (newHash === State.checksum) {
           State.lastSync = nowISOString();
           setSyncStatus('online');
@@ -2660,13 +2222,11 @@
           State.isFetching = false;
           return;
         }
-
         State.records = records;
         State.checksum = newHash;
         State.lastSync = nowISOString();
         State.parser = parser;
         State.lastError = '';
-
         onCatalogChanged();
         setSyncStatus('online');
         updateDiagnostics();
@@ -2686,35 +2246,31 @@
         State.syncTimer = setInterval(syncFromGoogle, CONFIG.POLL_INTERVAL_MS);
       }
     }
-
     function stopPolling() {
       if (State.syncTimer) { clearInterval(State.syncTimer); State.syncTimer = null; }
     }
 
     /* =======================================================================
-       14. SYNC STATUS & DIAGNOSTICS
+       SYNC STATUS
        ======================================================================= */
-
     function setSyncStatus(mode) {
-      const status = el.syncStatus;
-      status.className = 'sync-status';
+      const s = el.syncStatus;
+      s.className = 'sync-status';
       if (mode === 'online') {
-        status.classList.add('sync-online');
+        s.classList.add('sync-online');
         el.syncLabel.textContent = '🟢 Live Connected';
         const n = State.records.length;
         el.syncDetail.textContent = `${n} book${n === 1 ? '' : 's'} · Last synced: ${nowTimeString()}`;
       } else if (mode === 'fetching') {
-        status.classList.add('sync-fetching');
+        s.classList.add('sync-fetching');
         el.syncLabel.textContent = '🟡 Syncing / Fetching…';
         el.syncDetail.textContent = 'Please wait';
       } else if (mode === 'offline') {
-        status.classList.add('sync-offline');
+        s.classList.add('sync-offline');
         el.syncLabel.textContent = '🔴 Connection Offline';
-        el.syncDetail.textContent = State.records.length
-          ? `Using cached data (${State.records.length} books)`
-          : 'No cached data available';
+        el.syncDetail.textContent = State.records.length ? `Using cached data (${State.records.length} books)` : 'No cached data available';
       } else {
-        status.classList.add('sync-local');
+        s.classList.add('sync-local');
         el.syncLabel.textContent = '🔵 Local Mode';
         el.syncDetail.textContent = `${State.records.length} book${State.records.length === 1 ? '' : 's'} loaded`;
       }
@@ -2733,12 +2289,10 @@
     }
 
     /* =======================================================================
-       15. FILTERING, SORTING & STATS
+       FILTERS
        ======================================================================= */
-
     function applyFilters() {
-      const f = State.filters;
-      const q = f.search.toLowerCase();
+      const f = State.filters, q = f.search.toLowerCase();
       State.filtered = State.records.filter(rec => {
         if (f.type && rec.type !== f.type) return false;
         if (f.genre && rec.genre !== f.genre) return false;
@@ -2746,11 +2300,8 @@
         if (f.status && rec.status !== f.status) return false;
         if (f.shelf && rec.shelf !== f.shelf) return false;
         if (q) {
-          const haystack = [
-            rec.title, rec.author, rec.callNumber, rec.itemNo,
-            rec.genre, rec.type, rec.shelf, rec.language, rec.status
-          ].join(' ').toLowerCase();
-          if (!haystack.includes(q)) return false;
+          const hay = [rec.title, rec.author, rec.callNumber, rec.itemNo, rec.genre, rec.type, rec.shelf, rec.language, rec.status].join(' ').toLowerCase();
+          if (!hay.includes(q)) return false;
         }
         return true;
       });
@@ -2759,8 +2310,7 @@
     }
 
     function sortRecords(arr) {
-      const key = State.sortKey;
-      const dir = State.sortDir === 'asc' ? 1 : -1;
+      const key = State.sortKey, dir = State.sortDir === 'asc' ? 1 : -1;
       arr.sort((a, b) => {
         let va = a[key] || '', vb = b[key] || '';
         if (key === 'itemNo') {
@@ -2787,8 +2337,7 @@
     }
 
     function updateStats() {
-      const total = State.records.length;
-      const shown = State.filtered.length;
+      const total = State.records.length, shown = State.filtered.length;
       const physical = State.records.filter(r => !r.callNumber.startsWith('DIG-')).length;
       const digital = total - physical;
       el.statTotal.textContent = total;
@@ -2799,23 +2348,18 @@
     }
 
     /* =======================================================================
-       16. CATALOG TABLE
+       CATALOG TABLE
        ======================================================================= */
-
     function renderCatalogTable() {
-      const tbody = el.catalogBody;
-      const frag = document.createDocumentFragment();
-
+      const tbody = el.catalogBody, frag = document.createDocumentFragment();
       if (State.filtered.length === 0) {
         tbody.innerHTML = '';
         el.emptyState.hidden = false;
         el.catalogTable.hidden = true;
         return;
       }
-
       el.emptyState.hidden = true;
       el.catalogTable.hidden = false;
-
       State.filtered.forEach(rec => {
         const tr = document.createElement('tr');
         const langClass = (rec.language || '').toLowerCase().includes('bengali') ? ' lang-bn' : '';
@@ -2833,32 +2377,21 @@
         `;
         frag.appendChild(tr);
       });
-
       tbody.innerHTML = '';
       tbody.appendChild(frag);
     }
 
-    function shortType(type) {
-      if (!type) return '';
-      const m = type.match(/\(([^)]+)\)/);
-      return m ? m[1] : type;
-    }
-    function shortGenre(genre) {
-      if (!genre) return '';
-      const m = genre.match(/\(([^)]+)\)/);
-      return m ? m[1] : genre;
-    }
+    function shortType(t) { if (!t) return ''; const m = t.match(/\(([^)]+)\)/); return m ? m[1] : t; }
+    function shortGenre(g) { if (!g) return ''; const m = g.match(/\(([^)]+)\)/); return m ? m[1] : g; }
 
     /* =======================================================================
-       17. LABEL ENGINE
+       LABEL ENGINE
        ======================================================================= */
-
     function getLabelAccent(rec) {
       const mode = el.colorModeSelect.value;
       if (mode === 'navy') return '#1e3a5f';
       if (mode === 'mono') return '#1a1f2e';
-      const code = shortType(rec.type);
-      return TYPE_COLORS[code] || TYPE_COLORS.DEFAULT;
+      return TYPE_COLORS[shortType(rec.type)] || TYPE_COLORS.DEFAULT;
     }
 
     function extractSurname(author) {
@@ -2871,7 +2404,6 @@
       const accent = getLabelAccent(rec);
       const cutClass = options.showCutline ? '' : ' no-cutline';
       const authorDisplay = options.authorLastOnly ? extractSurname(rec.author) : rec.author;
-
       if (options.template === 'block') return createBlockLabel(rec, accent, cutClass, authorDisplay, options);
       if (options.template === 'minimal') return createMinimalLabel(rec, accent, cutClass, authorDisplay, options);
       return createStandardLabel(rec, accent, cutClass, authorDisplay, options);
@@ -2881,15 +2413,11 @@
       const div = document.createElement('div');
       div.className = 'label' + cutClass;
       div.style.setProperty('--label-accent', accent);
-
       const title = escapeHtml(rec.title || '—');
       const author = escapeHtml(authorDisplay || '');
       const volume = rec.volume ? `<div class="l-vol">${escapeHtml(rec.volume)}</div>` : '';
-      const shelf = (options.showShelf && rec.shelf)
-        ? `<span class="l-shelf">${escapeHtml(rec.shelf)}</span>` : '';
-      const itemTag = options.showItemTag
-        ? `<span class="l-item">#${escapeHtml(rec.itemNo)}</span>` : '';
-
+      const shelf = (options.showShelf && rec.shelf) ? `<span class="l-shelf">${escapeHtml(rec.shelf)}</span>` : '';
+      const itemTag = options.showItemTag ? `<span class="l-item">#${escapeHtml(rec.itemNo)}</span>` : '';
       div.innerHTML = `
         <div class="l-head">
           <span class="l-call" title="${escapeHtml(rec.callNumber)}">${escapeHtml(rec.callNumber)}</span>
@@ -2913,16 +2441,11 @@
       const div = document.createElement('div');
       div.className = 'label-block' + cutClass;
       div.style.setProperty('--label-accent', accent);
-
-      const shelf = (options.showShelf && rec.shelf)
-        ? `<span class="l-shelf">${escapeHtml(rec.shelf)}</span>` : '';
-      const itemTag = options.showItemTag
-        ? `<span class="l-item">#${escapeHtml(rec.itemNo)}</span>` : '';
-
+      const shelf = (options.showShelf && rec.shelf) ? `<span class="l-shelf">${escapeHtml(rec.shelf)}</span>` : '';
+      const itemTag = options.showItemTag ? `<span class="l-item">#${escapeHtml(rec.itemNo)}</span>` : '';
       const parts = (rec.callNumber || '').split('-');
       const line1 = parts.slice(0, 2).join('-') || '—';
       const line2 = parts.slice(2).join('-') || '';
-
       div.innerHTML = `
         <div class="block-call">
           <span>${escapeHtml(line1)}</span>
@@ -2931,10 +2454,7 @@
         <div class="block-meta">
           <div class="block-title" title="${escapeHtml(rec.title)}">${escapeHtml(truncate(rec.title, 40))}</div>
           <div class="block-author">${escapeHtml(authorDisplay)}</div>
-          <div class="block-bottom">
-            ${itemTag}
-            ${shelf}
-          </div>
+          <div class="block-bottom">${itemTag}${shelf}</div>
           <div class="barcode block-barcode" aria-hidden="true"></div>
         </div>
       `;
@@ -2945,10 +2465,7 @@
       const div = document.createElement('div');
       div.className = 'label-strip' + cutClass;
       div.style.setProperty('--label-accent', accent);
-
-      const shelf = (options.showShelf && rec.shelf)
-        ? `<span class="l-shelf">${escapeHtml(rec.shelf)}</span>` : '';
-
+      const shelf = (options.showShelf && rec.shelf) ? `<span class="l-shelf">${escapeHtml(rec.shelf)}</span>` : '';
       div.innerHTML = `
         <div class="strip-call" title="${escapeHtml(rec.callNumber)}">${escapeHtml(truncate(rec.callNumber, 28))}</div>
         <div class="strip-title" title="${escapeHtml(rec.title)}">${escapeHtml(truncate(rec.title, 40))}</div>
@@ -2974,9 +2491,8 @@
     }
 
     /* =======================================================================
-       18. PRINT PAGINATION
+       PRINT PAGINATION
        ======================================================================= */
-
     function buildPrintPages() {
       const options = {
         template: el.templateSelect.value,
@@ -2986,45 +2502,31 @@
         showSpare: el.optSpare.checked,
         showItemTag: el.optItemTag.checked
       };
-
       const records = State.filtered.length ? State.filtered : State.records;
       let items = records.slice();
-
       if (options.showSpare && items.length > 0) {
-        const remainder = items.length % CONFIG.LABELS_PER_PAGE;
-        if (remainder !== 0) {
-          const spares = CONFIG.LABELS_PER_PAGE - remainder;
+        const rem = items.length % CONFIG.LABELS_PER_PAGE;
+        if (rem !== 0) {
+          const spares = CONFIG.LABELS_PER_PAGE - rem;
           for (let i = 0; i < spares; i++) items.push({ __spare: true });
         }
       }
-
       const totalPages = Math.max(1, Math.ceil(items.length / CONFIG.LABELS_PER_PAGE));
-      el.previewMeta.textContent =
-        `Sheet ${totalPages} of ${totalPages} · ` +
-        `${CONFIG.LABELS_PER_PAGE} labels per page · ` +
-        `${CONFIG.LABEL_WIDTH_MM}×${CONFIG.LABEL_HEIGHT_MM} mm`;
-
+      el.previewMeta.textContent = `Sheet ${totalPages} of ${totalPages} · ${CONFIG.LABELS_PER_PAGE} labels per page · ${CONFIG.LABEL_WIDTH_MM}×${CONFIG.LABEL_HEIGHT_MM} mm`;
       return { items, totalPages, options };
     }
 
     function renderSheets() {
       const { items, totalPages, options } = buildPrintPages();
-      const container = el.sheetContainer;
-      const frag = document.createDocumentFragment();
-
+      const container = el.sheetContainer, frag = document.createDocumentFragment();
       for (let p = 0; p < totalPages; p++) {
         const sheet = document.createElement('section');
         sheet.className = 'a4-sheet';
         sheet.setAttribute('aria-label', `A4 sheet ${p + 1} of ${totalPages}`);
-
         const header = document.createElement('div');
         header.className = 'sheet-header';
-        header.innerHTML = `
-          <h3>Spine Labels — A4 Sticker Sheet</h3>
-          <span>Page ${p + 1} of ${totalPages} · ${CONFIG.LABELS_PER_PAGE} up</span>
-        `;
+        header.innerHTML = `<h3>Spine Labels — A4 Sticker Sheet</h3><span>Page ${p + 1} of ${totalPages} · ${CONFIG.LABELS_PER_PAGE} up</span>`;
         sheet.appendChild(header);
-
         const grid = document.createElement('div');
         grid.className = 'label-grid';
         const pageItems = items.slice(p * CONFIG.LABELS_PER_PAGE, (p + 1) * CONFIG.LABELS_PER_PAGE);
@@ -3033,28 +2535,20 @@
           else grid.appendChild(createLabel(item, options));
         });
         sheet.appendChild(grid);
-
         const footer = document.createElement('div');
         footer.className = 'sheet-footer';
-        footer.innerHTML = `
-          <span>Personal Library Collection</span>
-          <span>${CONFIG.LABEL_WIDTH_MM} × ${CONFIG.LABEL_HEIGHT_MM} mm</span>
-          <span>Sheet ${p + 1} of ${totalPages}</span>
-        `;
+        footer.innerHTML = `<span>Personal Library Collection</span><span>${CONFIG.LABEL_WIDTH_MM} × ${CONFIG.LABEL_HEIGHT_MM} mm</span><span>Sheet ${p + 1} of ${totalPages}</span>`;
         sheet.appendChild(footer);
-
         frag.appendChild(sheet);
       }
-
       container.innerHTML = '';
       container.appendChild(frag);
       el.labelCount.textContent = `${records.length} label${records.length === 1 ? '' : 's'}`;
     }
 
     /* =======================================================================
-       19. MAIN PIPELINE
+       PIPELINE
        ======================================================================= */
-
     function onCatalogChanged() {
       updateFilterOptions();
       applyFilters();
@@ -3074,34 +2568,245 @@
     }
 
     /* =======================================================================
-       20. EVENT HANDLERS
+       SCANNER — Barcode detection + Google Books lookup
+       Mobile-only feature. Hidden on desktop via CSS.
        ======================================================================= */
+    const Scanner = {
+      stream: null,
+      detector: null,
+      scanTimer: null,
+      active: false,
+      closed: false,          // ← set true in close(), guards against late getUserMedia resolves
+      lastIsbn: null,
+      lastBook: null,
 
+      isSupported() {
+        return typeof window.BarcodeDetector === 'function' && !!navigator.mediaDevices;
+      },
+
+      async open() {
+        // Guard: mobile only
+        if (window.innerWidth > CONFIG.MOBILE_BREAKPOINT) return;
+
+        this.closed = false;
+
+        if (!this.isSupported()) {
+          showToast('Camera scanning is not supported on this browser. Type the ISBN manually below.', 'error');
+          if (typeof el.scanDialog.showModal === 'function') {
+            if (!el.scanDialog.open) el.scanDialog.showModal();
+          } else {
+            el.scanDialog.setAttribute('open', '');
+          }
+          return;
+        }
+
+        if (typeof el.scanDialog.showModal === 'function') {
+          if (!el.scanDialog.open) el.scanDialog.showModal();
+        } else {
+          el.scanDialog.setAttribute('open', '');
+        }
+
+        // Reset state
+        el.scanResult.hidden = true;
+        el.manualIsbn.value = '';
+        el.scanStatus.className = 'scan-status';
+        el.scanStatusText.textContent = 'Starting camera…';
+        this.lastIsbn = null;
+        this.lastBook = null;
+
+        try {
+          // Prefer rear camera
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
+            audio: false
+          });
+
+          // Guard: if user closed the dialog while we were waiting, kill the stream
+          if (this.closed) {
+            stream.getTracks().forEach(t => t.stop());
+            return;
+          }
+
+          this.stream = stream;
+          el.scanVideo.srcObject = this.stream;
+          await el.scanVideo.play();
+
+          // Guard again: user may have closed during play()
+          if (this.closed) {
+            this.stream.getTracks().forEach(t => t.stop());
+            this.stream = null;
+            return;
+          }
+
+          this.detector = new BarcodeDetector({ formats: ['ean_13', 'ean_8', 'code_128', 'code_39', 'upc_a', 'upc_e'] });
+
+          el.scanStatus.className = 'scan-status scan-active';
+          el.scanStatusText.textContent = 'Scanning… point camera at barcode';
+
+          this.active = true;
+          this.startScanning();
+        } catch (err) {
+          console.warn('[Scanner] Camera error:', err);
+          let msg = 'Camera unavailable';
+          if (err.name === 'NotAllowedError') msg = 'Camera permission denied — allow access in browser settings';
+          else if (err.name === 'NotFoundError') msg = 'No camera found on this device';
+          else if (err.name === 'NotReadableError') msg = 'Camera is in use by another app';
+          el.scanStatus.className = 'scan-status scan-error';
+          el.scanStatusText.textContent = msg;
+        }
+      },
+
+      startScanning() {
+        this.stopScanning();
+        this.scanTimer = setInterval(async () => {
+          if (!this.active || !this.detector) return;
+          if (el.scanVideo.readyState < 2) return;
+          try {
+            const codes = await this.detector.detect(el.scanVideo);
+            if (codes && codes.length > 0) {
+              const code = codes[0].rawValue;
+              if (code && code !== this.lastIsbn) {
+                this.handleDetected(code);
+              }
+            }
+          } catch (err) {
+            // Silent — barcode detection throws when no barcode present
+          }
+        }, CONFIG.SCAN_INTERVAL_MS);
+      },
+
+      stopScanning() {
+        if (this.scanTimer) { clearInterval(this.scanTimer); this.scanTimer = null; }
+      },
+
+      async handleDetected(rawValue) {
+        // Normalize: ISBN can be digits only, 10 or 13 length
+        const cleaned = rawValue.replace(/[^0-9Xx]/g, '');
+        if (cleaned.length !== 10 && cleaned.length !== 13) return;
+
+        this.lastIsbn = cleaned;
+        this.stopScanning();
+        this.active = false;
+
+        el.scanStatus.className = 'scan-status';
+        el.scanStatusText.textContent = `Found barcode: ${cleaned}. Looking up book…`;
+
+        // Vibrate for feedback on supported devices
+        if (navigator.vibrate) navigator.vibrate(50);
+
+        await this.lookupIsbn(cleaned);
+      },
+
+      async lookupIsbn(isbn) {
+        el.scanStatusText.textContent = `Looking up ISBN ${isbn}…`;
+        try {
+          const res = await fetch(`${CONFIG.GOOGLE_BOOKS_API}?q=isbn:${encodeURIComponent(isbn)}`);
+          if (!res.ok) throw new Error(`Google Books API returned HTTP ${res.status}`);
+          const data = await res.json();
+
+          if (!data.totalItems || data.totalItems === 0) {
+            el.scanStatus.className = 'scan-status scan-error';
+            el.scanStatusText.textContent = `No book found for ISBN ${isbn}. Try scanning again or typing manually.`;
+            this.lastIsbn = null;
+            this.active = true;
+            this.startScanning();
+            return;
+          }
+
+          const info = data.items[0].volumeInfo || {};
+          const book = {
+            title: info.title || '',
+            author: (info.authors || []).join(', '),
+            isbn: isbn,
+            publisher: info.publisher || '',
+            publishedDate: info.publishedDate || '',
+            language: info.language || 'en'
+          };
+
+          this.lastBook = book;
+          el.scanTitleField.value = book.title;
+          el.scanAuthorField.value = book.author;
+          el.scanIsbnField.value = book.isbn;
+          el.scanPublisherField.value = book.publisher;
+
+          el.scanResult.hidden = false;
+          el.scanStatus.className = 'scan-status';
+          el.scanStatusText.textContent = `✓ Found: ${book.title}`;
+        } catch (err) {
+          console.warn('[Scanner] Lookup error:', err);
+          el.scanStatus.className = 'scan-status scan-error';
+          el.scanStatusText.textContent = `Lookup failed: ${err.message}`;
+          this.lastIsbn = null;
+          this.active = true;
+          this.startScanning();
+        }
+      },
+
+      async scanAgain() {
+        this.lastIsbn = null;
+        this.lastBook = null;
+        el.scanResult.hidden = true;
+        el.scanStatus.className = 'scan-status scan-active';
+        el.scanStatusText.textContent = 'Scanning… point camera at barcode';
+        this.active = true;
+        this.startScanning();
+      },
+
+      async addToCatalog() {
+        if (!this.lastBook) return;
+        el.mTitle.value = this.lastBook.title;
+        el.mAuthor.value = this.lastBook.author;
+        el.mLanguage.value = this.lastBook.language === 'en' ? 'English' : this.lastBook.language;
+        this.close();
+        setMobileView('add');
+        showToast('Book pre-filled — review and click "Add to Catalog"', 'success');
+        setTimeout(() => el.mTitle.focus(), 250);
+      },
+
+      close() {
+        this.closed = true;
+        this.active = false;
+        this.lastIsbn = null;
+        this.lastBook = null;
+        this.stopScanning();
+        if (this.stream) {
+          this.stream.getTracks().forEach(t => t.stop());
+          this.stream = null;
+        }
+        try {
+          if (typeof el.scanDialog.close === 'function') el.scanDialog.close();
+          else el.scanDialog.removeAttribute('open');
+        } catch (e) {}
+      }
+    };
+
+    function openScanner() {
+      // Scanner is mobile-only. On desktop, do nothing (button is hidden anyway).
+      if (window.innerWidth > CONFIG.MOBILE_BREAKPOINT) return;
+      Scanner.open();
+    }
+
+    /* =======================================================================
+       EVENT HANDLERS
+       ======================================================================= */
     function switchTab(tabName) {
-      [el.tabCloudBtn, el.tabFileBtn, el.tabManualBtn].forEach(btn => {
+      [el.tabCloudBtn, el.tabFileBtn].forEach(btn => {
         btn.classList.remove('active');
         btn.setAttribute('aria-selected', 'false');
       });
-      [el.tabCloud, el.tabFile, el.tabManual].forEach(p => p.classList.remove('active'));
-
+      [el.tabCloud, el.tabFile].forEach(p => p.classList.remove('active'));
       if (tabName === 'cloud') {
         el.tabCloudBtn.classList.add('active');
         el.tabCloudBtn.setAttribute('aria-selected', 'true');
         el.tabCloud.classList.add('active');
-      } else if (tabName === 'file') {
+      } else {
         el.tabFileBtn.classList.add('active');
         el.tabFileBtn.setAttribute('aria-selected', 'true');
         el.tabFile.classList.add('active');
-      } else {
-        el.tabManualBtn.classList.add('active');
-        el.tabManualBtn.setAttribute('aria-selected', 'true');
-        el.tabManual.classList.add('active');
       }
     }
-
     el.tabCloudBtn.addEventListener('click', () => switchTab('cloud'));
     el.tabFileBtn.addEventListener('click', () => switchTab('file'));
-    el.tabManualBtn.addEventListener('click', () => switchTab('manual'));
 
     el.btnConnect.addEventListener('click', async () => {
       const input = el.sheetUrl.value.trim();
@@ -3167,7 +2872,6 @@
         if (ext === 'csv') result = await parseCSVFile(file);
         else if (ext === 'xlsx' || ext === 'xls') result = await parseExcelFile(file);
         else throw new Error('Unsupported file type. Please use .xlsx, .xls, or .csv.');
-
         State.records = result.records;
         State.source = 'local-file';
         State.sourceLabel = ext === 'csv' ? 'Local CSV' : 'Local Excel';
@@ -3210,9 +2914,7 @@
       const volTag = volume ? `-${volume.replace(/\s+/g, '')}` : '';
       const callNumber = `${typeCode}-${genreCode}-${surname}-${nextItem}${volTag}`;
 
-      State.records.push({
-        itemNo: nextItem, callNumber, type, genre, title, volume, author, language, status, shelf
-      });
+      State.records.push({ itemNo: nextItem, callNumber, type, genre, title, volume, author, language, status, shelf });
       State.checksum = calculateDatasetHash(State.records);
       State.lastSync = nowISOString();
       State.lastError = '';
@@ -3236,11 +2938,8 @@
     }
 
     [el.templateSelect, el.colorModeSelect, el.optShelf, el.optAuthorLastOnly,
-     el.optCutline, el.optSpare, el.optItemTag].forEach(control => {
-      control.addEventListener('change', () => {
-        renderSheets();
-        Cache.savePrefs();
-      });
+     el.optCutline, el.optSpare, el.optItemTag].forEach(c => {
+      c.addEventListener('change', () => { renderSheets(); Cache.savePrefs(); });
     });
 
     const debouncedSearch = debounce(() => {
@@ -3252,8 +2951,8 @@
     }, 200);
     el.searchInput.addEventListener('input', debouncedSearch);
 
-    [el.filterType, el.filterGenre, el.filterLanguage, el.filterStatus, el.filterShelf].forEach(select => {
-      select.addEventListener('change', () => {
+    [el.filterType, el.filterGenre, el.filterLanguage, el.filterStatus, el.filterShelf].forEach(sel => {
+      sel.addEventListener('change', () => {
         State.filters.type = el.filterType.value;
         State.filters.genre = el.filterGenre.value;
         State.filters.language = el.filterLanguage.value;
@@ -3279,7 +2978,6 @@
         const key = th.dataset.sort;
         if (State.sortKey === key) State.sortDir = State.sortDir === 'asc' ? 'desc' : 'asc';
         else { State.sortKey = key; State.sortDir = 'asc'; }
-
         $$('#catalogTable th[data-sort]').forEach(h => {
           h.classList.remove('sort-active');
           const arrow = h.querySelector('.sort-arrow');
@@ -3288,7 +2986,6 @@
         th.classList.add('sort-active');
         const arrow = th.querySelector('.sort-arrow');
         if (arrow) arrow.textContent = State.sortDir === 'asc' ? '↑' : '↓';
-
         applyFilters();
         renderCatalogTable();
         renderSheets();
@@ -3358,9 +3055,8 @@
     });
 
     /* =======================================================================
-       21. BUILT-IN SAMPLE
+       BUILT-IN SAMPLE
        ======================================================================= */
-
     function getBuiltinSample() {
       return [
         { itemNo: '001', callNumber: 'FIC-LIT-TEG-001-Vol1', type: 'Fiction (FIC)', genre: 'Literature (LIT)', title: 'Rabindra Rachanabali', volume: 'Vol 1', author: 'Rabindranath Tagore', language: 'Bengali', status: 'Reading', shelf: 'Shelf A2' },
@@ -3374,9 +3070,8 @@
     }
 
     /* =======================================================================
-       22. INIT
+       INIT
        ======================================================================= */
-
     function loadPreferences() {
       const prefs = Cache.loadPrefs();
       if (!prefs) return;
@@ -3392,8 +3087,8 @@
 
     function init() {
       el.pollIntervalLabel.textContent = (CONFIG.POLL_INTERVAL_MS / 1000) + 's';
-
       Theme.init();
+      initMobileNav();
       loadPreferences();
 
       const cached = Cache.load();
@@ -3424,35 +3119,24 @@
     }
 
     /* =======================================================================
-       23. DONATION MODAL — module-level IIFE
-       Runs independently of init() so it works even when the cache short-circuits init().
+       DONATION MODAL
        ======================================================================= */
-
     (function initDonationModal() {
       const dialog = document.getElementById('donateDialog');
       if (!dialog) return;
-
       const openBtn = document.getElementById('btnSupport');
       const closeBtn = document.getElementById('btnDonateClose');
-
-      if (openBtn) {
-        openBtn.addEventListener('click', () => {
-          if (typeof dialog.showModal === 'function') {
-            dialog.showModal();
-          } else {
-            dialog.setAttribute('open', '');
-          }
-        });
-      }
-
-      if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-          if (typeof dialog.close === 'function') dialog.close();
-          else dialog.removeAttribute('open');
-        });
-      }
-
-      // Click backdrop to close
+      if (openBtn) openBtn.addEventListener('click', () => {
+        if (typeof dialog.showModal === 'function') {
+          if (!dialog.open) dialog.showModal();
+        } else {
+          dialog.setAttribute('open', '');
+        }
+      });
+      if (closeBtn) closeBtn.addEventListener('click', () => {
+        if (typeof dialog.close === 'function') dialog.close();
+        else dialog.removeAttribute('open');
+      });
       dialog.addEventListener('click', (e) => {
         if (e.target === dialog) {
           if (typeof dialog.close === 'function') dialog.close();
@@ -3462,26 +3146,61 @@
     })();
 
     /* =======================================================================
-       24. BOOT
+       SCANNER EVENT HANDLERS
        ======================================================================= */
+    (function initScannerHandlers() {
+      if (el.btnOpenScanner) el.btnOpenScanner.addEventListener('click', () => openScanner());
+      if (el.btnScanClose) el.btnScanClose.addEventListener('click', () => Scanner.close());
+      if (el.btnScanAgain) el.btnScanAgain.addEventListener('click', () => Scanner.scanAgain());
+      if (el.btnScanAdd) el.btnScanAdd.addEventListener('click', () => Scanner.addToCatalog());
 
-    document.addEventListener('DOMContentLoaded', init);
+      if (el.btnManualIsbn) {
+        el.btnManualIsbn.addEventListener('click', () => {
+          const raw = el.manualIsbn.value.trim();
+          const cleaned = raw.replace(/[^0-9Xx]/g, '');
+          if (cleaned.length !== 10 && cleaned.length !== 13) {
+            showToast('Please enter a valid 10- or 13-digit ISBN.', 'error');
+            return;
+          }
+          el.scanResult.hidden = true;
+          el.scanStatus.className = 'scan-status';
+          el.scanStatusText.textContent = 'Looking up…';
+          Scanner.lookupIsbn(cleaned);
+        });
+      }
+
+      if (el.manualIsbn) {
+        el.manualIsbn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') el.btnManualIsbn.click();
+        });
+      }
+
+      // Ensure camera is released when dialog closes
+      if (el.scanDialog) {
+        el.scanDialog.addEventListener('close', () => {
+          Scanner.closed = true;
+          Scanner.active = false;
+          Scanner.stopScanning();
+          if (Scanner.stream) {
+            Scanner.stream.getTracks().forEach(t => t.stop());
+            Scanner.stream = null;
+          }
+        });
+      }
+    })();
+
     /* =======================================================================
-       PWA — SERVICE WORKER REGISTRATION & INSTALL PROMPT
+       PWA
        ======================================================================= */
-
     (function initPWA() {
       const isHttp = location.protocol === 'http:' || location.protocol === 'https:';
-      if (!isHttp) return; // Service workers require http(s) — silently skip on file://
+      if (!isHttp) return;
 
-      /* -------- Register the service worker -------- */
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('service-worker.js')
             .then((reg) => {
               console.log('[PWA] Service worker registered. Scope:', reg.scope);
-
-              // Watch for updates and reload when a new SW takes over
               reg.addEventListener('updatefound', () => {
                 const newWorker = reg.installing;
                 if (!newWorker) return;
@@ -3492,22 +3211,16 @@
                 });
               });
             })
-            .catch((err) => {
-              console.warn('[PWA] Service worker registration failed:', err);
-            });
+            .catch((err) => console.warn('[PWA] SW registration failed:', err));
         });
       }
 
-      /* -------- Install prompt (Chrome, Edge, Samsung Internet) -------- */
       const installBtn = document.getElementById('btnInstall');
       let deferredPrompt = null;
 
       window.addEventListener('beforeinstallprompt', (e) => {
-        // Prevent the mini-infobar from appearing on mobile
         e.preventDefault();
         deferredPrompt = e;
-
-        // Reveal our own install button
         if (installBtn) {
           installBtn.hidden = false;
           installBtn.addEventListener('click', async () => {
@@ -3521,13 +3234,15 @@
         }
       });
 
-      /* -------- Hide button once app is installed -------- */
       window.addEventListener('appinstalled', () => {
         console.log('[PWA] App installed successfully.');
         deferredPrompt = null;
         if (installBtn) installBtn.hidden = true;
       });
     })();
+
+    document.addEventListener('DOMContentLoaded', init);
+
   })();
   </script>
 </body>
