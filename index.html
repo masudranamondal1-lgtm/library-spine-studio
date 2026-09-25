@@ -4,6 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Personal Library Manager & Spine Studio — catalog, filter, and print A4 spine labels for your personal library.">
+  <meta name="color-scheme" content="light dark">
+
+  <!-- ============================================================
+       FOUC PREVENTION: apply the saved theme before CSS paints.
+       Must run synchronously, before any stylesheet is parsed.
+       ============================================================ -->
+  <script>
+    (function () {
+      var THEME_KEY = 'plm_theme_choice_v1';
+      var choice = 'system';
+      try {
+        choice = localStorage.getItem(THEME_KEY) || 'system';
+      } catch (e) { /* localStorage unavailable */ }
+
+      var prefersDark = false;
+      try {
+        prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      } catch (e) { /* matchMedia unavailable */ }
+
+      var active = choice === 'system'
+        ? (prefersDark ? 'dark' : 'light')
+        : choice;
+
+      var root = document.documentElement;
+      root.setAttribute('data-theme', active);
+      root.setAttribute('data-theme-choice', choice);
+    })();
+  </script>
+
   <title>Personal Library Manager & Spine Studio</title>
 
   <!-- SheetJS for local Excel import (client-side only) -->
@@ -11,46 +40,213 @@
 
   <style>
     /* =========================================================
-       DESIGN TOKENS
+       THEME TOKENS — LIGHT (default)
+       A warm "Bengal Literary Archive" palette: parchment paper,
+       indigo ink, terracotta accents, muted green for status.
+       ========================================================= */
+    :root,
+    [data-theme="light"] {
+      color-scheme: light;
+
+      /* Backgrounds — warm parchment, not stark white */
+      --bg: #f4efe4;
+      --bg-elevated: #ebe4d3;
+      --surface: #fffdf8;
+      --surface-alt: #f8f3e8;
+      --surface-raised: #ffffff;
+
+      /* Text — warm near-black */
+      --text: #22262e;
+      --text-soft: #454b58;
+      --text-muted: #6e7585;
+      --text-faint: #98a0ae;
+      --text-inverse: #f4efe4;
+
+      /* Borders */
+      --border: #dcd4c2;
+      --border-strong: #b8ae99;
+      --border-subtle: #ebe4d3;
+
+      /* Primary — deep indigo */
+      --primary: #253b6e;
+      --primary-hover: #1c2e56;
+      --primary-soft: #e4eaf6;
+      --primary-text: #ffffff;
+
+      /* Accent — terracotta */
+      --accent: #b85c38;
+      --accent-hover: #9c4a2b;
+      --accent-soft: #f3ddd2;
+
+      /* Status colours */
+      --success: #34745b;
+      --success-soft: #dceee5;
+      --success-border: #b0dbc4;
+      --success-text: #1e5a38;
+
+      --warning: #a86b24;
+      --warning-soft: #f6e5c4;
+      --warning-border: #e6d29e;
+      --warning-text: #74540a;
+
+      --danger: #a84242;
+      --danger-soft: #f3dada;
+      --danger-border: #e4b4b4;
+      --danger-text: #832020;
+
+      --info: #2a6f8f;
+      --info-soft: #e0eff5;
+      --info-border: #aed4e2;
+      --info-text: #1a4a62;
+
+      /* Focus */
+      --focus: #b8741e;
+      --focus-ring: rgba(37, 59, 110, 0.20);
+
+      /* Header — dark in both themes */
+      --header-bg: #1a2332;
+      --header-text: #f4efe4;
+      --header-muted: #8fa8c9;
+      --header-border: #2d3a4f;
+      --header-btn-text: #c5cdd9;
+      --header-btn-border: #46536a;
+      --header-btn-hover-bg: #2a3145;
+      --header-tag-bg: #252f42;
+      --header-tag-text: #c5cdd9;
+
+      /* Table */
+      --table-stripe: #faf6ec;
+      --table-hover: #ebdfca;
+      --table-header-bg: #f0ead9;
+
+      /* Print-content colours — always dark, never themed */
+      --print-ink: #1a1f2e;
+      --print-ink-soft: #3d475c;
+      --print-ink-muted: #6b7488;
+      --print-border: #d9d5ce;
+      --print-border-strong: #b8b2a8;
+      --print-surface-alt: #faf9f7;
+      --print-info: #2a6f8f;
+      --print-info-soft: #e6f2f7;
+
+      /* Shadows */
+      --shadow-sm: 0 1px 3px rgba(34, 38, 46, 0.06);
+      --shadow-md: 0 4px 16px rgba(34, 38, 46, 0.10);
+      --shadow-sheet: 0 4px 24px rgba(34, 38, 46, 0.16);
+
+      /* Transitions */
+      --theme-transition: background-color 0.22s ease, color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    /* =========================================================
+       THEME TOKENS — DARK
+       Deep blue-black for eye comfort. Softer than pure black,
+       with warm off-white text to reduce glare.
+       ========================================================= */
+    [data-theme="dark"] {
+      color-scheme: dark;
+
+      /* Backgrounds — deep blue-black */
+      --bg: #12161d;
+      --bg-elevated: #171c25;
+      --surface: #1a202c;
+      --surface-alt: #1f2634;
+      --surface-raised: #232b3a;
+
+      /* Text — warm off-white, never pure white */
+      --text: #e6e4dd;
+      --text-soft: #b2b6c1;
+      --text-muted: #868f9e;
+      --text-faint: #5b6577;
+      --text-inverse: #12161d;
+
+      /* Borders */
+      --border: #2e3746;
+      --border-strong: #47506080;
+      --border-subtle: #262d3a;
+
+      /* Primary — soft indigo for contrast on dark */
+      --primary: #8fa9e0;
+      --primary-hover: #a8bcf0;
+      --primary-soft: #26334f;
+      --primary-text: #0f141c;
+
+      /* Accent — warm terracotta */
+      --accent: #e28b68;
+      --accent-hover: #f09e7c;
+      --accent-soft: #3c2822;
+
+      /* Status colours — desaturated for dark comfort */
+      --success: #7cc39e;
+      --success-soft: #1d3a2e;
+      --success-border: #2e5443;
+      --success-text: #a9e0c2;
+
+      --warning: #e0b06a;
+      --warning-soft: #3a2d1a;
+      --warning-border: #55431f;
+      --warning-text: #f0cd8a;
+
+      --danger: #eb8c8c;
+      --danger-soft: #3a2020;
+      --danger-border: #5a2e2e;
+      --danger-text: #f5b0b0;
+
+      --info: #7db8d4;
+      --info-soft: #1b2f3a;
+      --info-border: #2e4858;
+      --info-text: #a5d4e5;
+
+      /* Focus */
+      --focus: #e5b570;
+      --focus-ring: rgba(143, 169, 224, 0.28);
+
+      /* Header — deeper in dark mode, blended */
+      --header-bg: #0c0f16;
+      --header-text: #e6e4dd;
+      --header-muted: #7a90b3;
+      --header-border: #1c2430;
+      --header-btn-text: #b2b6c1;
+      --header-btn-border: #39424f;
+      --header-btn-hover-bg: #1f2634;
+      --header-tag-bg: #1f2634;
+      --header-tag-text: #b2b6c1;
+
+      /* Table */
+      --table-stripe: #1c2330;
+      --table-hover: #262f40;
+      --table-header-bg: #1a202c;
+
+      /* Shadows — heavier in dark, but softly rendered */
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+      --shadow-sheet: 0 4px 24px rgba(0, 0, 0, 0.6);
+    }
+
+    /* =========================================================
+       GLOBAL DESIGN TOKENS (theme-independent)
        ========================================================= */
     :root {
-      --ink: #1a1f2e;
-      --ink-soft: #3d475c;
-      --ink-muted: #6b7488;
-      --paper: #f5f3ef;
-      --surface: #ffffff;
-      --surface-alt: #faf9f7;
-      --border: #d9d5ce;
-      --border-strong: #b8b2a8;
-      --accent: #2c4a7c;
-      --accent-soft: #e8edf5;
-      --accent-hover: #1f3559;
-      --success: #2d7a4f;
-      --success-soft: #e6f4ed;
-      --warning: #b8860b;
-      --warning-soft: #fdf6e3;
-      --danger: #a83232;
-      --danger-soft: #fce8e8;
-      --info: #2a6f8f;
-      --info-soft: #e6f2f7;
       --radius: 6px;
       --radius-sm: 4px;
-      --shadow: 0 1px 3px rgba(26, 31, 46, 0.08);
-      --shadow-lg: 0 4px 16px rgba(26, 31, 46, 0.12);
+
       --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
       --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
       --font-bengali: "Noto Sans Bengali", "SolaimanLipi", "Kalpurush", sans-serif;
 
-      /* Typographic scale */
-      --fs-body: 1rem;         /* 16px */
-      --fs-small: 0.9375rem;   /* 15px */
-      --fs-label: 0.9375rem;   /* 15px */
-      --fs-meta: 0.875rem;     /* 14px */
-      --fs-micro: 0.8125rem;   /* 13px */
-      --fs-heading: 1.375rem;  /* 22px */
-      --fs-title: 1.75rem;     /* 28px */
+      --fs-body: 1rem;
+      --fs-small: 0.9375rem;
+      --fs-label: 0.9375rem;
+      --fs-meta: 0.875rem;
+      --fs-micro: 0.8125rem;
+      --fs-heading: 1.375rem;
+      --fs-title: 1.75rem;
       --lh-body: 1.55;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :root { --theme-transition: none; }
     }
 
     /* =========================================================
@@ -72,10 +268,11 @@
       font-family: var(--font-ui);
       font-size: var(--fs-body);
       line-height: var(--lh-body);
-      background: var(--paper);
-      color: var(--ink);
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
       min-height: 100dvh;
+      transition: var(--theme-transition);
     }
 
     img, svg { display: block; max-width: 100%; }
@@ -85,7 +282,7 @@
     [hidden] { display: none !important; }
 
     :focus-visible {
-      outline: 2px solid var(--accent);
+      outline: 2px solid var(--focus);
       outline-offset: 2px;
     }
 
@@ -95,8 +292,8 @@
       top: 0;
       z-index: 999;
       padding: 10px 18px;
-      background: var(--accent);
-      color: #fff;
+      background: var(--primary);
+      color: var(--primary-text);
       font-weight: 600;
       font-size: var(--fs-body);
       border-radius: 0 0 var(--radius) 0;
@@ -113,10 +310,10 @@
       min-height: 100dvh;
     }
 
-    /* Header */
+    /* ---------- HEADER ---------- */
     .app-header {
-      background: var(--ink);
-      color: #fff;
+      background: var(--header-bg);
+      color: var(--header-text);
       padding: 12px 20px;
       display: flex;
       align-items: center;
@@ -126,7 +323,8 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+      transition: var(--theme-transition);
     }
 
     .brand {
@@ -140,7 +338,7 @@
       width: 32px;
       height: 32px;
       flex-shrink: 0;
-      color: #8db4e8;
+      color: var(--header-muted);
     }
 
     .brand-text {
@@ -156,11 +354,12 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      color: var(--header-text);
     }
 
     .brand-text small {
       font-size: 0.8rem;
-      color: #8db4e8;
+      color: var(--header-muted);
       letter-spacing: 0.03em;
       text-transform: uppercase;
     }
@@ -172,7 +371,7 @@
       flex-wrap: wrap;
     }
 
-    /* Buttons */
+    /* ---------- BUTTONS ---------- */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -192,39 +391,54 @@
     .btn svg { flex-shrink: 0; }
 
     .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
+      background: var(--primary);
+      color: var(--primary-text);
+      border-color: var(--primary);
     }
-    .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      border-color: var(--primary-hover);
+    }
 
     .btn-outline {
       background: transparent;
-      color: #c5cdd9;
-      border-color: #4a5568;
+      color: var(--header-btn-text);
+      border-color: var(--header-btn-border);
     }
-    .btn-outline:hover { background: #2a3145; color: #fff; }
+    .btn-outline:hover {
+      background: var(--header-btn-hover-bg);
+      color: var(--header-text);
+    }
 
     .btn-ghost {
-      background: transparent;
-      color: var(--ink-soft);
+      background: var(--surface);
+      color: var(--text-soft);
       border-color: var(--border);
     }
-    .btn-ghost:hover { background: var(--surface-alt); border-color: var(--border-strong); }
+    .btn-ghost:hover {
+      background: var(--surface-alt);
+      border-color: var(--border-strong);
+      color: var(--text);
+    }
 
     .btn-success {
       background: var(--success);
-      color: #fff;
+      color: #ffffff;
       border-color: var(--success);
     }
-    .btn-success:hover { background: #24663f; }
+    .btn-success:hover {
+      background: var(--success-text);
+      border-color: var(--success-text);
+    }
 
     .btn-danger {
-      background: transparent;
+      background: var(--surface);
       color: var(--danger);
-      border-color: #e0b4b4;
+      border-color: var(--danger-border);
     }
-    .btn-danger:hover { background: var(--danger-soft); }
+    .btn-danger:hover {
+      background: var(--danger-soft);
+    }
 
     .btn-sm {
       padding: 8px 14px;
@@ -232,7 +446,47 @@
       font-size: var(--fs-meta);
     }
 
-    /* Main layout */
+    /* ---------- THEME SWITCHER ---------- */
+    .theme-switcher {
+      display: inline-flex;
+      align-items: stretch;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--header-border);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
+      transition: var(--theme-transition);
+    }
+
+    .theme-switcher button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 6px 10px;
+      min-height: 36px;
+      background: transparent;
+      color: var(--header-btn-text);
+      border: none;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      transition: background 0.14s, color 0.14s;
+      white-space: nowrap;
+    }
+
+    .theme-switcher button:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--header-text);
+    }
+
+    .theme-switcher button[aria-pressed="true"] {
+      background: rgba(255, 255, 255, 0.14);
+      color: var(--header-text);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.10);
+    }
+
+    /* ---------- MAIN LAYOUT ---------- */
     .app-body {
       display: grid;
       grid-template-columns: 400px 1fr;
@@ -250,6 +504,7 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
+      transition: var(--theme-transition);
     }
 
     .main-pane {
@@ -257,6 +512,7 @@
       max-height: calc(100vh - 64px);
       max-height: calc(100dvh - 64px);
       padding: 20px;
+      transition: var(--theme-transition);
     }
 
     /* =========================================================
@@ -267,7 +523,8 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 18px;
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-sm);
+      transition: var(--theme-transition);
     }
 
     .panel-head {
@@ -283,14 +540,14 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--ink-soft);
+      color: var(--text-soft);
     }
 
     .panel-head .count-badge {
       font-size: var(--fs-meta);
       font-weight: 700;
-      color: var(--accent);
-      background: var(--accent-soft);
+      color: var(--primary);
+      background: var(--primary-soft);
       padding: 4px 10px;
       border-radius: 999px;
     }
@@ -306,7 +563,7 @@
       display: block;
       font-size: var(--fs-label);
       font-weight: 600;
-      color: var(--ink-soft);
+      color: var(--text-soft);
       margin-bottom: 6px;
     }
 
@@ -322,17 +579,22 @@
       font-size: var(--fs-body);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      background: var(--surface);
-      color: var(--ink);
+      background: var(--surface-raised);
+      color: var(--text);
       outline: none;
-      transition: border-color 0.12s, box-shadow 0.12s;
+      transition: border-color 0.12s, box-shadow 0.12s, background 0.22s, color 0.22s;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: var(--text-faint);
     }
 
     .field input:focus,
     .field select:focus,
     .field textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(44, 74, 124, 0.15);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--focus-ring);
     }
 
     .field textarea {
@@ -362,14 +624,14 @@
       gap: 8px;
       font-size: var(--fs-small);
       font-weight: 500;
-      color: var(--ink-soft);
+      color: var(--text-soft);
       cursor: pointer;
       user-select: none;
       min-height: 28px;
     }
 
     .check-label input[type="checkbox"] {
-      accent-color: var(--accent);
+      accent-color: var(--primary);
       width: 18px;
       height: 18px;
       flex-shrink: 0;
@@ -390,7 +652,7 @@
       padding: 10px 14px;
       font-size: var(--fs-small);
       font-weight: 600;
-      color: var(--ink-muted);
+      color: var(--text-muted);
       background: none;
       border: none;
       border-bottom: 2px solid transparent;
@@ -399,10 +661,10 @@
       min-height: 44px;
     }
 
-    .tab:hover { color: var(--ink-soft); }
+    .tab:hover { color: var(--text); }
     .tab.active {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
+      color: var(--primary);
+      border-bottom-color: var(--primary);
     }
 
     .tab-panel { display: none; }
@@ -420,7 +682,7 @@
       font-size: var(--fs-small);
       font-weight: 600;
       border: 1px solid transparent;
-      transition: background 0.2s, border-color 0.2s;
+      transition: var(--theme-transition);
     }
 
     .sync-status .dot {
@@ -453,29 +715,32 @@
 
     .sync-online {
       background: var(--success-soft);
-      border-color: #b8dfc9;
-      color: #1e5a38;
+      border-color: var(--success-border);
+      color: var(--success-text);
     }
     .sync-online .dot { background: var(--success); }
 
     .sync-fetching {
       background: var(--warning-soft);
-      border-color: #e8d9a8;
-      color: #7a5c0a;
+      border-color: var(--warning-border);
+      color: var(--warning-text);
     }
-    .sync-fetching .dot { background: var(--warning); animation: pulse 1.2s infinite; }
+    .sync-fetching .dot {
+      background: var(--warning);
+      animation: pulse 1.2s infinite;
+    }
 
     .sync-offline {
       background: var(--danger-soft);
-      border-color: #e8b8b8;
-      color: #8a2020;
+      border-color: var(--danger-border);
+      color: var(--danger-text);
     }
     .sync-offline .dot { background: var(--danger); }
 
     .sync-local {
       background: var(--info-soft);
-      border-color: #b8d8e5;
-      color: #1e5670;
+      border-color: var(--info-border);
+      color: var(--info-text);
     }
     .sync-local .dot { background: var(--info); }
 
@@ -497,9 +762,10 @@
       letter-spacing: 0.04em;
       padding: 6px 12px;
       border-radius: 999px;
-      background: #2a3145;
-      border: 1px solid #4a5568;
-      color: #c5cdd9;
+      background: var(--header-tag-bg);
+      border: 1px solid var(--header-border);
+      color: var(--header-tag-text);
+      transition: var(--theme-transition);
     }
 
     /* =========================================================
@@ -540,16 +806,17 @@
       flex-wrap: wrap;
       gap: 8px 20px;
       font-size: var(--fs-meta);
-      color: var(--ink-muted);
+      color: var(--text-muted);
       margin-bottom: 12px;
       padding: 10px 14px;
       background: var(--surface-alt);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
+      transition: var(--theme-transition);
     }
 
     .stats-bar strong {
-      color: var(--ink);
+      color: var(--text);
       font-weight: 700;
     }
 
@@ -561,6 +828,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       background: var(--surface);
+      transition: var(--theme-transition);
     }
 
     .catalog-table {
@@ -570,7 +838,7 @@
     }
 
     .catalog-table thead {
-      background: var(--surface-alt);
+      background: var(--table-header-bg);
       position: sticky;
       top: 0;
       z-index: 5;
@@ -583,14 +851,15 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--ink-muted);
+      color: var(--text-muted);
       border-bottom: 2px solid var(--border);
       white-space: nowrap;
       cursor: pointer;
       user-select: none;
+      transition: var(--theme-transition);
     }
 
-    .catalog-table th:hover { color: var(--accent); }
+    .catalog-table th:hover { color: var(--primary); }
 
     .catalog-table th .sort-arrow {
       display: inline-block;
@@ -601,41 +870,42 @@
 
     .catalog-table th.sort-active .sort-arrow {
       opacity: 1;
-      color: var(--accent);
+      color: var(--primary);
     }
 
     .catalog-table td {
       padding: 11px 14px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-subtle);
       vertical-align: top;
       max-width: 280px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      color: var(--text);
     }
 
     .catalog-table tbody tr:nth-child(even) {
-      background: var(--surface-alt);
+      background: var(--table-stripe);
     }
 
     .catalog-table tbody tr:hover {
-      background: var(--accent-soft);
+      background: var(--table-hover);
     }
 
     .catalog-table .cell-call {
       font-family: var(--font-mono);
       font-size: 0.9rem;
       font-weight: 700;
-      color: var(--accent);
+      color: var(--primary);
     }
 
     .catalog-table .cell-title {
       font-weight: 600;
-      color: var(--ink);
+      color: var(--text);
     }
 
     .catalog-table .cell-muted {
-      color: var(--ink-muted);
+      color: var(--text-muted);
     }
 
     .catalog-table .lang-bn {
@@ -646,7 +916,7 @@
     .empty-state {
       text-align: center;
       padding: 56px 24px;
-      color: var(--ink-muted);
+      color: var(--text-muted);
     }
 
     .empty-state svg {
@@ -654,12 +924,13 @@
       opacity: 0.4;
       width: 56px;
       height: 56px;
+      color: var(--text-muted);
     }
 
     .empty-state h3 {
       font-size: var(--fs-heading);
       font-weight: 700;
-      color: var(--ink-soft);
+      color: var(--text-soft);
       margin-bottom: 8px;
     }
 
@@ -685,11 +956,12 @@
     .preview-header h2 {
       font-size: var(--fs-heading);
       font-weight: 700;
+      color: var(--text);
     }
 
     .preview-meta {
       font-size: var(--fs-meta);
-      color: var(--ink-muted);
+      color: var(--text-muted);
     }
 
     .sheet-scroll {
@@ -701,25 +973,29 @@
 
     /* =========================================================
        A4 SHEET & LABEL GRID
+       NOTE: The sheet is intentionally NOT theme-aware — it
+       represents paper and must always be white.
        ========================================================= */
     .a4-sheet {
       width: 210mm;
       height: 297mm;
-      background: #fff;
-      box-shadow: var(--shadow-lg);
+      background: #ffffff;
+      color: var(--print-ink);
+      box-shadow: var(--shadow-sheet);
       padding: 10mm 9mm 8mm 9mm;
       display: flex;
       flex-direction: column;
       position: relative;
       overflow: hidden;
       flex-shrink: 0;
+      transition: box-shadow 0.22s ease;
     }
 
     .sheet-header {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
-      border-bottom: 1.5px solid var(--ink);
+      border-bottom: 1.5px solid var(--print-ink);
       padding-bottom: 2mm;
       margin-bottom: 3mm;
       flex-shrink: 0;
@@ -730,21 +1006,22 @@
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: -0.01em;
+      color: var(--print-ink);
     }
 
     .sheet-header span {
       font-size: 7.5pt;
-      color: var(--ink-muted);
+      color: var(--print-ink-muted);
       font-weight: 600;
       font-family: var(--font-mono);
     }
 
     .sheet-footer {
-      border-top: 1px solid var(--border);
+      border-top: 1px solid var(--print-border);
       padding-top: 2mm;
       margin-top: 3mm;
       font-size: 7.5pt;
-      color: var(--ink-muted);
+      color: var(--print-ink-muted);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -767,18 +1044,17 @@
     .label {
       position: relative;
       overflow: hidden;
-      background: #fff;
+      background: #ffffff;
+      color: var(--print-ink);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       padding: 1.6mm 2.2mm;
-      border: 1px dashed var(--border-strong);
+      border: 1px dashed var(--print-border-strong);
       border-radius: 2px;
     }
 
-    .label.no-cutline {
-      border-color: transparent;
-    }
+    .label.no-cutline { border-color: transparent; }
 
     .label::before {
       content: "";
@@ -787,11 +1063,11 @@
       top: 0;
       bottom: 0;
       width: 3px;
-      background: var(--label-accent, var(--accent));
+      background: var(--label-accent, var(--primary));
     }
 
     .label.spare {
-      background: var(--surface-alt);
+      background: var(--print-surface-alt);
       justify-content: center;
       align-items: center;
     }
@@ -803,13 +1079,13 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--ink-muted);
+      color: var(--print-ink-muted);
       text-align: center;
     }
 
     .label.spare .spare-sub {
       font-size: 6pt;
-      color: var(--border-strong);
+      color: var(--print-border-strong);
       text-transform: none;
       letter-spacing: 0;
       font-weight: 500;
@@ -822,7 +1098,7 @@
       justify-content: space-between;
       align-items: baseline;
       gap: 4px;
-      border-bottom: 0.5px solid var(--border);
+      border-bottom: 0.5px solid var(--print-border);
       padding-bottom: 0.8mm;
       margin-bottom: 0.8mm;
       min-width: 0;
@@ -832,7 +1108,7 @@
       font-family: var(--font-mono);
       font-size: 8pt;
       font-weight: 800;
-      color: var(--ink);
+      color: var(--print-ink);
       letter-spacing: -0.01em;
       white-space: nowrap;
       overflow: hidden;
@@ -843,8 +1119,8 @@
     .l-item {
       font-size: 6.4pt;
       font-weight: 700;
-      color: var(--ink-muted);
-      background: var(--surface-alt);
+      color: var(--print-ink-muted);
+      background: var(--print-surface-alt);
       padding: 0.5px 3px;
       border-radius: 2px;
       white-space: nowrap;
@@ -863,7 +1139,7 @@
     .l-title {
       font-size: 7.6pt;
       font-weight: 700;
-      color: var(--ink);
+      color: var(--print-ink);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -871,7 +1147,7 @@
 
     .l-author {
       font-size: 6.6pt;
-      color: var(--ink-soft);
+      color: var(--print-ink-soft);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -889,7 +1165,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 4px;
-      border-top: 0.5px solid var(--border);
+      border-top: 0.5px solid var(--print-border);
       padding-top: 0.8mm;
       min-width: 0;
     }
@@ -897,8 +1173,8 @@
     .l-shelf {
       font-size: 6.2pt;
       font-weight: 700;
-      color: var(--info);
-      background: var(--info-soft);
+      color: var(--print-info);
+      background: var(--print-info-soft);
       padding: 0.5px 4px;
       border-radius: 2px;
       white-space: nowrap;
@@ -907,7 +1183,7 @@
 
     .l-lang {
       font-size: 6pt;
-      color: var(--ink-muted);
+      color: var(--print-ink-muted);
       font-family: var(--font-bengali);
       white-space: nowrap;
       overflow: hidden;
@@ -922,9 +1198,10 @@
       grid-template-columns: 40% 1fr;
       gap: 1.6mm;
       padding: 1.6mm;
-      border: 1px dashed var(--border-strong);
+      border: 1px dashed var(--print-border-strong);
       border-radius: 2px;
-      background: #fff;
+      background: #ffffff;
+      color: var(--print-ink);
       overflow: hidden;
     }
 
@@ -936,8 +1213,8 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      background: var(--label-accent, var(--ink));
-      color: #fff;
+      background: var(--label-accent, var(--print-ink));
+      color: #ffffff;
       border-radius: 2px;
       padding: 1.2mm 0.8mm;
       font-family: var(--font-mono);
@@ -967,7 +1244,7 @@
     .block-title {
       font-size: 7.2pt;
       font-weight: 700;
-      color: var(--ink);
+      color: var(--print-ink);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -975,7 +1252,7 @@
 
     .block-author {
       font-size: 6.4pt;
-      color: var(--ink-soft);
+      color: var(--print-ink-soft);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -988,9 +1265,7 @@
       gap: 3px;
     }
 
-    .block-bottom .l-shelf {
-      font-size: 6pt;
-    }
+    .block-bottom .l-shelf { font-size: 6pt; }
 
     /* =========================================================
        LABEL TEMPLATE 3: MINIMAL SPINE STRIP
@@ -1001,23 +1276,24 @@
       justify-content: center;
       gap: 0.8mm;
       padding: 1.6mm 2.2mm;
-      border: 1px dashed var(--border-strong);
-      border-left: 3px solid var(--label-accent, var(--accent));
+      border: 1px dashed var(--print-border-strong);
+      border-left: 3px solid var(--label-accent, var(--primary));
       border-radius: 2px;
-      background: #fff;
+      background: #ffffff;
+      color: var(--print-ink);
       overflow: hidden;
     }
 
     .label-strip.no-cutline {
       border-color: transparent;
-      border-left-color: var(--label-accent, var(--accent));
+      border-left-color: var(--label-accent, var(--primary));
     }
 
     .strip-call {
       font-family: var(--font-mono);
       font-size: 8.2pt;
       font-weight: 800;
-      color: var(--ink);
+      color: var(--print-ink);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -1027,7 +1303,7 @@
     .strip-title {
       font-size: 6.8pt;
       font-weight: 600;
-      color: var(--ink-soft);
+      color: var(--print-ink-soft);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -1040,7 +1316,7 @@
       align-items: center;
       gap: 4px;
       font-size: 6pt;
-      color: var(--ink-muted);
+      color: var(--print-ink-muted);
       min-width: 0;
     }
 
@@ -1061,16 +1337,16 @@
       width: 100%;
       background: repeating-linear-gradient(
         90deg,
-        var(--ink) 0,
-        var(--ink) 0.5px,
+        var(--print-ink) 0,
+        var(--print-ink) 0.5px,
         transparent 0.5px,
         transparent 1.3px,
-        var(--ink) 1.3px,
-        var(--ink) 2px,
+        var(--print-ink) 1.3px,
+        var(--print-ink) 2px,
         transparent 2px,
         transparent 2.8px,
-        var(--ink) 2.8px,
-        var(--ink) 3.4px,
+        var(--print-ink) 2.8px,
+        var(--print-ink) 3.4px,
         transparent 3.4px,
         transparent 4.2px
       );
@@ -1079,18 +1355,9 @@
       flex-shrink: 0;
     }
 
-    /* Barcode placement per template */
-    .l-barcode {
-      margin: 0.6mm 0;
-    }
-
-    .block-barcode {
-      margin-top: 0.6mm;
-    }
-
-    .strip-barcode {
-      margin: 0.4mm 0;
-    }
+    .l-barcode { margin: 0.6mm 0; }
+    .block-barcode { margin-top: 0.6mm; }
+    .strip-barcode { margin: 0.4mm 0; }
 
     /* =========================================================
        DIAGNOSTICS PANEL
@@ -1103,7 +1370,7 @@
       cursor: pointer;
       font-weight: 700;
       font-size: var(--fs-small);
-      color: var(--ink-soft);
+      color: var(--text-soft);
       padding: 6px 0;
       list-style: none;
     }
@@ -1116,9 +1383,7 @@
       transition: transform 0.15s;
     }
 
-    .diagnostics[open] summary::before {
-      transform: rotate(90deg);
-    }
+    .diagnostics[open] summary::before { transform: rotate(90deg); }
 
     .diag-table {
       width: 100%;
@@ -1133,7 +1398,7 @@
 
     .diag-table td:first-child {
       font-weight: 600;
-      color: var(--ink-muted);
+      color: var(--text-muted);
       white-space: nowrap;
       width: 110px;
     }
@@ -1141,7 +1406,7 @@
     .diag-table td:last-child {
       font-family: var(--font-mono);
       font-size: var(--fs-micro);
-      color: var(--ink-soft);
+      color: var(--text-soft);
       word-break: break-all;
     }
 
@@ -1162,14 +1427,16 @@
 
     .toast {
       pointer-events: auto;
-      background: var(--ink);
-      color: #fff;
+      background: var(--surface-raised);
+      color: var(--text);
       padding: 14px 18px;
       border-radius: var(--radius);
       font-size: var(--fs-small);
-      box-shadow: var(--shadow-lg);
-      border-left: 4px solid var(--accent);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
       animation: toast-in 0.2s ease-out;
+      transition: var(--theme-transition);
     }
 
     .toast.toast-error { border-left-color: var(--danger); }
@@ -1184,9 +1451,7 @@
        RESPONSIVE DESIGN
        ========================================================= */
     @media (max-width: 1100px) {
-      .app-body {
-        grid-template-columns: 1fr;
-      }
+      .app-body { grid-template-columns: 1fr; }
       .sidebar {
         max-height: none;
         border-right: none;
@@ -1199,10 +1464,13 @@
       }
     }
 
+    @media (max-width: 720px) {
+      .theme-switcher button .theme-label { display: none; }
+      .theme-switcher button { padding: 6px 9px; min-height: 36px; }
+    }
+
     @media (max-width: 640px) {
-      .app-header {
-        padding: 10px 14px;
-      }
+      .app-header { padding: 10px 14px; }
       .brand-text strong { font-size: 0.95rem; }
       .brand-text small { font-size: 0.72rem; }
 
@@ -1228,7 +1496,6 @@
         row-gap: 2.5mm;
       }
 
-      /* Table: allow horizontal scroll, keep readable */
       .catalog-table {
         font-size: var(--fs-meta);
         min-width: 760px;
@@ -1244,7 +1511,7 @@
     }
 
     /* =========================================================
-       PRINT MEDIA — A4 PORTRAIT, 30-UP GRID
+       PRINT MEDIA — always light, paper-like
        ========================================================= */
     @page {
       size: A4 portrait;
@@ -1253,7 +1520,8 @@
 
     @media print {
       html, body {
-        background: #fff !important;
+        background: #ffffff !important;
+        color: #000000 !important;
         padding: 0 !important;
         margin: 0 !important;
         width: 210mm;
@@ -1271,14 +1539,13 @@
         display: none !important;
       }
 
-      .app-body {
-        display: block !important;
-      }
+      .app-body { display: block !important; }
 
       .main-pane {
         padding: 0 !important;
         max-height: none !important;
         overflow: visible !important;
+        background: #ffffff !important;
       }
 
       .sheet-scroll {
@@ -1298,6 +1565,7 @@
         page-break-inside: avoid;
         break-inside: avoid;
         overflow: hidden;
+        background: #ffffff !important;
       }
 
       .a4-sheet:last-child {
@@ -1329,9 +1597,7 @@
         border-color: transparent !important;
       }
 
-      .barcode {
-        opacity: 0.9 !important;
-      }
+      .barcode { opacity: 0.9 !important; }
     }
   </style>
 </head>
@@ -1357,6 +1623,39 @@
       </div>
       <div class="header-actions">
         <span class="source-tag" id="sourceTag" title="Current data source">Local Sample</span>
+
+        <!-- ===== THEME SWITCHER ===== -->
+        <div class="theme-switcher" role="group" aria-label="Color theme">
+          <button type="button" data-theme-choice="light" title="Light theme" aria-label="Light theme">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2"/>
+              <path d="M12 20v2"/>
+              <path d="M4.93 4.93l1.41 1.41"/>
+              <path d="M17.66 17.66l1.41 1.41"/>
+              <path d="M2 12h2"/>
+              <path d="M20 12h2"/>
+              <path d="M6.34 17.66l-1.41 1.41"/>
+              <path d="M19.07 4.93l-1.41 1.41"/>
+            </svg>
+            <span class="theme-label">Light</span>
+          </button>
+          <button type="button" data-theme-choice="dark" title="Dark theme" aria-label="Dark theme">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <span class="theme-label">Dark</span>
+          </button>
+          <button type="button" data-theme-choice="system" title="System theme" aria-label="Follow system theme">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="3" width="20" height="14" rx="2"/>
+              <path d="M8 21h8"/>
+              <path d="M12 17v4"/>
+            </svg>
+            <span class="theme-label">Auto</span>
+          </button>
+        </div>
+
         <button class="btn btn-outline btn-sm" id="btnRefresh" type="button" title="Force sync now">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
           <span>Sync</span>
@@ -1395,7 +1694,6 @@
             <button class="tab" id="tabManualBtn" role="tab" aria-selected="false" aria-controls="tabManual" type="button">Manual</button>
           </div>
 
-          <!-- Cloud tab -->
           <div class="tab-panel active" id="tabCloud" role="tabpanel" aria-labelledby="tabCloudBtn">
             <div class="field">
               <label for="sheetUrl">Google Sheets URL (published or standard)</label>
@@ -1410,28 +1708,26 @@
                 <button class="btn btn-primary btn-sm" id="btnConnect" type="button">Connect</button>
               </div>
             </div>
-            <p style="font-size:var(--fs-meta); color:var(--ink-muted); margin-top:6px;">
+            <p style="font-size:var(--fs-meta); color:var(--text-muted); margin-top:6px;">
               Published sheets are fetched directly. Standard edit URLs are resolved via Google Visualization.
               Polling every <strong id="pollIntervalLabel">12s</strong>.
             </p>
           </div>
 
-          <!-- File tab -->
           <div class="tab-panel" id="tabFile" role="tabpanel" aria-labelledby="tabFileBtn">
             <div class="field">
               <label for="fileInput">Import .xlsx, .xls, or .csv</label>
               <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv">
             </div>
-            <div id="dropZone" style="border:2px dashed var(--border); border-radius:var(--radius); padding:22px 18px; text-align:center; font-size:var(--fs-small); color:var(--ink-muted); cursor:pointer; transition:border-color 0.15s, background 0.15s;">
+            <div id="dropZone" style="border:2px dashed var(--border); border-radius:var(--radius); padding:22px 18px; text-align:center; font-size:var(--fs-small); color:var(--text-muted); cursor:pointer; transition:border-color 0.15s, background 0.15s;">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 8px; opacity:0.5;" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               Drag & drop a file here, or click to browse
             </div>
-            <p style="font-size:var(--fs-meta); color:var(--ink-muted); margin-top:8px;">
+            <p style="font-size:var(--fs-meta); color:var(--text-muted); margin-top:8px;">
               Files are processed entirely in your browser. Nothing is uploaded.
             </p>
           </div>
 
-          <!-- Manual tab -->
           <div class="tab-panel" id="tabManual" role="tabpanel" aria-labelledby="tabManualBtn">
             <div class="field-row">
               <div class="field">
@@ -1492,7 +1788,7 @@
               <input type="text" id="mShelf" placeholder="Shelf A1" autocomplete="off">
             </div>
             <button class="btn btn-success btn-sm" id="btnAddManual" type="button" style="width:100%;">Add to Catalog</button>
-            <p style="font-size:var(--fs-meta); color:var(--ink-muted); margin-top:8px;">
+            <p style="font-size:var(--fs-meta); color:var(--text-muted); margin-top:8px;">
               Manual entries are local only. They are not written back to Google Sheets.
             </p>
           </div>
@@ -1533,7 +1829,7 @@
             <label class="check-label"><input type="checkbox" id="optSpare" checked> Spare-label padding</label>
             <label class="check-label"><input type="checkbox" id="optItemTag" checked> Accession tag</label>
           </div>
-          <p style="font-size:var(--fs-meta); color:var(--ink-muted); margin-top:10px;">
+          <p style="font-size:var(--fs-meta); color:var(--text-muted); margin-top:10px;">
             Decorative barcodes are always shown on every label.
           </p>
         </div>
@@ -1569,7 +1865,6 @@
       <!-- ========== MAIN PANE ========== -->
       <main class="main-pane" id="main-content">
 
-        <!-- Catalog section -->
         <section aria-label="Catalog">
           <div class="panel" style="margin-bottom:20px;">
             <div class="panel-head">
@@ -1577,7 +1872,6 @@
               <span class="count-badge" id="catalogCount">0 books</span>
             </div>
 
-            <!-- Toolbar -->
             <div class="toolbar">
               <div class="field search-field">
                 <label for="searchInput">Search</label>
@@ -1618,7 +1912,6 @@
               </div>
             </div>
 
-            <!-- Stats -->
             <div class="stats-bar" id="statsBar">
               <span>Total: <strong id="statTotal">0</strong></span>
               <span>Shown: <strong id="statShown">0</strong></span>
@@ -1626,7 +1919,6 @@
               <span>Digital: <strong id="statDigital">0</strong></span>
             </div>
 
-            <!-- Table -->
             <div class="table-wrap">
               <table class="catalog-table" id="catalogTable">
                 <thead>
@@ -1643,9 +1935,7 @@
                     <th data-sort="shelf">Shelf <span class="sort-arrow">↕</span></th>
                   </tr>
                 </thead>
-                <tbody id="catalogBody">
-                  <!-- rendered by JS -->
-                </tbody>
+                <tbody id="catalogBody"></tbody>
               </table>
             </div>
 
@@ -1660,22 +1950,18 @@
           </div>
         </section>
 
-        <!-- Preview section -->
         <section aria-label="Print preview">
           <div class="preview-header">
             <h2>Print Preview — A4 30-Up</h2>
             <div class="preview-meta" id="previewMeta">Sheet 1 of 1 · 30 labels per page · 70×25.4 mm</div>
           </div>
-          <div class="sheet-scroll" id="sheetContainer">
-            <!-- sheets rendered by JS -->
-          </div>
+          <div class="sheet-scroll" id="sheetContainer"></div>
         </section>
 
       </main>
     </div>
   </div>
 
-  <!-- Toast region -->
   <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="false"></div>
 
   <script>
@@ -1683,11 +1969,11 @@
      PERSONAL LIBRARY MANAGER & SPINE STUDIO
      Single-file application. Vanilla JS. No frameworks. Client-side only.
 
-     Changes in this revision:
-       - Larger typographic scale throughout (body 16px, labels 15px, etc.)
-       - Minimum 44px touch targets on interactive controls
-       - Decorative barcode is now ALWAYS shown on all three templates
-         (the "Decorative barcode" toggle has been removed)
+     Revision highlights:
+       - Light / Dark / System theme with persistence + FOUC prevention
+       - Warm parchment light bg and deep blue-black dark bg for eye comfort
+       - Larger typographic scale; min 44px touch targets
+       - Decorative barcode always shown on all three templates
      ========================================================================= */
 
   (function () {
@@ -1701,9 +1987,9 @@
       POLL_INTERVAL_MS: 12000,
       CACHE_KEY: 'plm_spine_studio_cache_v1',
       PREFS_KEY: 'plm_spine_studio_prefs_v1',
+      THEME_KEY: 'plm_theme_choice_v1',
       SAMPLE_CATALOG_URL:
         'https://docs.google.com/spreadsheets/d/1AjXwZNXzc-aSkwQSXzJIwWLJ7BXtkkTHIhR5MFHv88g/export?format=csv&gid=1225430138',
-      SAMPLE_SHEET_NAME: 'Catalog',
       PAGE_COLS: 3,
       PAGE_ROWS: 10,
       LABELS_PER_PAGE: 30,
@@ -1738,14 +2024,7 @@
       parser: 'sample',
       syncTimer: null,
       isFetching: false,
-      filters: {
-        search: '',
-        type: '',
-        genre: '',
-        language: '',
-        status: '',
-        shelf: ''
-      },
+      filters: { search: '', type: '', genre: '', language: '', status: '', shelf: '' },
       sortKey: 'itemNo',
       sortDir: 'asc'
     };
@@ -1874,9 +2153,7 @@
       return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
     }
 
-    function nowISOString() {
-      return new Date().toISOString();
-    }
+    function nowISOString() { return new Date().toISOString(); }
 
     function formatTimestamp(iso) {
       if (!iso) return 'Never';
@@ -1884,9 +2161,7 @@
         const d = new Date(iso);
         const pad = n => String(n).padStart(2, '0');
         return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-      } catch {
-        return 'Invalid date';
-      }
+      } catch { return 'Invalid date'; }
     }
 
     function showToast(message, type) {
@@ -1902,7 +2177,57 @@
     }
 
     /* =======================================================================
-       5. GOOGLE SHEETS URL RESOLVER
+       5. THEME MANAGEMENT
+       ======================================================================= */
+
+    const Theme = {
+      mq: window.matchMedia('(prefers-color-scheme: dark)'),
+
+      getChoice() {
+        return document.documentElement.getAttribute('data-theme-choice') || 'system';
+      },
+
+      apply(choice) {
+        const active = choice === 'system'
+          ? (this.mq.matches ? 'dark' : 'light')
+          : choice;
+
+        document.documentElement.setAttribute('data-theme', active);
+        document.documentElement.setAttribute('data-theme-choice', choice);
+
+        try { localStorage.setItem(CONFIG.THEME_KEY, choice); } catch (e) {}
+
+        $$('[data-theme-choice]').forEach(btn => {
+          const isActive = btn.getAttribute('data-theme-choice') === choice;
+          btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      },
+
+      init() {
+        // Sync button states with the choice already applied by the inline head script.
+        this.apply(this.getChoice());
+
+        // Wire buttons.
+        $$('[data-theme-choice]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            this.apply(btn.getAttribute('data-theme-choice'));
+          });
+        });
+
+        // React to OS changes when in system mode.
+        const handleChange = () => {
+          if (this.getChoice() === 'system') this.apply('system');
+        };
+        if (typeof this.mq.addEventListener === 'function') {
+          this.mq.addEventListener('change', handleChange);
+        } else if (typeof this.mq.addListener === 'function') {
+          this.mq.addListener(handleChange); // Safari < 14
+        }
+      }
+    };
+
+    /* =======================================================================
+       6. GOOGLE SHEETS URL RESOLVER
        ======================================================================= */
 
     function resolveGoogleSheetUrl(input, sheetName) {
@@ -1922,16 +2247,11 @@
         };
       }
 
-      if (!/^https?:\/\//i.test(url)) {
-        url = 'https://' + url;
-      }
+      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
 
       let parsed;
-      try {
-        parsed = new URL(url);
-      } catch {
-        throw new Error('The URL could not be parsed. Please check it and try again.');
-      }
+      try { parsed = new URL(url); }
+      catch { throw new Error('The URL could not be parsed. Please check it and try again.'); }
 
       if (!parsed.hostname.includes('docs.google.com')) {
         throw new Error('Only Google Sheets URLs are supported for cloud sync.');
@@ -1971,110 +2291,59 @@
     }
 
     /* =======================================================================
-       6. CSV PARSER (RFC 4180-ish)
+       7. CSV PARSER
        ======================================================================= */
 
     function parseCSV(text) {
       if (!text) return [];
-
-      if (text.charCodeAt(0) === 0xFEFF) {
-        text = text.slice(1);
-      }
+      if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
 
       const rows = [];
-      let row = [];
-      let field = '';
-      let inQuotes = false;
-      let i = 0;
+      let row = [], field = '', inQuotes = false, i = 0;
       const len = text.length;
 
       while (i < len) {
         const ch = text[i];
-
         if (inQuotes) {
           if (ch === '"') {
-            if (text[i + 1] === '"') {
-              field += '"';
-              i += 2;
-            } else {
-              inQuotes = false;
-              i++;
-            }
-          } else {
-            field += ch;
-            i++;
-          }
+            if (text[i + 1] === '"') { field += '"'; i += 2; }
+            else { inQuotes = false; i++; }
+          } else { field += ch; i++; }
         } else {
-          if (ch === '"') {
-            inQuotes = true;
-            i++;
-          } else if (ch === ',') {
-            row.push(field);
-            field = '';
-            i++;
-          } else if (ch === '\r') {
+          if (ch === '"') { inQuotes = true; i++; }
+          else if (ch === ',') { row.push(field); field = ''; i++; }
+          else if (ch === '\r') {
             if (text[i + 1] === '\n') i++;
-            row.push(field);
-            field = '';
-            rows.push(row);
-            row = [];
-            i++;
-          } else if (ch === '\n') {
-            row.push(field);
-            field = '';
-            rows.push(row);
-            row = [];
-            i++;
-          } else {
-            field += ch;
-            i++;
+            row.push(field); field = ''; rows.push(row); row = []; i++;
           }
+          else if (ch === '\n') {
+            row.push(field); field = ''; rows.push(row); row = []; i++;
+          }
+          else { field += ch; i++; }
         }
       }
 
-      if (field !== '' || row.length > 0) {
-        row.push(field);
-        rows.push(row);
-      }
-
+      if (field !== '' || row.length > 0) { row.push(field); rows.push(row); }
       return rows.filter(r => r.some(c => c.trim() !== ''));
     }
 
     /* =======================================================================
-       7. HEADER NORMALIZATION
+       8. HEADER NORMALIZATION
        ======================================================================= */
 
     const HEADER_MAP = {
-      'item no.': 'itemNo',
-      'item no': 'itemNo',
-      'itemno': 'itemNo',
-      'item': 'itemNo',
-      'no.': 'itemNo',
-      'accession / call number': 'callNumber',
-      'accession/call number': 'callNumber',
-      'call number': 'callNumber',
-      'call no.': 'callNumber',
-      'callno': 'callNumber',
-      'digital call no.': 'callNumber',
-      'digital call number': 'callNumber',
+      'item no.': 'itemNo', 'item no': 'itemNo', 'itemno': 'itemNo', 'item': 'itemNo', 'no.': 'itemNo',
+      'accession / call number': 'callNumber', 'accession/call number': 'callNumber',
+      'call number': 'callNumber', 'call no.': 'callNumber', 'callno': 'callNumber',
+      'digital call no.': 'callNumber', 'digital call number': 'callNumber',
       'type': 'type',
       'genre': 'genre',
-      'book title': 'title',
-      'title': 'title',
-      'volume no.': 'volume',
-      'volume': 'volume',
-      'vol': 'volume',
-      'author name': 'author',
-      'author': 'author',
-      'language': 'language',
-      'lang': 'language',
-      'notes / status': 'status',
-      'notes/status': 'status',
-      'status': 'status',
-      'reading status': 'status',
-      'shelf location': 'shelf',
-      'shelf': 'shelf',
-      'location': 'shelf'
+      'book title': 'title', 'title': 'title',
+      'volume no.': 'volume', 'volume': 'volume', 'vol': 'volume',
+      'author name': 'author', 'author': 'author',
+      'language': 'language', 'lang': 'language',
+      'notes / status': 'status', 'notes/status': 'status', 'status': 'status', 'reading status': 'status',
+      'shelf location': 'shelf', 'shelf': 'shelf', 'location': 'shelf'
     };
 
     function normalizeHeaderKey(header) {
@@ -2082,83 +2351,54 @@
       return HEADER_MAP[key] || null;
     }
 
-    function normalizeHeaders(headerRow) {
-      return headerRow.map(h => normalizeHeaderKey(h));
-    }
+    function normalizeHeaders(headerRow) { return headerRow.map(h => normalizeHeaderKey(h)); }
 
     /* =======================================================================
-       8. RECORD NORMALIZATION & VALIDATION
+       9. RECORD NORMALIZATION & VALIDATION
        ======================================================================= */
 
     function normalizeRecord(raw, headerMap) {
       const rec = {
-        itemNo: '',
-        callNumber: '',
-        type: '',
-        genre: '',
-        title: '',
-        volume: '',
-        author: '',
-        language: '',
-        status: '',
-        shelf: ''
+        itemNo: '', callNumber: '', type: '', genre: '', title: '',
+        volume: '', author: '', language: '', status: '', shelf: ''
       };
 
       headerMap.forEach((key, idx) => {
         if (!key) return;
         const val = safeText(raw[idx]);
         if (val === '') return;
-
-        if (key === 'itemNo') {
-          rec.itemNo = val.replace(/^0+/, '').padStart(3, '0');
-        } else if (key === 'callNumber') {
-          rec.callNumber = val;
-        } else {
-          rec[key] = val;
-        }
+        if (key === 'itemNo') rec.itemNo = val.replace(/^0+/, '').padStart(3, '0');
+        else if (key === 'callNumber') rec.callNumber = val;
+        else rec[key] = val;
       });
 
       return rec;
     }
 
-    function validateRecord(rec) {
-      if (!rec.title && !rec.callNumber) return false;
-      return true;
-    }
+    function validateRecord(rec) { return !!(rec.title || rec.callNumber); }
 
     function finalizeRecords(rawRecords) {
-      return rawRecords
-        .filter(validateRecord)
-        .map((rec, idx) => {
-          if (!rec.itemNo) {
-            rec.itemNo = String(idx + 1).padStart(3, '0');
-          }
-          if (!rec.callNumber) {
-            rec.callNumber = '—';
-          }
-          return rec;
-        });
+      return rawRecords.filter(validateRecord).map((rec, idx) => {
+        if (!rec.itemNo) rec.itemNo = String(idx + 1).padStart(3, '0');
+        if (!rec.callNumber) rec.callNumber = '—';
+        return rec;
+      });
     }
 
     /* =======================================================================
-       9. EXCEL PARSER (SheetJS)
+       10. EXCEL / CSV FILE PARSERS
        ======================================================================= */
 
     function parseExcelFile(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
-
         reader.onerror = () => reject(new Error('The file could not be read.'));
-
         reader.onload = (e) => {
           try {
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, { type: 'array' });
 
-            let sheetName = workbook.SheetNames.find(
-              n => n.toLowerCase() === 'catalog'
-            );
-
+            let sheetName = workbook.SheetNames.find(n => n.toLowerCase() === 'catalog');
             if (!sheetName) {
               sheetName = workbook.SheetNames.find(n => {
                 const ws = workbook.Sheets[n];
@@ -2167,17 +2407,11 @@
                 return ref && ref !== 'A1:A1';
               }) || workbook.SheetNames[0];
             }
-
-            if (!sheetName) {
-              throw new Error('No readable worksheet found in this workbook.');
-            }
+            if (!sheetName) throw new Error('No readable worksheet found in this workbook.');
 
             const worksheet = workbook.Sheets[sheetName];
             const rows = XLSX.utils.sheet_to_json(worksheet, {
-              header: 1,
-              defval: '',
-              raw: false,
-              dateNF: 'yyyy-mm-dd'
+              header: 1, defval: '', raw: false, dateNF: 'yyyy-mm-dd'
             });
 
             if (!rows || rows.length < 2) {
@@ -2187,27 +2421,14 @@
             const headerRow = rows[0];
             const headerMap = normalizeHeaders(headerRow);
 
-            const hasTitle = headerMap.includes('title');
-            const hasCall = headerMap.includes('callNumber');
-            if (!hasTitle && !hasCall) {
+            if (!headerMap.includes('title') && !headerMap.includes('callNumber')) {
               throw new Error('The worksheet "' + sheetName + '" does not look like a library catalog. Expected columns such as "Book Title" or "Accession / Call Number".');
             }
 
-            const dataRows = rows.slice(1);
-            const rawRecords = dataRows.map(r => normalizeRecord(r, headerMap));
-            const records = finalizeRecords(rawRecords);
-
-            resolve({
-              records,
-              parser: 'excel',
-              sheetName,
-              headerMap
-            });
-          } catch (err) {
-            reject(err);
-          }
+            const rawRecords = rows.slice(1).map(r => normalizeRecord(r, headerMap));
+            resolve({ records: finalizeRecords(rawRecords), parser: 'excel', sheetName, headerMap });
+          } catch (err) { reject(err); }
         };
-
         reader.readAsArrayBuffer(file);
       });
     }
@@ -2215,18 +2436,14 @@
     function parseCSVFile(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
-
         reader.onerror = () => reject(new Error('The file could not be read.'));
-
         reader.onload = (e) => {
           try {
             const text = e.target.result;
             const rows = parseCSV(text);
-
             if (rows.length < 2) {
               throw new Error('The CSV file does not contain a header and at least one data row.');
             }
-
             const headerRow = rows[0];
             const headerMap = normalizeHeaders(headerRow);
 
@@ -2234,27 +2451,16 @@
               throw new Error('The CSV file does not look like a library catalog. Expected columns such as "Book Title" or "Call Number".');
             }
 
-            const dataRows = rows.slice(1);
-            const rawRecords = dataRows.map(r => normalizeRecord(r, headerMap));
-            const records = finalizeRecords(rawRecords);
-
-            resolve({
-              records,
-              parser: 'csv',
-              sheetName: '(CSV file)',
-              headerMap
-            });
-          } catch (err) {
-            reject(err);
-          }
+            const rawRecords = rows.slice(1).map(r => normalizeRecord(r, headerMap));
+            resolve({ records: finalizeRecords(rawRecords), parser: 'csv', sheetName: '(CSV file)', headerMap });
+          } catch (err) { reject(err); }
         };
-
         reader.readAsText(file, 'UTF-8');
       });
     }
 
     /* =======================================================================
-       10. DATASET HASHING
+       11. DATASET HASHING
        ======================================================================= */
 
     function calculateDatasetHash(records) {
@@ -2265,16 +2471,8 @@
       });
 
       const str = JSON.stringify(sorted.map(r => ({
-        i: r.itemNo,
-        c: r.callNumber,
-        t: r.title,
-        a: r.author,
-        v: r.volume,
-        l: r.language,
-        s: r.status,
-        sh: r.shelf,
-        ty: r.type,
-        g: r.genre
+        i: r.itemNo, c: r.callNumber, t: r.title, a: r.author, v: r.volume,
+        l: r.language, s: r.status, sh: r.shelf, ty: r.type, g: r.genre
       })));
 
       let hash = 0x811c9dc5;
@@ -2286,25 +2484,19 @@
     }
 
     /* =======================================================================
-       11. CACHE MANAGER
+       12. CACHE MANAGER
        ======================================================================= */
 
     const Cache = {
       save() {
         try {
-          const payload = {
-            records: State.records,
-            source: State.source,
-            sourceLabel: State.sourceLabel,
-            sourceUrl: State.sourceUrl,
-            checksum: State.checksum,
-            lastSync: State.lastSync,
-            parser: State.parser
-          };
-          localStorage.setItem(CONFIG.CACHE_KEY, JSON.stringify(payload));
-        } catch (e) { /* ignore */ }
+          localStorage.setItem(CONFIG.CACHE_KEY, JSON.stringify({
+            records: State.records, source: State.source, sourceLabel: State.sourceLabel,
+            sourceUrl: State.sourceUrl, checksum: State.checksum,
+            lastSync: State.lastSync, parser: State.parser
+          }));
+        } catch (e) {}
       },
-
       load() {
         try {
           const raw = localStorage.getItem(CONFIG.CACHE_KEY);
@@ -2312,18 +2504,12 @@
           const data = JSON.parse(raw);
           if (!data || !Array.isArray(data.records)) return null;
           return data;
-        } catch {
-          return null;
-        }
+        } catch { return null; }
       },
-
-      clear() {
-        try { localStorage.removeItem(CONFIG.CACHE_KEY); } catch { /* ignore */ }
-      },
-
+      clear() { try { localStorage.removeItem(CONFIG.CACHE_KEY); } catch (e) {} },
       savePrefs() {
         try {
-          const prefs = {
+          localStorage.setItem(CONFIG.PREFS_KEY, JSON.stringify({
             template: el.templateSelect.value,
             colorMode: el.colorModeSelect.value,
             showShelf: el.optShelf.checked,
@@ -2332,78 +2518,50 @@
             showSpare: el.optSpare.checked,
             showItemTag: el.optItemTag.checked,
             sortKey: State.sortKey
-          };
-          localStorage.setItem(CONFIG.PREFS_KEY, JSON.stringify(prefs));
-        } catch { /* ignore */ }
+          }));
+        } catch (e) {}
       },
-
       loadPrefs() {
         try {
           const raw = localStorage.getItem(CONFIG.PREFS_KEY);
-          if (!raw) return null;
-          return JSON.parse(raw);
-        } catch {
-          return null;
-        }
+          return raw ? JSON.parse(raw) : null;
+        } catch { return null; }
       }
     };
 
     /* =======================================================================
-       12. GOOGLE SHEETS FETCHING
+       13. GOOGLE SHEETS FETCHING & SYNC
        ======================================================================= */
 
     async function fetchCSV(url) {
       const res = await fetch(url, {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
+        method: 'GET', mode: 'cors', cache: 'no-cache',
         headers: { 'Accept': 'text/csv, text/plain, */*' }
       });
-
-      if (!res.ok) {
-        throw new Error(`Google Sheets returned HTTP ${res.status} (${res.statusText}).`);
-      }
-
+      if (!res.ok) throw new Error(`Google Sheets returned HTTP ${res.status} (${res.statusText}).`);
       const text = await res.text();
-
       if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
         throw new Error('The server returned an HTML page instead of CSV. The sheet may not be published to the web.');
       }
-
       return text;
     }
 
     function parseCSVToRecords(csvText) {
       const rows = parseCSV(csvText);
-      if (rows.length < 2) {
-        throw new Error('The fetched sheet does not contain a header and at least one data row.');
-      }
-
+      if (rows.length < 2) throw new Error('The fetched sheet does not contain a header and at least one data row.');
       const headerRow = rows[0];
       const headerMap = normalizeHeaders(headerRow);
-
       if (!headerMap.includes('title') && !headerMap.includes('callNumber')) {
         throw new Error('The fetched sheet does not look like a library catalog. Expected columns such as "Book Title" or "Accession / Call Number".');
       }
-
-      const dataRows = rows.slice(1);
-      const rawRecords = dataRows.map(r => normalizeRecord(r, headerMap));
-      const records = finalizeRecords(rawRecords);
-
-      return {
-        records,
-        parser: 'google-sheets-csv',
-        headerMap
-      };
+      const rawRecords = rows.slice(1).map(r => normalizeRecord(r, headerMap));
+      return { records: finalizeRecords(rawRecords), parser: 'google-sheets-csv', headerMap };
     }
 
     async function syncFromGoogle() {
-      if (State.isFetching) return;
-      if (!State.sourceUrl) return;
-
+      if (State.isFetching || !State.sourceUrl) return;
       State.isFetching = true;
       setSyncStatus('fetching');
-
       try {
         const csvText = await fetchCSV(State.sourceUrl);
         const { records, parser } = parseCSVToRecords(csvText);
@@ -2428,7 +2586,6 @@
         setSyncStatus('online');
         updateDiagnostics();
         Cache.save();
-
       } catch (err) {
         State.lastError = err.message || 'Unknown error';
         setSyncStatus('offline');
@@ -2446,20 +2603,16 @@
     }
 
     function stopPolling() {
-      if (State.syncTimer) {
-        clearInterval(State.syncTimer);
-        State.syncTimer = null;
-      }
+      if (State.syncTimer) { clearInterval(State.syncTimer); State.syncTimer = null; }
     }
 
     /* =======================================================================
-       13. SYNC STATUS UI
+       14. SYNC STATUS & DIAGNOSTICS
        ======================================================================= */
 
     function setSyncStatus(mode) {
       const status = el.syncStatus;
       status.className = 'sync-status';
-
       if (mode === 'online') {
         status.classList.add('sync-online');
         el.syncLabel.textContent = '🟢 Live Connected';
@@ -2480,14 +2633,9 @@
         el.syncLabel.textContent = '🔵 Local Mode';
         el.syncDetail.textContent = `${State.records.length} book${State.records.length === 1 ? '' : 's'} loaded`;
       }
-
       el.sourceTag.textContent = State.sourceLabel;
       updateDiagnostics();
     }
-
-    /* =======================================================================
-       14. DIAGNOSTICS
-       ======================================================================= */
 
     function updateDiagnostics() {
       el.diagSource.textContent = State.sourceLabel || '—';
@@ -2506,26 +2654,21 @@
     function applyFilters() {
       const f = State.filters;
       const q = f.search.toLowerCase();
-
       State.filtered = State.records.filter(rec => {
         if (f.type && rec.type !== f.type) return false;
         if (f.genre && rec.genre !== f.genre) return false;
         if (f.language && rec.language !== f.language) return false;
         if (f.status && rec.status !== f.status) return false;
         if (f.shelf && rec.shelf !== f.shelf) return false;
-
         if (q) {
           const haystack = [
-            rec.title, rec.author, rec.callNumber,
-            rec.itemNo, rec.genre, rec.type,
-            rec.shelf, rec.language, rec.status
+            rec.title, rec.author, rec.callNumber, rec.itemNo,
+            rec.genre, rec.type, rec.shelf, rec.language, rec.status
           ].join(' ').toLowerCase();
           if (!haystack.includes(q)) return false;
         }
-
         return true;
       });
-
       sortRecords(State.filtered);
       State.filtered = State.filtered.slice();
     }
@@ -2533,17 +2676,12 @@
     function sortRecords(arr) {
       const key = State.sortKey;
       const dir = State.sortDir === 'asc' ? 1 : -1;
-
       arr.sort((a, b) => {
-        let va = a[key] || '';
-        let vb = b[key] || '';
-
+        let va = a[key] || '', vb = b[key] || '';
         if (key === 'itemNo') {
-          const na = parseInt(va, 10) || 0;
-          const nb = parseInt(vb, 10) || 0;
+          const na = parseInt(va, 10) || 0, nb = parseInt(vb, 10) || 0;
           return (na - nb) * dir;
         }
-
         return va.localeCompare(vb, undefined, { numeric: true, sensitivity: 'base' }) * dir;
       });
     }
@@ -2556,7 +2694,6 @@
           values.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
         if (values.includes(current)) selectEl.value = current;
       };
-
       populate(el.filterType, 'type', 'All types');
       populate(el.filterGenre, 'genre', 'All genres');
       populate(el.filterLanguage, 'language', 'All languages');
@@ -2569,7 +2706,6 @@
       const shown = State.filtered.length;
       const physical = State.records.filter(r => !r.callNumber.startsWith('DIG-')).length;
       const digital = total - physical;
-
       el.statTotal.textContent = total;
       el.statShown.textContent = shown;
       el.statPhysical.textContent = physical;
@@ -2578,7 +2714,7 @@
     }
 
     /* =======================================================================
-       16. CATALOG TABLE RENDERING
+       16. CATALOG TABLE
        ======================================================================= */
 
     function renderCatalogTable() {
@@ -2598,7 +2734,6 @@
       State.filtered.forEach(rec => {
         const tr = document.createElement('tr');
         const langClass = (rec.language || '').toLowerCase().includes('bengali') ? ' lang-bn' : '';
-
         tr.innerHTML = `
           <td class="cell-mono">${escapeHtml(rec.itemNo)}</td>
           <td class="cell-call">${escapeHtml(rec.callNumber)}</td>
@@ -2611,7 +2746,6 @@
           <td class="cell-muted">${escapeHtml(rec.status)}</td>
           <td class="cell-muted">${escapeHtml(rec.shelf)}</td>
         `;
-
         frag.appendChild(tr);
       });
 
@@ -2624,7 +2758,6 @@
       const m = type.match(/\(([^)]+)\)/);
       return m ? m[1] : type;
     }
-
     function shortGenre(genre) {
       if (!genre) return '';
       const m = genre.match(/\(([^)]+)\)/);
@@ -2637,10 +2770,8 @@
 
     function getLabelAccent(rec) {
       const mode = el.colorModeSelect.value;
-
       if (mode === 'navy') return '#1e3a5f';
       if (mode === 'mono') return '#1a1f2e';
-
       const code = shortType(rec.type);
       return TYPE_COLORS[code] || TYPE_COLORS.DEFAULT;
     }
@@ -2654,17 +2785,10 @@
     function createLabel(rec, options) {
       const accent = getLabelAccent(rec);
       const cutClass = options.showCutline ? '' : ' no-cutline';
-      const authorDisplay = options.authorLastOnly
-        ? extractSurname(rec.author)
-        : rec.author;
+      const authorDisplay = options.authorLastOnly ? extractSurname(rec.author) : rec.author;
 
-      const template = options.template;
-
-      if (template === 'block') {
-        return createBlockLabel(rec, accent, cutClass, authorDisplay, options);
-      } else if (template === 'minimal') {
-        return createMinimalLabel(rec, accent, cutClass, authorDisplay, options);
-      }
+      if (options.template === 'block') return createBlockLabel(rec, accent, cutClass, authorDisplay, options);
+      if (options.template === 'minimal') return createMinimalLabel(rec, accent, cutClass, authorDisplay, options);
       return createStandardLabel(rec, accent, cutClass, authorDisplay, options);
     }
 
@@ -2697,7 +2821,6 @@
           ${shelf}
         </div>
       `;
-
       return div;
     }
 
@@ -2730,7 +2853,6 @@
           <div class="barcode block-barcode" aria-hidden="true"></div>
         </div>
       `;
-
       return div;
     }
 
@@ -2751,7 +2873,6 @@
           ${shelf}
         </div>
       `;
-
       return div;
     }
 
@@ -2782,21 +2903,17 @@
       };
 
       const records = State.filtered.length ? State.filtered : State.records;
-
       let items = records.slice();
 
       if (options.showSpare && items.length > 0) {
         const remainder = items.length % CONFIG.LABELS_PER_PAGE;
         if (remainder !== 0) {
           const spares = CONFIG.LABELS_PER_PAGE - remainder;
-          for (let i = 0; i < spares; i++) {
-            items.push({ __spare: true });
-          }
+          for (let i = 0; i < spares; i++) items.push({ __spare: true });
         }
       }
 
       const totalPages = Math.max(1, Math.ceil(items.length / CONFIG.LABELS_PER_PAGE));
-
       el.previewMeta.textContent =
         `Sheet ${totalPages} of ${totalPages} · ` +
         `${CONFIG.LABELS_PER_PAGE} labels per page · ` +
@@ -2825,17 +2942,11 @@
 
         const grid = document.createElement('div');
         grid.className = 'label-grid';
-
         const pageItems = items.slice(p * CONFIG.LABELS_PER_PAGE, (p + 1) * CONFIG.LABELS_PER_PAGE);
-
         pageItems.forEach(item => {
-          if (item.__spare) {
-            grid.appendChild(createSpareLabel(options.showCutline ? '' : ' no-cutline'));
-          } else {
-            grid.appendChild(createLabel(item, options));
-          }
+          if (item.__spare) grid.appendChild(createSpareLabel(options.showCutline ? '' : ' no-cutline'));
+          else grid.appendChild(createLabel(item, options));
         });
-
         sheet.appendChild(grid);
 
         const footer = document.createElement('div');
@@ -2852,12 +2963,11 @@
 
       container.innerHTML = '';
       container.appendChild(frag);
-
       el.labelCount.textContent = `${records.length} label${records.length === 1 ? '' : 's'}`;
     }
 
     /* =======================================================================
-       19. MAIN RENDER PIPELINE
+       19. MAIN PIPELINE
        ======================================================================= */
 
     function onCatalogChanged() {
@@ -2910,27 +3020,18 @@
 
     el.btnConnect.addEventListener('click', async () => {
       const input = el.sheetUrl.value.trim();
-      if (!input) {
-        showToast('Please paste a Google Sheets URL.', 'error');
-        return;
-      }
-
+      if (!input) { showToast('Please paste a Google Sheets URL.', 'error'); return; }
       try {
         const resolved = resolveGoogleSheetUrl(input, el.sheetName.value.trim() || undefined);
         State.sourceUrl = resolved.url;
         State.source = 'google-sheets';
         State.sourceLabel = 'Google Sheets';
         State.parser = 'google-sheets-csv';
-
         el.btnConnect.disabled = true;
         el.btnConnect.textContent = 'Connecting…';
-
         await syncFromGoogle();
         startPolling();
-
-        if (State.records.length > 0) {
-          showToast(`Connected — ${State.records.length} books loaded.`, 'success');
-        }
+        if (State.records.length > 0) showToast(`Connected — ${State.records.length} books loaded.`, 'success');
       } catch (err) {
         State.lastError = err.message;
         showToast(err.message, 'error');
@@ -2943,17 +3044,11 @@
     });
 
     el.btnRefresh.addEventListener('click', async () => {
-      if (State.source === 'google-sheets' && State.sourceUrl) {
-        await syncFromGoogle();
-      } else {
-        refreshAll();
-        showToast('Catalog re-rendered.', 'success');
-      }
+      if (State.source === 'google-sheets' && State.sourceUrl) await syncFromGoogle();
+      else { refreshAll(); showToast('Catalog re-rendered.', 'success'); }
     });
 
-    el.btnPrint.addEventListener('click', () => {
-      window.print();
-    });
+    el.btnPrint.addEventListener('click', () => window.print());
 
     el.fileInput.addEventListener('change', async (e) => {
       const file = e.target.files && e.target.files[0];
@@ -2963,18 +3058,15 @@
     });
 
     el.dropZone.addEventListener('click', () => el.fileInput.click());
-
     el.dropZone.addEventListener('dragover', (e) => {
       e.preventDefault();
-      el.dropZone.style.borderColor = 'var(--accent)';
-      el.dropZone.style.background = 'var(--accent-soft)';
+      el.dropZone.style.borderColor = 'var(--primary)';
+      el.dropZone.style.background = 'var(--primary-soft)';
     });
-
     el.dropZone.addEventListener('dragleave', () => {
       el.dropZone.style.borderColor = 'var(--border)';
       el.dropZone.style.background = '';
     });
-
     el.dropZone.addEventListener('drop', async (e) => {
       e.preventDefault();
       el.dropZone.style.borderColor = 'var(--border)';
@@ -2985,16 +3077,11 @@
 
     async function handleFile(file) {
       const ext = (file.name || '').split('.').pop().toLowerCase();
-
       try {
         let result;
-        if (ext === 'csv') {
-          result = await parseCSVFile(file);
-        } else if (ext === 'xlsx' || ext === 'xls') {
-          result = await parseExcelFile(file);
-        } else {
-          throw new Error('Unsupported file type. Please use .xlsx, .xls, or .csv.');
-        }
+        if (ext === 'csv') result = await parseCSVFile(file);
+        else if (ext === 'xlsx' || ext === 'xls') result = await parseExcelFile(file);
+        else throw new Error('Unsupported file type. Please use .xlsx, .xls, or .csv.');
 
         State.records = result.records;
         State.source = 'local-file';
@@ -3004,7 +3091,6 @@
         State.lastSync = nowISOString();
         State.lastError = '';
         State.sourceUrl = '';
-
         stopPolling();
         onCatalogChanged();
         showToast(`Imported ${result.records.length} books from ${file.name}.`, 'success');
@@ -3017,11 +3103,7 @@
 
     el.btnAddManual.addEventListener('click', () => {
       const title = el.mTitle.value.trim();
-      if (!title) {
-        showToast('Please enter a book title.', 'error');
-        el.mTitle.focus();
-        return;
-      }
+      if (!title) { showToast('Please enter a book title.', 'error'); el.mTitle.focus(); return; }
 
       const type = el.mType.value;
       const genre = el.mGenre.value;
@@ -3043,20 +3125,9 @@
       const volTag = volume ? `-${volume.replace(/\s+/g, '')}` : '';
       const callNumber = `${typeCode}-${genreCode}-${surname}-${nextItem}${volTag}`;
 
-      const rec = {
-        itemNo: nextItem,
-        callNumber,
-        type,
-        genre,
-        title,
-        volume,
-        author,
-        language,
-        status,
-        shelf
-      };
-
-      State.records.push(rec);
+      State.records.push({
+        itemNo: nextItem, callNumber, type, genre, title, volume, author, language, status, shelf
+      });
       State.checksum = calculateDatasetHash(State.records);
       State.lastSync = nowISOString();
       State.lastError = '';
@@ -3079,9 +3150,8 @@
       return m ? m[1] : fallback;
     }
 
-    /* Label design changes (barcode is always on, so no toggle) */
-    [el.templateSelect, el.colorModeSelect, el.optShelf,
-     el.optAuthorLastOnly, el.optCutline, el.optSpare, el.optItemTag].forEach(control => {
+    [el.templateSelect, el.colorModeSelect, el.optShelf, el.optAuthorLastOnly,
+     el.optCutline, el.optSpare, el.optItemTag].forEach(control => {
       control.addEventListener('change', () => {
         renderSheets();
         Cache.savePrefs();
@@ -3095,7 +3165,6 @@
       renderCatalogTable();
       renderSheets();
     }, 200);
-
     el.searchInput.addEventListener('input', debouncedSearch);
 
     [el.filterType, el.filterGenre, el.filterLanguage, el.filterStatus, el.filterShelf].forEach(select => {
@@ -3123,12 +3192,8 @@
     $$('#catalogTable th[data-sort]').forEach(th => {
       th.addEventListener('click', () => {
         const key = th.dataset.sort;
-        if (State.sortKey === key) {
-          State.sortDir = State.sortDir === 'asc' ? 'desc' : 'asc';
-        } else {
-          State.sortKey = key;
-          State.sortDir = 'asc';
-        }
+        if (State.sortKey === key) State.sortDir = State.sortDir === 'asc' ? 'desc' : 'asc';
+        else { State.sortKey = key; State.sortDir = 'asc'; }
 
         $$('#catalogTable th[data-sort]').forEach(h => {
           h.classList.remove('sort-active');
@@ -3166,17 +3231,14 @@
         State.source = 'google-sheets';
         State.sourceLabel = 'Google Sheets (Sample)';
         State.parser = 'google-sheets-csv';
-
         setSyncStatus('fetching');
         const csvText = await fetchCSV(CONFIG.SAMPLE_CATALOG_URL);
         const { records, parser } = parseCSVToRecords(csvText);
-
         State.records = records;
         State.checksum = calculateDatasetHash(records);
         State.lastSync = nowISOString();
         State.lastError = '';
         State.parser = parser;
-
         onCatalogChanged();
         startPolling();
         showToast(`Sample catalog loaded — ${records.length} books.`, 'success');
@@ -3188,7 +3250,6 @@
         State.checksum = calculateDatasetHash(State.records);
         State.lastSync = nowISOString();
         State.lastError = err.message;
-
         onCatalogChanged();
         showToast('Could not reach the sample sheet. Loaded built-in sample instead.', 'error');
       }
@@ -3212,7 +3273,7 @@
     });
 
     /* =======================================================================
-       21. BUILT-IN SAMPLE DATA
+       21. BUILT-IN SAMPLE
        ======================================================================= */
 
     function getBuiltinSample() {
@@ -3228,13 +3289,12 @@
     }
 
     /* =======================================================================
-       22. INITIALIZATION
+       22. INIT
        ======================================================================= */
 
     function loadPreferences() {
       const prefs = Cache.loadPrefs();
       if (!prefs) return;
-
       if (prefs.template) el.templateSelect.value = prefs.template;
       if (prefs.colorMode) el.colorModeSelect.value = prefs.colorMode;
       if (typeof prefs.showShelf === 'boolean') el.optShelf.checked = prefs.showShelf;
@@ -3242,14 +3302,14 @@
       if (typeof prefs.showCutline === 'boolean') el.optCutline.checked = prefs.showCutline;
       if (typeof prefs.showSpare === 'boolean') el.optSpare.checked = prefs.showSpare;
       if (typeof prefs.showItemTag === 'boolean') el.optItemTag.checked = prefs.showItemTag;
-      if (prefs.sortKey) {
-        State.sortKey = prefs.sortKey;
-        el.sortSelect.value = prefs.sortKey;
-      }
+      if (prefs.sortKey) { State.sortKey = prefs.sortKey; el.sortSelect.value = prefs.sortKey; }
     }
 
     function init() {
       el.pollIntervalLabel.textContent = (CONFIG.POLL_INTERVAL_MS / 1000) + 's';
+
+      // Theme must be initialized first so components render in the right palette.
+      Theme.init();
 
       loadPreferences();
 
@@ -3262,9 +3322,7 @@
         State.checksum = cached.checksum || calculateDatasetHash(cached.records);
         State.lastSync = cached.lastSync || null;
         State.parser = cached.parser || 'cache';
-
         onCatalogChanged();
-
         if (State.source === 'google-sheets' && State.sourceUrl) {
           setSyncStatus('online');
           startPolling();
@@ -3278,7 +3336,6 @@
       State.checksum = calculateDatasetHash(State.records);
       State.lastSync = nowISOString();
       State.parser = 'built-in';
-
       onCatalogChanged();
       setSyncStatus('local');
     }
