@@ -5,7 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Personal Library Manager & Spine Studio — catalog, filter, and print A4 spine labels for your personal library.">
   <meta name="color-scheme" content="light dark">
-
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a2332" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c0f16" media="(prefers-color-scheme: dark)">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Spine Studio">
+  
   <script>
     (function () {
       var THEME_KEY = 'plm_theme_choice_v1';
@@ -1664,7 +1672,16 @@
       </div>
       <div class="header-actions">
         <span class="source-tag" id="sourceTag" title="Current data source">Local Sample</span>
-
+        
+        <button class="btn btn-outline btn-sm" id="btnInstall" type="button" title="Install as app" hidden>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span>Install</span>
+        </button>
+        
         <div class="theme-switcher" role="group" aria-label="Color theme">
           <button type="button" data-theme-choice="light" title="Light theme" aria-label="Light theme">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -3449,7 +3466,68 @@
        ======================================================================= */
 
     document.addEventListener('DOMContentLoaded', init);
+    /* =======================================================================
+       PWA — SERVICE WORKER REGISTRATION & INSTALL PROMPT
+       ======================================================================= */
 
+    (function initPWA() {
+      const isHttp = location.protocol === 'http:' || location.protocol === 'https:';
+      if (!isHttp) return; // Service workers require http(s) — silently skip on file://
+
+      /* -------- Register the service worker -------- */
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('service-worker.js')
+            .then((reg) => {
+              console.log('[PWA] Service worker registered. Scope:', reg.scope);
+
+              // Watch for updates and reload when a new SW takes over
+              reg.addEventListener('updatefound', () => {
+                const newWorker = reg.installing;
+                if (!newWorker) return;
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    console.log('[PWA] New version available. Refresh to update.');
+                  }
+                });
+              });
+            })
+            .catch((err) => {
+              console.warn('[PWA] Service worker registration failed:', err);
+            });
+        });
+      }
+
+      /* -------- Install prompt (Chrome, Edge, Samsung Internet) -------- */
+      const installBtn = document.getElementById('btnInstall');
+      let deferredPrompt = null;
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent the mini-infobar from appearing on mobile
+        e.preventDefault();
+        deferredPrompt = e;
+
+        // Reveal our own install button
+        if (installBtn) {
+          installBtn.hidden = false;
+          installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const choice = await deferredPrompt.userChoice;
+            console.log('[PWA] Install choice:', choice.outcome);
+            deferredPrompt = null;
+            installBtn.hidden = true;
+          }, { once: true });
+        }
+      });
+
+      /* -------- Hide button once app is installed -------- */
+      window.addEventListener('appinstalled', () => {
+        console.log('[PWA] App installed successfully.');
+        deferredPrompt = null;
+        if (installBtn) installBtn.hidden = true;
+      });
+    })();
   })();
   </script>
 </body>
