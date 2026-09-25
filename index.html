@@ -6,10 +6,6 @@
   <meta name="description" content="Personal Library Manager & Spine Studio — catalog, filter, and print A4 spine labels for your personal library.">
   <meta name="color-scheme" content="light dark">
 
-  <!-- ============================================================
-       FOUC PREVENTION: apply the saved theme before CSS paints.
-       Must run synchronously, before any stylesheet is parsed.
-       ============================================================ -->
   <script>
     (function () {
       var THEME_KEY = 'plm_theme_choice_v1';
@@ -35,50 +31,41 @@
 
   <title>Personal Library Manager & Spine Studio</title>
 
-  <!-- SheetJS for local Excel import (client-side only) -->
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 
   <style>
     /* =========================================================
        THEME TOKENS — LIGHT (default)
-       A warm "Bengal Literary Archive" palette: parchment paper,
-       indigo ink, terracotta accents, muted green for status.
        ========================================================= */
     :root,
     [data-theme="light"] {
       color-scheme: light;
 
-      /* Backgrounds — warm parchment, not stark white */
       --bg: #f4efe4;
       --bg-elevated: #ebe4d3;
       --surface: #fffdf8;
       --surface-alt: #f8f3e8;
       --surface-raised: #ffffff;
 
-      /* Text — warm near-black */
       --text: #22262e;
       --text-soft: #454b58;
       --text-muted: #6e7585;
       --text-faint: #98a0ae;
       --text-inverse: #f4efe4;
 
-      /* Borders */
       --border: #dcd4c2;
       --border-strong: #b8ae99;
       --border-subtle: #ebe4d3;
 
-      /* Primary — deep indigo */
       --primary: #253b6e;
       --primary-hover: #1c2e56;
       --primary-soft: #e4eaf6;
       --primary-text: #ffffff;
 
-      /* Accent — terracotta */
       --accent: #b85c38;
       --accent-hover: #9c4a2b;
       --accent-soft: #f3ddd2;
 
-      /* Status colours */
       --success: #34745b;
       --success-soft: #dceee5;
       --success-border: #b0dbc4;
@@ -99,11 +86,9 @@
       --info-border: #aed4e2;
       --info-text: #1a4a62;
 
-      /* Focus */
       --focus: #b8741e;
       --focus-ring: rgba(37, 59, 110, 0.20);
 
-      /* Header — dark in both themes */
       --header-bg: #1a2332;
       --header-text: #f4efe4;
       --header-muted: #8fa8c9;
@@ -114,12 +99,10 @@
       --header-tag-bg: #252f42;
       --header-tag-text: #c5cdd9;
 
-      /* Table */
       --table-stripe: #faf6ec;
       --table-hover: #ebdfca;
       --table-header-bg: #f0ead9;
 
-      /* Print-content colours — always dark, never themed */
       --print-ink: #1a1f2e;
       --print-ink-soft: #3d475c;
       --print-ink-muted: #6b7488;
@@ -129,54 +112,44 @@
       --print-info: #2a6f8f;
       --print-info-soft: #e6f2f7;
 
-      /* Shadows */
       --shadow-sm: 0 1px 3px rgba(34, 38, 46, 0.06);
       --shadow-md: 0 4px 16px rgba(34, 38, 46, 0.10);
       --shadow-sheet: 0 4px 24px rgba(34, 38, 46, 0.16);
 
-      /* Transitions */
       --theme-transition: background-color 0.22s ease, color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
     }
 
     /* =========================================================
        THEME TOKENS — DARK
-       Deep blue-black for eye comfort. Softer than pure black,
-       with warm off-white text to reduce glare.
        ========================================================= */
     [data-theme="dark"] {
       color-scheme: dark;
 
-      /* Backgrounds — deep blue-black */
       --bg: #12161d;
       --bg-elevated: #171c25;
       --surface: #1a202c;
       --surface-alt: #1f2634;
       --surface-raised: #232b3a;
 
-      /* Text — warm off-white, never pure white */
       --text: #e6e4dd;
       --text-soft: #b2b6c1;
       --text-muted: #868f9e;
       --text-faint: #5b6577;
       --text-inverse: #12161d;
 
-      /* Borders */
       --border: #2e3746;
       --border-strong: #47506080;
       --border-subtle: #262d3a;
 
-      /* Primary — soft indigo for contrast on dark */
       --primary: #8fa9e0;
       --primary-hover: #a8bcf0;
       --primary-soft: #26334f;
       --primary-text: #0f141c;
 
-      /* Accent — warm terracotta */
       --accent: #e28b68;
       --accent-hover: #f09e7c;
       --accent-soft: #3c2822;
 
-      /* Status colours — desaturated for dark comfort */
       --success: #7cc39e;
       --success-soft: #1d3a2e;
       --success-border: #2e5443;
@@ -197,11 +170,9 @@
       --info-border: #2e4858;
       --info-text: #a5d4e5;
 
-      /* Focus */
       --focus: #e5b570;
       --focus-ring: rgba(143, 169, 224, 0.28);
 
-      /* Header — deeper in dark mode, blended */
       --header-bg: #0c0f16;
       --header-text: #e6e4dd;
       --header-muted: #7a90b3;
@@ -212,12 +183,10 @@
       --header-tag-bg: #1f2634;
       --header-tag-text: #b2b6c1;
 
-      /* Table */
       --table-stripe: #1c2330;
       --table-hover: #262f40;
       --table-header-bg: #1a202c;
 
-      /* Shadows — heavier in dark, but softly rendered */
       --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
       --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
       --shadow-sheet: 0 4px 24px rgba(0, 0, 0, 0.6);
@@ -440,6 +409,143 @@
       background: var(--danger-soft);
     }
 
+    /* Support button */
+    .btn-support {
+      background: linear-gradient(135deg, #b85c38 0%, #8a4128 100%);
+      color: #ffffff;
+      border-color: #8a4128;
+      font-weight: 700;
+    }
+    .btn-support:hover {
+      background: linear-gradient(135deg, #c96844 0%, #9a4a30 100%);
+      border-color: #9a4a30;
+    }
+
+    /* ---------- DONATION MODAL ---------- */
+    .donate-dialog {
+      border: none;
+      border-radius: 14px;
+      padding: 0;
+      max-width: 540px;
+      width: calc(100vw - 32px);
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow-md), 0 24px 64px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .donate-dialog::backdrop {
+      background: rgba(10, 14, 20, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .donate-inner { padding: 32px 28px 26px; }
+
+    .donate-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      transition: background 0.12s, color 0.12s;
+      cursor: pointer;
+    }
+    .donate-close:hover { background: var(--surface-alt); color: var(--text); }
+
+    .donate-title {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      line-height: 1.2;
+    }
+    .donate-title .donate-emoji { font-size: 1.8rem; line-height: 1; }
+
+    .donate-subtitle {
+      font-size: var(--fs-small);
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.55;
+    }
+
+    .donate-qr-block {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+    .donate-qr-block img {
+      width: 112px;
+      height: 112px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 6px;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .donate-qr-copy { min-width: 0; flex: 1; }
+    .donate-qr-copy strong {
+      display: block;
+      font-size: var(--fs-small);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .donate-qr-copy code {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: var(--fs-meta);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: var(--text);
+      margin-top: 4px;
+      word-break: break-all;
+      max-width: 100%;
+    }
+    .donate-qr-copy small {
+      display: block;
+      font-size: var(--fs-micro);
+      color: var(--text-muted);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    .donate-note {
+      font-size: var(--fs-meta);
+      color: var(--text-muted);
+      text-align: center;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 520px) {
+      .donate-title { font-size: 1.35rem; }
+      .donate-inner { padding: 26px 20px 22px; }
+      .donate-qr-block { flex-direction: column; text-align: center; }
+      .donate-qr-copy code { width: 100%; text-align: center; }
+    }
+
     .btn-sm {
       padding: 8px 14px;
       min-height: 40px;
@@ -515,9 +621,7 @@
       transition: var(--theme-transition);
     }
 
-    /* =========================================================
-       CARDS & PANELS
-       ========================================================= */
+    /* ---------- PANELS ---------- */
     .panel {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -552,12 +656,8 @@
       border-radius: 999px;
     }
 
-    /* =========================================================
-       FORM CONTROLS
-       ========================================================= */
-    .field {
-      margin-bottom: 14px;
-    }
+    /* ---------- FORM CONTROLS ---------- */
+    .field { margin-bottom: 14px; }
 
     .field label {
       display: block;
@@ -586,9 +686,7 @@
     }
 
     .field input::placeholder,
-    .field textarea::placeholder {
-      color: var(--text-faint);
-    }
+    .field textarea::placeholder { color: var(--text-faint); }
 
     .field input:focus,
     .field select:focus,
@@ -605,13 +703,9 @@
       line-height: 1.5;
     }
 
-    .field-row {
-      display: flex;
-      gap: 12px;
-    }
+    .field-row { display: flex; gap: 12px; }
     .field-row .field { flex: 1; }
 
-    /* Checkbox grid */
     .check-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -637,9 +731,7 @@
       flex-shrink: 0;
     }
 
-    /* =========================================================
-       TAB GROUP
-       ========================================================= */
+    /* ---------- TABS ---------- */
     .tabs {
       display: flex;
       gap: 2px;
@@ -670,9 +762,7 @@
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* =========================================================
-       SYNC STATUS
-       ========================================================= */
+    /* ---------- SYNC STATUS ---------- */
     .sync-status {
       display: flex;
       align-items: center;
@@ -749,9 +839,7 @@
       50% { opacity: 0.4; }
     }
 
-    /* =========================================================
-       SOURCE INDICATOR
-       ========================================================= */
+    /* ---------- SOURCE TAG ---------- */
     .source-tag {
       display: inline-flex;
       align-items: center;
@@ -768,9 +856,7 @@
       transition: var(--theme-transition);
     }
 
-    /* =========================================================
-       CATALOG TOOLBAR
-       ========================================================= */
+    /* ---------- TOOLBAR ---------- */
     .toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -785,9 +871,7 @@
       min-width: 140px;
     }
 
-    .toolbar .field label {
-      font-size: var(--fs-meta);
-    }
+    .toolbar .field label { font-size: var(--fs-meta); }
 
     .toolbar .field input,
     .toolbar .field select {
@@ -796,11 +880,8 @@
       min-height: 42px;
     }
 
-    .search-field {
-      flex: 2 1 260px;
-    }
+    .search-field { flex: 2 1 260px; }
 
-    /* Stats bar */
     .stats-bar {
       display: flex;
       flex-wrap: wrap;
@@ -820,9 +901,7 @@
       font-weight: 700;
     }
 
-    /* =========================================================
-       CATALOG TABLE
-       ========================================================= */
+    /* ---------- TABLE ---------- */
     .table-wrap {
       overflow-x: auto;
       border: 1px solid var(--border);
@@ -884,13 +963,8 @@
       color: var(--text);
     }
 
-    .catalog-table tbody tr:nth-child(even) {
-      background: var(--table-stripe);
-    }
-
-    .catalog-table tbody tr:hover {
-      background: var(--table-hover);
-    }
+    .catalog-table tbody tr:nth-child(even) { background: var(--table-stripe); }
+    .catalog-table tbody tr:hover { background: var(--table-hover); }
 
     .catalog-table .cell-call {
       font-family: var(--font-mono);
@@ -904,15 +978,9 @@
       color: var(--text);
     }
 
-    .catalog-table .cell-muted {
-      color: var(--text-muted);
-    }
+    .catalog-table .cell-muted { color: var(--text-muted); }
+    .catalog-table .lang-bn { font-family: var(--font-bengali); }
 
-    .catalog-table .lang-bn {
-      font-family: var(--font-bengali);
-    }
-
-    /* Empty state */
     .empty-state {
       text-align: center;
       padding: 56px 24px;
@@ -941,9 +1009,7 @@
       line-height: 1.5;
     }
 
-    /* =========================================================
-       PREVIEW AREA
-       ========================================================= */
+    /* ---------- PREVIEW ---------- */
     .preview-header {
       display: flex;
       align-items: center;
@@ -971,11 +1037,7 @@
       align-items: center;
     }
 
-    /* =========================================================
-       A4 SHEET & LABEL GRID
-       NOTE: The sheet is intentionally NOT theme-aware — it
-       represents paper and must always be white.
-       ========================================================= */
+    /* ---------- A4 SHEET (paper) ---------- */
     .a4-sheet {
       width: 210mm;
       height: 297mm;
@@ -1038,9 +1100,7 @@
       align-content: start;
     }
 
-    /* =========================================================
-       LABEL TEMPLATE 1: STANDARD CARD
-       ========================================================= */
+    /* ---------- LABELS ---------- */
     .label {
       position: relative;
       overflow: hidden;
@@ -1092,7 +1152,6 @@
       margin-top: 1px;
     }
 
-    /* Standard card internals */
     .l-head {
       display: flex;
       justify-content: space-between;
@@ -1190,9 +1249,7 @@
       text-overflow: ellipsis;
     }
 
-    /* =========================================================
-       LABEL TEMPLATE 2: LIBRARY BLOCK (Stacked)
-       ========================================================= */
+    /* Library block template */
     .label-block {
       display: grid;
       grid-template-columns: 40% 1fr;
@@ -1267,9 +1324,7 @@
 
     .block-bottom .l-shelf { font-size: 6pt; }
 
-    /* =========================================================
-       LABEL TEMPLATE 3: MINIMAL SPINE STRIP
-       ========================================================= */
+    /* Minimal spine template */
     .label-strip {
       display: flex;
       flex-direction: column;
@@ -1329,9 +1384,7 @@
       min-width: 0;
     }
 
-    /* =========================================================
-       DECORATIVE BARCODE (always shown on all templates)
-       ========================================================= */
+    /* Decorative barcode */
     .barcode {
       height: 2.6mm;
       width: 100%;
@@ -1359,12 +1412,8 @@
     .block-barcode { margin-top: 0.6mm; }
     .strip-barcode { margin: 0.4mm 0; }
 
-    /* =========================================================
-       DIAGNOSTICS PANEL
-       ========================================================= */
-    .diagnostics {
-      font-size: var(--fs-small);
-    }
+    /* ---------- DIAGNOSTICS ---------- */
+    .diagnostics { font-size: var(--fs-small); }
 
     .diagnostics summary {
       cursor: pointer;
@@ -1410,9 +1459,7 @@
       word-break: break-all;
     }
 
-    /* =========================================================
-       TOAST NOTIFICATIONS
-       ========================================================= */
+    /* ---------- TOASTS ---------- */
     .toast-region {
       position: fixed;
       bottom: 20px;
@@ -1447,9 +1494,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* =========================================================
-       RESPONSIVE DESIGN
-       ========================================================= */
+    /* ---------- RESPONSIVE ---------- */
     @media (max-width: 1100px) {
       .app-body { grid-template-columns: 1fr; }
       .sidebar {
@@ -1496,10 +1541,7 @@
         row-gap: 2.5mm;
       }
 
-      .catalog-table {
-        font-size: var(--fs-meta);
-        min-width: 760px;
-      }
+      .catalog-table { font-size: var(--fs-meta); min-width: 760px; }
       .catalog-table td { padding: 9px 12px; }
       .catalog-table th { padding: 10px 12px; }
     }
@@ -1510,9 +1552,7 @@
       .catalog-table { font-size: var(--fs-micro); }
     }
 
-    /* =========================================================
-       PRINT MEDIA — always light, paper-like
-       ========================================================= */
+    /* ---------- PRINT ---------- */
     @page {
       size: A4 portrait;
       margin: 0;
@@ -1535,6 +1575,8 @@
       .stats-bar,
       .table-wrap,
       .toast-region,
+      .donate-dialog,
+      .donate-dialog::backdrop,
       .no-print {
         display: none !important;
       }
@@ -1607,7 +1649,6 @@
 
   <div class="app-shell">
 
-    <!-- ==================== HEADER ==================== -->
     <header class="app-header">
       <div class="brand">
         <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1624,7 +1665,6 @@
       <div class="header-actions">
         <span class="source-tag" id="sourceTag" title="Current data source">Local Sample</span>
 
-        <!-- ===== THEME SWITCHER ===== -->
         <div class="theme-switcher" role="group" aria-label="Color theme">
           <button type="button" data-theme-choice="light" title="Light theme" aria-label="Light theme">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1656,6 +1696,16 @@
           </button>
         </div>
 
+        <button class="btn btn-support btn-sm" id="btnSupport" type="button" title="Buy me a book — support this project">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            <path d="M12 7v6"/>
+            <path d="M9 10h6"/>
+          </svg>
+          <span>Buy me a book</span>
+        </button>
+
         <button class="btn btn-outline btn-sm" id="btnRefresh" type="button" title="Force sync now">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
           <span>Sync</span>
@@ -1667,13 +1717,10 @@
       </div>
     </header>
 
-    <!-- ==================== BODY ==================== -->
     <div class="app-body">
 
-      <!-- ========== SIDEBAR ========== -->
       <aside class="sidebar" aria-label="Data source and label controls">
 
-        <!-- Sync status -->
         <div class="sync-status sync-local" id="syncStatus" role="status" aria-live="polite">
           <span class="dot"></span>
           <div class="sync-meta">
@@ -1682,7 +1729,6 @@
           </div>
         </div>
 
-        <!-- ===== DATA SOURCE TABS ===== -->
         <div class="panel">
           <div class="panel-head">
             <h2>Data Source</h2>
@@ -1794,7 +1840,6 @@
           </div>
         </div>
 
-        <!-- ===== LABEL DESIGN ===== -->
         <div class="panel">
           <div class="panel-head">
             <h2>Label Design</h2>
@@ -1834,7 +1879,6 @@
           </p>
         </div>
 
-        <!-- ===== ACTIONS ===== -->
         <div class="panel">
           <div class="panel-head">
             <h2>Actions</h2>
@@ -1846,7 +1890,6 @@
           </div>
         </div>
 
-        <!-- ===== DIAGNOSTICS ===== -->
         <details class="panel diagnostics" id="diagnosticsPanel">
           <summary>Diagnostics</summary>
           <table class="diag-table">
@@ -1862,7 +1905,6 @@
 
       </aside>
 
-      <!-- ========== MAIN PANE ========== -->
       <main class="main-pane" id="main-content">
 
         <section aria-label="Catalog">
@@ -1962,20 +2004,51 @@
     </div>
   </div>
 
+  <!-- BUY ME A BOOK MODAL -->
+  <dialog class="donate-dialog" id="donateDialog" aria-labelledby="donateTitle">
+    <div class="donate-inner">
+
+      <button class="donate-close" id="btnDonateClose" type="button" aria-label="Close donation dialog">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+      <h2 class="donate-title" id="donateTitle">
+        <span class="donate-emoji" aria-hidden="true">📖</span>
+        Buy me a book
+      </h2>
+
+      <p class="donate-subtitle">
+        This library manager is free, open-source, and runs entirely in your browser — no ads, no tracking, no accounts.
+        If it saved you time or made your shelves a little tidier, you can help keep the ink flowing.
+        Every contribution buys the developer another book (or, more honestly, another evening of coding).
+      </p>
+
+      <div class="donate-qr-block">
+        <img src="upi-qr.png"
+             alt="UPI QR code — scan with any UPI app to donate"
+             loading="lazy">
+
+        <div class="donate-qr-copy">
+          <strong>Scan to donate via UPI</strong>
+          <code>masudranamandal-1@okicici</code>
+          <small>Works with GPay, PhonePe, Paytm, BHIM, and every other UPI app.</small>
+        </div>
+      </div>
+
+      <p class="donate-note">
+        No pressure at all — the app stays free either way.
+        If you'd rather not donate, sharing the project with another book lover is equally appreciated.
+      </p>
+
+    </div>
+  </dialog>
+
   <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="false"></div>
 
   <script>
-  /* =========================================================================
-     PERSONAL LIBRARY MANAGER & SPINE STUDIO
-     Single-file application. Vanilla JS. No frameworks. Client-side only.
-
-     Revision highlights:
-       - Light / Dark / System theme with persistence + FOUC prevention
-       - Warm parchment light bg and deep blue-black dark bg for eye comfort
-       - Larger typographic scale; min 44px touch targets
-       - Decorative barcode always shown on all three templates
-     ========================================================================= */
-
   (function () {
     'use strict';
 
@@ -1990,8 +2063,6 @@
       THEME_KEY: 'plm_theme_choice_v1',
       SAMPLE_CATALOG_URL:
         'https://docs.google.com/spreadsheets/d/1AjXwZNXzc-aSkwQSXzJIwWLJ7BXtkkTHIhR5MFHv88g/export?format=csv&gid=1225430138',
-      PAGE_COLS: 3,
-      PAGE_ROWS: 10,
       LABELS_PER_PAGE: 30,
       LABEL_WIDTH_MM: 70,
       LABEL_HEIGHT_MM: 25.4,
@@ -2204,24 +2275,21 @@
       },
 
       init() {
-        // Sync button states with the choice already applied by the inline head script.
         this.apply(this.getChoice());
 
-        // Wire buttons.
         $$('[data-theme-choice]').forEach(btn => {
           btn.addEventListener('click', () => {
             this.apply(btn.getAttribute('data-theme-choice'));
           });
         });
 
-        // React to OS changes when in system mode.
         const handleChange = () => {
           if (this.getChoice() === 'system') this.apply('system');
         };
         if (typeof this.mq.addEventListener === 'function') {
           this.mq.addEventListener('change', handleChange);
         } else if (typeof this.mq.addListener === 'function') {
-          this.mq.addListener(handleChange); // Safari < 14
+          this.mq.addListener(handleChange);
         }
       }
     };
@@ -2354,7 +2422,7 @@
     function normalizeHeaders(headerRow) { return headerRow.map(h => normalizeHeaderKey(h)); }
 
     /* =======================================================================
-       9. RECORD NORMALIZATION & VALIDATION
+       9. RECORD NORMALIZATION
        ======================================================================= */
 
     function normalizeRecord(raw, headerMap) {
@@ -2386,7 +2454,7 @@
     }
 
     /* =======================================================================
-       10. EXCEL / CSV FILE PARSERS
+       10. FILE PARSERS
        ======================================================================= */
 
     function parseExcelFile(file) {
@@ -3308,9 +3376,7 @@
     function init() {
       el.pollIntervalLabel.textContent = (CONFIG.POLL_INTERVAL_MS / 1000) + 's';
 
-      // Theme must be initialized first so components render in the right palette.
       Theme.init();
-
       loadPreferences();
 
       const cached = Cache.load();
@@ -3339,6 +3405,48 @@
       onCatalogChanged();
       setSyncStatus('local');
     }
+
+    /* =======================================================================
+       23. DONATION MODAL — module-level IIFE
+       Runs independently of init() so it works even when the cache short-circuits init().
+       ======================================================================= */
+
+    (function initDonationModal() {
+      const dialog = document.getElementById('donateDialog');
+      if (!dialog) return;
+
+      const openBtn = document.getElementById('btnSupport');
+      const closeBtn = document.getElementById('btnDonateClose');
+
+      if (openBtn) {
+        openBtn.addEventListener('click', () => {
+          if (typeof dialog.showModal === 'function') {
+            dialog.showModal();
+          } else {
+            dialog.setAttribute('open', '');
+          }
+        });
+      }
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+          if (typeof dialog.close === 'function') dialog.close();
+          else dialog.removeAttribute('open');
+        });
+      }
+
+      // Click backdrop to close
+      dialog.addEventListener('click', (e) => {
+        if (e.target === dialog) {
+          if (typeof dialog.close === 'function') dialog.close();
+          else dialog.removeAttribute('open');
+        }
+      });
+    })();
+
+    /* =======================================================================
+       24. BOOT
+       ======================================================================= */
 
     document.addEventListener('DOMContentLoaded', init);
 
