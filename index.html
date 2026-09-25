@@ -41,6 +41,16 @@
       --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
       --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
       --font-bengali: "Noto Sans Bengali", "SolaimanLipi", "Kalpurush", sans-serif;
+
+      /* Typographic scale */
+      --fs-body: 1rem;         /* 16px */
+      --fs-small: 0.9375rem;   /* 15px */
+      --fs-label: 0.9375rem;   /* 15px */
+      --fs-meta: 0.875rem;     /* 14px */
+      --fs-micro: 0.8125rem;   /* 13px */
+      --fs-heading: 1.375rem;  /* 22px */
+      --fs-title: 1.75rem;     /* 28px */
+      --lh-body: 1.55;
     }
 
     /* =========================================================
@@ -60,9 +70,10 @@
 
     body {
       font-family: var(--font-ui);
+      font-size: var(--fs-body);
+      line-height: var(--lh-body);
       background: var(--paper);
       color: var(--ink);
-      line-height: 1.5;
       min-height: 100vh;
       min-height: 100dvh;
     }
@@ -73,27 +84,24 @@
     table { border-collapse: collapse; width: 100%; }
     [hidden] { display: none !important; }
 
-    /* Focus visibility */
     :focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
     }
 
-    /* Skip link */
     .skip-link {
       position: absolute;
       left: -9999px;
       top: 0;
       z-index: 999;
-      padding: 8px 16px;
+      padding: 10px 18px;
       background: var(--accent);
       color: #fff;
       font-weight: 600;
+      font-size: var(--fs-body);
       border-radius: 0 0 var(--radius) 0;
     }
-    .skip-link:focus {
-      left: 0;
-    }
+    .skip-link:focus { left: 0; }
 
     /* =========================================================
        APP LAYOUT
@@ -109,11 +117,11 @@
     .app-header {
       background: var(--ink);
       color: #fff;
-      padding: 10px 16px;
+      padding: 12px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 14px;
       flex-wrap: wrap;
       position: sticky;
       top: 0;
@@ -124,13 +132,13 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       min-width: 0;
     }
 
     .brand-mark {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       flex-shrink: 0;
       color: #8db4e8;
     }
@@ -142,7 +150,7 @@
     }
 
     .brand-text strong {
-      font-size: 0.92rem;
+      font-size: 1.05rem;
       font-weight: 700;
       letter-spacing: -0.01em;
       white-space: nowrap;
@@ -151,7 +159,7 @@
     }
 
     .brand-text small {
-      font-size: 0.68rem;
+      font-size: 0.8rem;
       color: #8db4e8;
       letter-spacing: 0.03em;
       text-transform: uppercase;
@@ -160,7 +168,7 @@
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
@@ -169,10 +177,11 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 7px 14px;
+      gap: 8px;
+      padding: 10px 18px;
+      min-height: 44px;
       border-radius: var(--radius-sm);
-      font-size: 0.8rem;
+      font-size: var(--fs-small);
       font-weight: 600;
       border: 1px solid transparent;
       transition: background 0.12s, border-color 0.12s, color 0.12s;
@@ -218,14 +227,15 @@
     .btn-danger:hover { background: var(--danger-soft); }
 
     .btn-sm {
-      padding: 4px 10px;
-      font-size: 0.74rem;
+      padding: 8px 14px;
+      min-height: 40px;
+      font-size: var(--fs-meta);
     }
 
     /* Main layout */
     .app-body {
       display: grid;
-      grid-template-columns: 380px 1fr;
+      grid-template-columns: 400px 1fr;
       gap: 0;
       min-height: 0;
     }
@@ -234,19 +244,19 @@
       background: var(--surface);
       border-right: 1px solid var(--border);
       overflow-y: auto;
-      max-height: calc(100vh - 56px);
-      max-height: calc(100dvh - 56px);
-      padding: 16px;
+      max-height: calc(100vh - 64px);
+      max-height: calc(100dvh - 64px);
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
     .main-pane {
       overflow-y: auto;
-      max-height: calc(100vh - 56px);
-      max-height: calc(100dvh - 56px);
-      padding: 16px;
+      max-height: calc(100vh - 64px);
+      max-height: calc(100dvh - 64px);
+      padding: 20px;
     }
 
     /* =========================================================
@@ -256,7 +266,7 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 14px;
+      padding: 18px;
       box-shadow: var(--shadow);
     }
 
@@ -264,12 +274,12 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 10px;
+      gap: 10px;
+      margin-bottom: 14px;
     }
 
     .panel-head h2 {
-      font-size: 0.78rem;
+      font-size: 0.95rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -277,11 +287,11 @@
     }
 
     .panel-head .count-badge {
-      font-size: 0.72rem;
+      font-size: var(--fs-meta);
       font-weight: 700;
       color: var(--accent);
       background: var(--accent-soft);
-      padding: 2px 8px;
+      padding: 4px 10px;
       border-radius: 999px;
     }
 
@@ -289,25 +299,27 @@
        FORM CONTROLS
        ========================================================= */
     .field {
-      margin-bottom: 10px;
+      margin-bottom: 14px;
     }
 
     .field label {
       display: block;
-      font-size: 0.74rem;
+      font-size: var(--fs-label);
       font-weight: 600;
       color: var(--ink-soft);
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .field input[type="text"],
     .field input[type="url"],
     .field input[type="search"],
+    .field input[type="file"],
     .field select,
     .field textarea {
       width: 100%;
-      padding: 7px 10px;
-      font-size: 0.82rem;
+      padding: 10px 12px;
+      min-height: 44px;
+      font-size: var(--fs-body);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       background: var(--surface);
@@ -320,20 +332,20 @@
     .field select:focus,
     .field textarea:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(44, 74, 124, 0.15);
+      box-shadow: 0 0 0 3px rgba(44, 74, 124, 0.15);
     }
 
     .field textarea {
       resize: vertical;
-      min-height: 72px;
+      min-height: 88px;
       font-family: var(--font-mono);
-      font-size: 0.76rem;
-      line-height: 1.4;
+      font-size: 0.9rem;
+      line-height: 1.5;
     }
 
     .field-row {
       display: flex;
-      gap: 10px;
+      gap: 12px;
     }
     .field-row .field { flex: 1; }
 
@@ -341,24 +353,25 @@
     .check-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px 12px;
+      gap: 10px 14px;
     }
 
     .check-label {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.78rem;
+      gap: 8px;
+      font-size: var(--fs-small);
       font-weight: 500;
       color: var(--ink-soft);
       cursor: pointer;
       user-select: none;
+      min-height: 28px;
     }
 
     .check-label input[type="checkbox"] {
       accent-color: var(--accent);
-      width: 15px;
-      height: 15px;
+      width: 18px;
+      height: 18px;
       flex-shrink: 0;
     }
 
@@ -369,12 +382,13 @@
       display: flex;
       gap: 2px;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
     }
 
     .tab {
-      padding: 7px 12px;
-      font-size: 0.76rem;
+      padding: 10px 14px;
+      font-size: var(--fs-small);
       font-weight: 600;
       color: var(--ink-muted);
       background: none;
@@ -382,6 +396,7 @@
       border-bottom: 2px solid transparent;
       margin-bottom: -1px;
       transition: color 0.12s, border-color 0.12s;
+      min-height: 44px;
     }
 
     .tab:hover { color: var(--ink-soft); }
@@ -399,18 +414,18 @@
     .sync-status {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
+      gap: 12px;
+      padding: 12px 14px;
       border-radius: var(--radius-sm);
-      font-size: 0.78rem;
+      font-size: var(--fs-small);
       font-weight: 600;
       border: 1px solid transparent;
       transition: background 0.2s, border-color 0.2s;
     }
 
     .sync-status .dot {
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       flex-shrink: 0;
     }
@@ -418,21 +433,22 @@
     .sync-status .sync-meta {
       display: flex;
       flex-direction: column;
-      gap: 1px;
+      gap: 2px;
       min-width: 0;
     }
 
     .sync-status .sync-meta strong {
-      font-size: 0.78rem;
+      font-size: var(--fs-small);
+      font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .sync-status .sync-meta small {
-      font-size: 0.68rem;
+      font-size: var(--fs-meta);
       font-weight: 500;
-      opacity: 0.8;
+      opacity: 0.85;
     }
 
     .sync-online {
@@ -474,16 +490,16 @@
     .source-tag {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      font-size: 0.7rem;
+      gap: 6px;
+      font-size: 0.8rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      padding: 3px 8px;
+      padding: 6px 12px;
       border-radius: 999px;
-      background: var(--surface-alt);
-      border: 1px solid var(--border);
-      color: var(--ink-muted);
+      background: #2a3145;
+      border: 1px solid #4a5568;
+      color: #c5cdd9;
     }
 
     /* =========================================================
@@ -492,40 +508,41 @@
     .toolbar {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 12px;
       align-items: flex-end;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .toolbar .field {
       margin-bottom: 0;
-      flex: 1 1 140px;
-      min-width: 120px;
+      flex: 1 1 160px;
+      min-width: 140px;
     }
 
     .toolbar .field label {
-      font-size: 0.7rem;
+      font-size: var(--fs-meta);
     }
 
     .toolbar .field input,
     .toolbar .field select {
-      font-size: 0.78rem;
-      padding: 6px 8px;
+      font-size: var(--fs-small);
+      padding: 9px 12px;
+      min-height: 42px;
     }
 
     .search-field {
-      flex: 2 1 220px;
+      flex: 2 1 260px;
     }
 
     /* Stats bar */
     .stats-bar {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px 16px;
-      font-size: 0.75rem;
+      gap: 8px 20px;
+      font-size: var(--fs-meta);
       color: var(--ink-muted);
-      margin-bottom: 10px;
-      padding: 6px 10px;
+      margin-bottom: 12px;
+      padding: 10px 14px;
       background: var(--surface-alt);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
@@ -548,8 +565,8 @@
 
     .catalog-table {
       width: 100%;
-      min-width: 720px;
-      font-size: 0.78rem;
+      min-width: 820px;
+      font-size: var(--fs-small);
     }
 
     .catalog-table thead {
@@ -561,11 +578,11 @@
 
     .catalog-table th {
       text-align: left;
-      padding: 8px 10px;
-      font-size: 0.7rem;
+      padding: 12px 14px;
+      font-size: var(--fs-micro);
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       color: var(--ink-muted);
       border-bottom: 2px solid var(--border);
       white-space: nowrap;
@@ -577,8 +594,8 @@
 
     .catalog-table th .sort-arrow {
       display: inline-block;
-      margin-left: 4px;
-      font-size: 0.6rem;
+      margin-left: 5px;
+      font-size: 0.72rem;
       opacity: 0.5;
     }
 
@@ -588,13 +605,17 @@
     }
 
     .catalog-table td {
-      padding: 7px 10px;
+      padding: 11px 14px;
       border-bottom: 1px solid var(--border);
       vertical-align: top;
-      max-width: 240px;
+      max-width: 280px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .catalog-table tbody tr:nth-child(even) {
+      background: var(--surface-alt);
     }
 
     .catalog-table tbody tr:hover {
@@ -603,7 +624,7 @@
 
     .catalog-table .cell-call {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: var(--accent);
     }
@@ -624,26 +645,29 @@
     /* Empty state */
     .empty-state {
       text-align: center;
-      padding: 48px 24px;
+      padding: 56px 24px;
       color: var(--ink-muted);
     }
 
     .empty-state svg {
-      margin: 0 auto 12px;
+      margin: 0 auto 16px;
       opacity: 0.4;
+      width: 56px;
+      height: 56px;
     }
 
     .empty-state h3 {
-      font-size: 1rem;
+      font-size: var(--fs-heading);
       font-weight: 700;
       color: var(--ink-soft);
-      margin-bottom: 4px;
+      margin-bottom: 8px;
     }
 
     .empty-state p {
-      font-size: 0.82rem;
-      max-width: 360px;
-      margin: 0 auto 16px;
+      font-size: var(--fs-small);
+      max-width: 400px;
+      margin: 0 auto 20px;
+      line-height: 1.5;
     }
 
     /* =========================================================
@@ -653,25 +677,25 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 14px;
+      gap: 14px;
+      margin-bottom: 16px;
       flex-wrap: wrap;
     }
 
     .preview-header h2 {
-      font-size: 1rem;
+      font-size: var(--fs-heading);
       font-weight: 700;
     }
 
     .preview-meta {
-      font-size: 0.75rem;
+      font-size: var(--fs-meta);
       color: var(--ink-muted);
     }
 
     .sheet-scroll {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 28px;
       align-items: center;
     }
 
@@ -702,14 +726,14 @@
     }
 
     .sheet-header h3 {
-      font-size: 10pt;
+      font-size: 11pt;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: -0.01em;
     }
 
     .sheet-header span {
-      font-size: 7pt;
+      font-size: 7.5pt;
       color: var(--ink-muted);
       font-weight: 600;
       font-family: var(--font-mono);
@@ -719,7 +743,7 @@
       border-top: 1px solid var(--border);
       padding-top: 2mm;
       margin-top: 3mm;
-      font-size: 7pt;
+      font-size: 7.5pt;
       color: var(--ink-muted);
       display: flex;
       justify-content: space-between;
@@ -747,7 +771,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 2mm 2.5mm;
+      padding: 1.6mm 2.2mm;
       border: 1px dashed var(--border-strong);
       border-radius: 2px;
     }
@@ -775,7 +799,7 @@
     .label.spare::before { display: none; }
 
     .label.spare .spare-text {
-      font-size: 6.5pt;
+      font-size: 7pt;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -784,11 +808,12 @@
     }
 
     .label.spare .spare-sub {
-      font-size: 5.5pt;
+      font-size: 6pt;
       color: var(--border-strong);
       text-transform: none;
       letter-spacing: 0;
       font-weight: 500;
+      margin-top: 1px;
     }
 
     /* Standard card internals */
@@ -798,14 +823,14 @@
       align-items: baseline;
       gap: 4px;
       border-bottom: 0.5px solid var(--border);
-      padding-bottom: 1px;
-      margin-bottom: 1px;
+      padding-bottom: 0.8mm;
+      margin-bottom: 0.8mm;
       min-width: 0;
     }
 
     .l-call {
       font-family: var(--font-mono);
-      font-size: 7.6pt;
+      font-size: 8pt;
       font-weight: 800;
       color: var(--ink);
       letter-spacing: -0.01em;
@@ -816,11 +841,11 @@
     }
 
     .l-item {
-      font-size: 6pt;
+      font-size: 6.4pt;
       font-weight: 700;
       color: var(--ink-muted);
       background: var(--surface-alt);
-      padding: 0 3px;
+      padding: 0.5px 3px;
       border-radius: 2px;
       white-space: nowrap;
       flex-shrink: 0;
@@ -832,11 +857,11 @@
       flex-direction: column;
       justify-content: center;
       min-height: 0;
-      line-height: 1.12;
+      line-height: 1.15;
     }
 
     .l-title {
-      font-size: 7.2pt;
+      font-size: 7.6pt;
       font-weight: 700;
       color: var(--ink);
       white-space: nowrap;
@@ -845,7 +870,7 @@
     }
 
     .l-author {
-      font-size: 6.4pt;
+      font-size: 6.6pt;
       color: var(--ink-soft);
       white-space: nowrap;
       overflow: hidden;
@@ -853,7 +878,7 @@
     }
 
     .l-vol {
-      font-size: 6.2pt;
+      font-size: 6.4pt;
       font-weight: 700;
       color: #8a5c00;
       white-space: nowrap;
@@ -865,25 +890,28 @@
       align-items: center;
       gap: 4px;
       border-top: 0.5px solid var(--border);
-      padding-top: 1px;
+      padding-top: 0.8mm;
       min-width: 0;
     }
 
     .l-shelf {
-      font-size: 6pt;
+      font-size: 6.2pt;
       font-weight: 700;
       color: var(--info);
       background: var(--info-soft);
-      padding: 0 4px;
+      padding: 0.5px 4px;
       border-radius: 2px;
       white-space: nowrap;
       flex-shrink: 0;
     }
 
     .l-lang {
-      font-size: 5.8pt;
+      font-size: 6pt;
       color: var(--ink-muted);
       font-family: var(--font-bengali);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* =========================================================
@@ -891,9 +919,9 @@
        ========================================================= */
     .label-block {
       display: grid;
-      grid-template-columns: 42% 1fr;
-      gap: 2mm;
-      padding: 2mm;
+      grid-template-columns: 40% 1fr;
+      gap: 1.6mm;
+      padding: 1.6mm;
       border: 1px dashed var(--border-strong);
       border-radius: 2px;
       background: #fff;
@@ -911,7 +939,7 @@
       background: var(--label-accent, var(--ink));
       color: #fff;
       border-radius: 2px;
-      padding: 1.5mm 1mm;
+      padding: 1.2mm 0.8mm;
       font-family: var(--font-mono);
       font-size: 6.6pt;
       font-weight: 800;
@@ -931,13 +959,13 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 1px;
+      gap: 0.8mm;
       min-width: 0;
       overflow: hidden;
     }
 
     .block-title {
-      font-size: 7pt;
+      font-size: 7.2pt;
       font-weight: 700;
       color: var(--ink);
       white-space: nowrap;
@@ -946,7 +974,7 @@
     }
 
     .block-author {
-      font-size: 6.2pt;
+      font-size: 6.4pt;
       color: var(--ink-soft);
       white-space: nowrap;
       overflow: hidden;
@@ -958,31 +986,10 @@
       justify-content: space-between;
       align-items: center;
       gap: 3px;
-      margin-top: 1px;
     }
 
     .block-bottom .l-shelf {
-      font-size: 5.8pt;
-    }
-
-    /* Decorative barcode */
-    .barcode {
-      height: 3.5mm;
-      width: 100%;
-      margin-top: 1px;
-      background: repeating-linear-gradient(
-        90deg,
-        var(--ink) 0,
-        var(--ink) 0.6px,
-        transparent 0.6px,
-        transparent 1.4px,
-        var(--ink) 1.4px,
-        var(--ink) 2.2px,
-        transparent 2.2px,
-        transparent 3px
-      );
-      opacity: 0.8;
-      border-radius: 1px;
+      font-size: 6pt;
     }
 
     /* =========================================================
@@ -992,8 +999,8 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 1.5px;
-      padding: 2.2mm 2.5mm;
+      gap: 0.8mm;
+      padding: 1.6mm 2.2mm;
       border: 1px dashed var(--border-strong);
       border-left: 3px solid var(--label-accent, var(--accent));
       border-radius: 2px;
@@ -1001,11 +1008,14 @@
       overflow: hidden;
     }
 
-    .label-strip.no-cutline { border-color: transparent; border-left-color: var(--label-accent, var(--accent)); }
+    .label-strip.no-cutline {
+      border-color: transparent;
+      border-left-color: var(--label-accent, var(--accent));
+    }
 
     .strip-call {
       font-family: var(--font-mono);
-      font-size: 8pt;
+      font-size: 8.2pt;
       font-weight: 800;
       color: var(--ink);
       white-space: nowrap;
@@ -1015,7 +1025,7 @@
     }
 
     .strip-title {
-      font-size: 6.6pt;
+      font-size: 6.8pt;
       font-weight: 600;
       color: var(--ink-soft);
       white-space: nowrap;
@@ -1029,26 +1039,72 @@
       justify-content: space-between;
       align-items: center;
       gap: 4px;
-      font-size: 5.8pt;
+      font-size: 6pt;
       color: var(--ink-muted);
       min-width: 0;
     }
 
-    .strip-foot .l-shelf { font-size: 5.6pt; }
+    .strip-foot .l-shelf { font-size: 5.8pt; }
+
+    .strip-foot .strip-author {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+
+    /* =========================================================
+       DECORATIVE BARCODE (always shown on all templates)
+       ========================================================= */
+    .barcode {
+      height: 2.6mm;
+      width: 100%;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--ink) 0,
+        var(--ink) 0.5px,
+        transparent 0.5px,
+        transparent 1.3px,
+        var(--ink) 1.3px,
+        var(--ink) 2px,
+        transparent 2px,
+        transparent 2.8px,
+        var(--ink) 2.8px,
+        var(--ink) 3.4px,
+        transparent 3.4px,
+        transparent 4.2px
+      );
+      opacity: 0.78;
+      border-radius: 1px;
+      flex-shrink: 0;
+    }
+
+    /* Barcode placement per template */
+    .l-barcode {
+      margin: 0.6mm 0;
+    }
+
+    .block-barcode {
+      margin-top: 0.6mm;
+    }
+
+    .strip-barcode {
+      margin: 0.4mm 0;
+    }
 
     /* =========================================================
        DIAGNOSTICS PANEL
        ========================================================= */
     .diagnostics {
-      font-size: 0.74rem;
+      font-size: var(--fs-small);
     }
 
     .diagnostics summary {
       cursor: pointer;
       font-weight: 700;
-      font-size: 0.74rem;
+      font-size: var(--fs-small);
       color: var(--ink-soft);
-      padding: 4px 0;
+      padding: 6px 0;
       list-style: none;
     }
 
@@ -1066,12 +1122,12 @@
 
     .diag-table {
       width: 100%;
-      font-size: 0.7rem;
-      margin-top: 6px;
+      font-size: var(--fs-meta);
+      margin-top: 8px;
     }
 
     .diag-table td {
-      padding: 2px 4px;
+      padding: 4px 6px;
       vertical-align: top;
     }
 
@@ -1079,12 +1135,12 @@
       font-weight: 600;
       color: var(--ink-muted);
       white-space: nowrap;
-      width: 100px;
+      width: 110px;
     }
 
     .diag-table td:last-child {
       font-family: var(--font-mono);
-      font-size: 0.66rem;
+      font-size: var(--fs-micro);
       color: var(--ink-soft);
       word-break: break-all;
     }
@@ -1094,13 +1150,13 @@
        ========================================================= */
     .toast-region {
       position: fixed;
-      bottom: 16px;
-      right: 16px;
+      bottom: 20px;
+      right: 20px;
       z-index: 300;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      max-width: 340px;
+      gap: 10px;
+      max-width: 380px;
       pointer-events: none;
     }
 
@@ -1108,11 +1164,11 @@
       pointer-events: auto;
       background: var(--ink);
       color: #fff;
-      padding: 10px 14px;
+      padding: 14px 18px;
       border-radius: var(--radius);
-      font-size: 0.78rem;
+      font-size: var(--fs-small);
       box-shadow: var(--shadow-lg);
-      border-left: 3px solid var(--accent);
+      border-left: 4px solid var(--accent);
       animation: toast-in 0.2s ease-out;
     }
 
@@ -1145,16 +1201,16 @@
 
     @media (max-width: 640px) {
       .app-header {
-        padding: 8px 12px;
+        padding: 10px 14px;
       }
-      .brand-text strong { font-size: 0.82rem; }
-      .brand-text small { font-size: 0.6rem; }
+      .brand-text strong { font-size: 0.95rem; }
+      .brand-text small { font-size: 0.72rem; }
 
       .header-actions .btn span { display: none; }
-      .header-actions .btn { padding: 7px 10px; }
+      .header-actions .btn { padding: 10px 12px; }
 
-      .sidebar { padding: 12px; }
-      .main-pane { padding: 12px; }
+      .sidebar { padding: 14px; }
+      .main-pane { padding: 14px; }
 
       .toolbar .field { flex: 1 1 100%; }
 
@@ -1162,26 +1218,29 @@
         width: 100%;
         height: auto;
         padding: 4mm;
-        transform-origin: top left;
         box-shadow: none;
         border: 1px solid var(--border);
       }
 
       .label-grid {
-        grid-auto-rows: 22mm;
-        column-gap: 2mm;
-        row-gap: 2mm;
+        grid-auto-rows: 24mm;
+        column-gap: 2.5mm;
+        row-gap: 2.5mm;
       }
 
-      .label, .label-block, .label-strip {
-        font-size: 90%;
+      /* Table: allow horizontal scroll, keep readable */
+      .catalog-table {
+        font-size: var(--fs-meta);
+        min-width: 760px;
       }
+      .catalog-table td { padding: 9px 12px; }
+      .catalog-table th { padding: 10px 12px; }
     }
 
     @media (max-width: 380px) {
       .brand-text small { display: none; }
-      .stats-bar { font-size: 0.68rem; }
-      .catalog-table { font-size: 0.72rem; }
+      .stats-bar { font-size: var(--fs-micro); }
+      .catalog-table { font-size: var(--fs-micro); }
     }
 
     /* =========================================================
@@ -1198,6 +1257,7 @@
         padding: 0 !important;
         margin: 0 !important;
         width: 210mm;
+        font-size: 11pt;
       }
 
       .app-header,
@@ -1258,17 +1318,19 @@
         page-break-inside: avoid;
       }
 
-      /* Ensure background colors and borders print */
       * {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
       }
 
-      /* Hide cut lines if user disabled them */
       .label.no-cutline,
       .label-block.no-cutline,
       .label-strip.no-cutline {
         border-color: transparent !important;
+      }
+
+      .barcode {
+        opacity: 0.9 !important;
       }
     }
   </style>
@@ -1296,11 +1358,11 @@
       <div class="header-actions">
         <span class="source-tag" id="sourceTag" title="Current data source">Local Sample</span>
         <button class="btn btn-outline btn-sm" id="btnRefresh" type="button" title="Force sync now">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
           <span>Sync</span>
         </button>
         <button class="btn btn-primary btn-sm" id="btnPrint" type="button" title="Print or save as PDF">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
           <span>Print</span>
         </button>
       </div>
@@ -1348,7 +1410,7 @@
                 <button class="btn btn-primary btn-sm" id="btnConnect" type="button">Connect</button>
               </div>
             </div>
-            <p style="font-size:0.7rem; color:var(--ink-muted); margin-top:4px;">
+            <p style="font-size:var(--fs-meta); color:var(--ink-muted); margin-top:6px;">
               Published sheets are fetched directly. Standard edit URLs are resolved via Google Visualization.
               Polling every <strong id="pollIntervalLabel">12s</strong>.
             </p>
@@ -1358,13 +1420,13 @@
           <div class="tab-panel" id="tabFile" role="tabpanel" aria-labelledby="tabFileBtn">
             <div class="field">
               <label for="fileInput">Import .xlsx, .xls, or .csv</label>
-              <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv" style="width:100%; font-size:0.78rem; padding:6px; border:1px dashed var(--border-strong); border-radius:var(--radius-sm); background:var(--surface-alt);">
+              <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv">
             </div>
-            <div id="dropZone" style="border:2px dashed var(--border); border-radius:var(--radius); padding:18px; text-align:center; font-size:0.78rem; color:var(--ink-muted); cursor:pointer; transition:border-color 0.15s, background 0.15s;">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 6px; opacity:0.5;" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <div id="dropZone" style="border:2px dashed var(--border); border-radius:var(--radius); padding:22px 18px; text-align:center; font-size:var(--fs-small); color:var(--ink-muted); cursor:pointer; transition:border-color 0.15s, background 0.15s;">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 8px; opacity:0.5;" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               Drag & drop a file here, or click to browse
             </div>
-            <p style="font-size:0.7rem; color:var(--ink-muted); margin-top:6px;">
+            <p style="font-size:var(--fs-meta); color:var(--ink-muted); margin-top:8px;">
               Files are processed entirely in your browser. Nothing is uploaded.
             </p>
           </div>
@@ -1430,7 +1492,7 @@
               <input type="text" id="mShelf" placeholder="Shelf A1" autocomplete="off">
             </div>
             <button class="btn btn-success btn-sm" id="btnAddManual" type="button" style="width:100%;">Add to Catalog</button>
-            <p style="font-size:0.68rem; color:var(--ink-muted); margin-top:6px;">
+            <p style="font-size:var(--fs-meta); color:var(--ink-muted); margin-top:8px;">
               Manual entries are local only. They are not written back to Google Sheets.
             </p>
           </div>
@@ -1461,17 +1523,19 @@
             </select>
           </div>
 
-          <div class="panel-head" style="margin-top:6px;">
+          <div class="panel-head" style="margin-top:8px;">
             <h2>Visible Elements</h2>
           </div>
           <div class="check-grid">
             <label class="check-label"><input type="checkbox" id="optShelf" checked> Shelf badge</label>
-            <label class="check-label"><input type="checkbox" id="optBarcode"> Decorative barcode</label>
             <label class="check-label"><input type="checkbox" id="optAuthorLastOnly"> Surname only</label>
             <label class="check-label"><input type="checkbox" id="optCutline" checked> Dashed cut guides</label>
             <label class="check-label"><input type="checkbox" id="optSpare" checked> Spare-label padding</label>
             <label class="check-label"><input type="checkbox" id="optItemTag" checked> Accession tag</label>
           </div>
+          <p style="font-size:var(--fs-meta); color:var(--ink-muted); margin-top:10px;">
+            Decorative barcodes are always shown on every label.
+          </p>
         </div>
 
         <!-- ===== ACTIONS ===== -->
@@ -1479,7 +1543,7 @@
           <div class="panel-head">
             <h2>Actions</h2>
           </div>
-          <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="display:flex; flex-direction:column; gap:8px;">
             <button class="btn btn-ghost btn-sm" id="btnLoadSample" type="button" style="width:100%;">Load Sample Catalog</button>
             <button class="btn btn-ghost btn-sm" id="btnClearCache" type="button" style="width:100%;">Clear Cached Data</button>
             <button class="btn btn-danger btn-sm" id="btnClearCatalog" type="button" style="width:100%;">Clear Catalog</button>
@@ -1507,7 +1571,7 @@
 
         <!-- Catalog section -->
         <section aria-label="Catalog">
-          <div class="panel" style="margin-bottom:16px;">
+          <div class="panel" style="margin-bottom:20px;">
             <div class="panel-head">
               <h2>Catalog</h2>
               <span class="count-badge" id="catalogCount">0 books</span>
@@ -1586,7 +1650,7 @@
             </div>
 
             <div class="empty-state" id="emptyState" hidden>
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
               </svg>
@@ -1618,6 +1682,12 @@
   /* =========================================================================
      PERSONAL LIBRARY MANAGER & SPINE STUDIO
      Single-file application. Vanilla JS. No frameworks. Client-side only.
+
+     Changes in this revision:
+       - Larger typographic scale throughout (body 16px, labels 15px, etc.)
+       - Minimum 44px touch targets on interactive controls
+       - Decorative barcode is now ALWAYS shown on all three templates
+         (the "Decorative barcode" toggle has been removed)
      ========================================================================= */
 
   (function () {
@@ -1657,8 +1727,8 @@
        ======================================================================= */
 
     const State = {
-      records: [],          // normalized catalog records
-      filtered: [],         // records after filtering/sorting
+      records: [],
+      filtered: [],
       source: 'local-sample',
       sourceLabel: 'Local Sample',
       sourceUrl: '',
@@ -1688,17 +1758,14 @@
     const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
 
     const el = {
-      // header
       sourceTag: $('#sourceTag'),
       btnRefresh: $('#btnRefresh'),
       btnPrint: $('#btnPrint'),
 
-      // sync
       syncStatus: $('#syncStatus'),
       syncLabel: $('#syncLabel'),
       syncDetail: $('#syncDetail'),
 
-      // tabs
       tabCloudBtn: $('#tabCloudBtn'),
       tabFileBtn: $('#tabFileBtn'),
       tabManualBtn: $('#tabManualBtn'),
@@ -1706,17 +1773,14 @@
       tabFile: $('#tabFile'),
       tabManual: $('#tabManual'),
 
-      // cloud
       sheetUrl: $('#sheetUrl'),
       sheetName: $('#sheetName'),
       btnConnect: $('#btnConnect'),
       pollIntervalLabel: $('#pollIntervalLabel'),
 
-      // file
       fileInput: $('#fileInput'),
       dropZone: $('#dropZone'),
 
-      // manual
       mType: $('#mType'),
       mGenre: $('#mGenre'),
       mTitle: $('#mTitle'),
@@ -1727,23 +1791,19 @@
       mShelf: $('#mShelf'),
       btnAddManual: $('#btnAddManual'),
 
-      // design
       templateSelect: $('#templateSelect'),
       colorModeSelect: $('#colorModeSelect'),
       optShelf: $('#optShelf'),
-      optBarcode: $('#optBarcode'),
       optAuthorLastOnly: $('#optAuthorLastOnly'),
       optCutline: $('#optCutline'),
       optSpare: $('#optSpare'),
       optItemTag: $('#optItemTag'),
       labelCount: $('#labelCount'),
 
-      // actions
       btnLoadSample: $('#btnLoadSample'),
       btnClearCache: $('#btnClearCache'),
       btnClearCatalog: $('#btnClearCatalog'),
 
-      // diagnostics
       diagSource: $('#diagSource'),
       diagUrl: $('#diagUrl'),
       diagLastSync: $('#diagLastSync'),
@@ -1752,7 +1812,6 @@
       diagParser: $('#diagParser'),
       diagError: $('#diagError'),
 
-      // catalog
       searchInput: $('#searchInput'),
       filterType: $('#filterType'),
       filterGenre: $('#filterGenre'),
@@ -1770,11 +1829,9 @@
       catalogTable: $('#catalogTable'),
       emptyState: $('#emptyState'),
 
-      // preview
       sheetContainer: $('#sheetContainer'),
       previewMeta: $('#previewMeta'),
 
-      // toast
       toastRegion: $('#toastRegion')
     };
 
@@ -1848,15 +1905,6 @@
        5. GOOGLE SHEETS URL RESOLVER
        ======================================================================= */
 
-    /**
-     * Accepts any Google Sheets URL and returns a normalized CSV fetch URL.
-     * Supports:
-     *   - /pubhtml  → /pub?output=csv
-     *   - /pub       → append &output=csv if missing
-     *   - /edit      → /gviz/tq?tqx=out:csv&sheet=NAME
-     *   - /export?format=csv (already normalized)
-     *   - bare spreadsheet ID
-     */
     function resolveGoogleSheetUrl(input, sheetName) {
       if (!input || typeof input !== 'string') {
         throw new Error('Please enter a Google Sheets URL.');
@@ -1864,7 +1912,6 @@
 
       let url = input.trim();
 
-      // Bare spreadsheet ID
       if (/^[a-zA-Z0-9_-]{20,}$/.test(url) && !url.includes('/')) {
         const sid = url;
         const sheet = sheetName ? encodeURIComponent(sheetName) : 'Sheet1';
@@ -1875,7 +1922,6 @@
         };
       }
 
-      // Ensure protocol
       if (!/^https?:\/\//i.test(url)) {
         url = 'https://' + url;
       }
@@ -1894,12 +1940,10 @@
       const path = parsed.pathname;
       const params = parsed.searchParams;
 
-      // Case 1: already an export CSV URL
       if (path.includes('/export') && params.get('format') === 'csv') {
         return { url, sheetName: sheetName || '', kind: 'export' };
       }
 
-      // Case 2: published /pub URL
       if (path.includes('/pub') && !path.includes('/pubhtml')) {
         if (params.get('output') === 'csv') {
           return { url, sheetName: sheetName || '', kind: 'pub' };
@@ -1908,14 +1952,12 @@
         return { url: `${url}${sep}output=csv`, sheetName: sheetName || '', kind: 'pub' };
       }
 
-      // Case 3: /pubhtml → convert to /pub?output=csv
       if (path.includes('/pubhtml')) {
         const base = url.replace(/\/pubhtml.*$/, '/pub');
         const sep = base.includes('?') ? '&' : '?';
         return { url: `${base}${sep}output=csv`, sheetName: sheetName || '', kind: 'pubhtml' };
       }
 
-      // Case 4: standard /edit URL → extract ID and use gviz
       const idMatch = path.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
       if (idMatch) {
         const sid = idMatch[1];
@@ -1935,7 +1977,6 @@
     function parseCSV(text) {
       if (!text) return [];
 
-      // Remove BOM
       if (text.charCodeAt(0) === 0xFEFF) {
         text = text.slice(1);
       }
@@ -1953,11 +1994,9 @@
         if (inQuotes) {
           if (ch === '"') {
             if (text[i + 1] === '"') {
-              // Escaped quote
               field += '"';
               i += 2;
             } else {
-              // End of quoted field
               inQuotes = false;
               i++;
             }
@@ -1993,13 +2032,11 @@
         }
       }
 
-      // Last field / row
       if (field !== '' || row.length > 0) {
         row.push(field);
         rows.push(row);
       }
 
-      // Remove completely empty rows
       return rows.filter(r => r.some(c => c.trim() !== ''));
     }
 
@@ -2085,7 +2122,6 @@
     }
 
     function validateRecord(rec) {
-      // A record is valid if it has at least a title OR a call number.
       if (!rec.title && !rec.callNumber) return false;
       return true;
     }
@@ -2094,11 +2130,9 @@
       return rawRecords
         .filter(validateRecord)
         .map((rec, idx) => {
-          // Ensure itemNo is populated
           if (!rec.itemNo) {
             rec.itemNo = String(idx + 1).padStart(3, '0');
           }
-          // If call number is missing, generate a graceful placeholder
           if (!rec.callNumber) {
             rec.callNumber = '—';
           }
@@ -2121,12 +2155,10 @@
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, { type: 'array' });
 
-            // Prefer the "Catalog" worksheet
             let sheetName = workbook.SheetNames.find(
               n => n.toLowerCase() === 'catalog'
             );
 
-            // Fallback: first sheet with data
             if (!sheetName) {
               sheetName = workbook.SheetNames.find(n => {
                 const ws = workbook.Sheets[n];
@@ -2155,7 +2187,6 @@
             const headerRow = rows[0];
             const headerMap = normalizeHeaders(headerRow);
 
-            // Check that we recognized at least Title or Call Number
             const hasTitle = headerMap.includes('title');
             const hasCall = headerMap.includes('callNumber');
             if (!hasTitle && !hasCall) {
@@ -2227,7 +2258,6 @@
        ======================================================================= */
 
     function calculateDatasetHash(records) {
-      // Deterministic serialization: sort by a composite key
       const sorted = [...records].sort((a, b) => {
         const ka = (a.itemNo || '') + '|' + (a.callNumber || '') + '|' + (a.title || '');
         const kb = (b.itemNo || '') + '|' + (b.callNumber || '') + '|' + (b.title || '');
@@ -2247,7 +2277,6 @@
         g: r.genre
       })));
 
-      // FNV-1a hash
       let hash = 0x811c9dc5;
       for (let i = 0; i < str.length; i++) {
         hash ^= str.charCodeAt(i);
@@ -2273,9 +2302,7 @@
             parser: State.parser
           };
           localStorage.setItem(CONFIG.CACHE_KEY, JSON.stringify(payload));
-        } catch (e) {
-          // localStorage may be full or unavailable
-        }
+        } catch (e) { /* ignore */ }
       },
 
       load() {
@@ -2291,9 +2318,7 @@
       },
 
       clear() {
-        try {
-          localStorage.removeItem(CONFIG.CACHE_KEY);
-        } catch { /* ignore */ }
+        try { localStorage.removeItem(CONFIG.CACHE_KEY); } catch { /* ignore */ }
       },
 
       savePrefs() {
@@ -2302,7 +2327,6 @@
             template: el.templateSelect.value,
             colorMode: el.colorModeSelect.value,
             showShelf: el.optShelf.checked,
-            showBarcode: el.optBarcode.checked,
             authorLastOnly: el.optAuthorLastOnly.checked,
             showCutline: el.optCutline.checked,
             showSpare: el.optSpare.checked,
@@ -2386,7 +2410,6 @@
         const newHash = calculateDatasetHash(records);
 
         if (newHash === State.checksum) {
-          // No change — update timestamp only
           State.lastSync = nowISOString();
           setSyncStatus('online');
           updateDiagnostics();
@@ -2395,7 +2418,6 @@
           return;
         }
 
-        // Data changed — apply
         State.records = records;
         State.checksum = newHash;
         State.lastSync = nowISOString();
@@ -2504,9 +2526,8 @@
         return true;
       });
 
-      // Apply sorting
       sortRecords(State.filtered);
-      State.filtered = State.filtered.slice(); // keep reference stable
+      State.filtered = State.filtered.slice();
     }
 
     function sortRecords(arr) {
@@ -2517,7 +2538,6 @@
         let va = a[key] || '';
         let vb = b[key] || '';
 
-        // Numeric sort for itemNo
         if (key === 'itemNo') {
           const na = parseInt(va, 10) || 0;
           const nb = parseInt(vb, 10) || 0;
@@ -2577,7 +2597,6 @@
 
       State.filtered.forEach(rec => {
         const tr = document.createElement('tr');
-
         const langClass = (rec.language || '').toLowerCase().includes('bengali') ? ' lang-bn' : '';
 
         tr.innerHTML = `
@@ -2622,7 +2641,6 @@
       if (mode === 'navy') return '#1e3a5f';
       if (mode === 'mono') return '#1a1f2e';
 
-      // Category coded
       const code = shortType(rec.type);
       return TYPE_COLORS[code] || TYPE_COLORS.DEFAULT;
     }
@@ -2673,6 +2691,7 @@
           ${volume}
           ${author ? `<div class="l-author" title="${author}">${author}</div>` : ''}
         </div>
+        <div class="barcode l-barcode" aria-hidden="true"></div>
         <div class="l-foot">
           <span class="l-lang">${escapeHtml(rec.language || '')}</span>
           ${shelf}
@@ -2689,11 +2708,9 @@
 
       const shelf = (options.showShelf && rec.shelf)
         ? `<span class="l-shelf">${escapeHtml(rec.shelf)}</span>` : '';
-      const barcode = options.showBarcode ? '<div class="barcode" aria-hidden="true"></div>' : '';
       const itemTag = options.showItemTag
         ? `<span class="l-item">#${escapeHtml(rec.itemNo)}</span>` : '';
 
-      // Split call number into two lines for the block
       const parts = (rec.callNumber || '').split('-');
       const line1 = parts.slice(0, 2).join('-') || '—';
       const line2 = parts.slice(2).join('-') || '';
@@ -2710,7 +2727,7 @@
             ${itemTag}
             ${shelf}
           </div>
-          ${barcode}
+          <div class="barcode block-barcode" aria-hidden="true"></div>
         </div>
       `;
 
@@ -2728,8 +2745,9 @@
       div.innerHTML = `
         <div class="strip-call" title="${escapeHtml(rec.callNumber)}">${escapeHtml(truncate(rec.callNumber, 28))}</div>
         <div class="strip-title" title="${escapeHtml(rec.title)}">${escapeHtml(truncate(rec.title, 40))}</div>
+        <div class="barcode strip-barcode" aria-hidden="true"></div>
         <div class="strip-foot">
-          <span>${escapeHtml(truncate(authorDisplay, 22))}</span>
+          <span class="strip-author">${escapeHtml(truncate(authorDisplay, 22))}</span>
           ${shelf}
         </div>
       `;
@@ -2757,7 +2775,6 @@
       const options = {
         template: el.templateSelect.value,
         showShelf: el.optShelf.checked,
-        showBarcode: el.optBarcode.checked,
         authorLastOnly: el.optAuthorLastOnly.checked,
         showCutline: el.optCutline.checked,
         showSpare: el.optSpare.checked,
@@ -2766,7 +2783,6 @@
 
       const records = State.filtered.length ? State.filtered : State.records;
 
-      // Build the full list of items to render
       let items = records.slice();
 
       if (options.showSpare && items.length > 0) {
@@ -2799,7 +2815,6 @@
         sheet.className = 'a4-sheet';
         sheet.setAttribute('aria-label', `A4 sheet ${p + 1} of ${totalPages}`);
 
-        // Header
         const header = document.createElement('div');
         header.className = 'sheet-header';
         header.innerHTML = `
@@ -2808,7 +2823,6 @@
         `;
         sheet.appendChild(header);
 
-        // Grid
         const grid = document.createElement('div');
         grid.className = 'label-grid';
 
@@ -2824,7 +2838,6 @@
 
         sheet.appendChild(grid);
 
-        // Footer
         const footer = document.createElement('div');
         footer.className = 'sheet-footer';
         footer.innerHTML = `
@@ -2869,7 +2882,6 @@
        20. EVENT HANDLERS
        ======================================================================= */
 
-    // --- Tabs ---
     function switchTab(tabName) {
       [el.tabCloudBtn, el.tabFileBtn, el.tabManualBtn].forEach(btn => {
         btn.classList.remove('active');
@@ -2896,7 +2908,6 @@
     el.tabFileBtn.addEventListener('click', () => switchTab('file'));
     el.tabManualBtn.addEventListener('click', () => switchTab('manual'));
 
-    // --- Connect to Google Sheets ---
     el.btnConnect.addEventListener('click', async () => {
       const input = el.sheetUrl.value.trim();
       if (!input) {
@@ -2931,7 +2942,6 @@
       }
     });
 
-    // --- Manual refresh ---
     el.btnRefresh.addEventListener('click', async () => {
       if (State.source === 'google-sheets' && State.sourceUrl) {
         await syncFromGoogle();
@@ -2941,12 +2951,10 @@
       }
     });
 
-    // --- Print ---
     el.btnPrint.addEventListener('click', () => {
       window.print();
     });
 
-    // --- File input ---
     el.fileInput.addEventListener('change', async (e) => {
       const file = e.target.files && e.target.files[0];
       if (!file) return;
@@ -2954,7 +2962,6 @@
       el.fileInput.value = '';
     });
 
-    // --- Drag & drop ---
     el.dropZone.addEventListener('click', () => el.fileInput.click());
 
     el.dropZone.addEventListener('dragover', (e) => {
@@ -3008,7 +3015,6 @@
       }
     }
 
-    // --- Manual add ---
     el.btnAddManual.addEventListener('click', () => {
       const title = el.mTitle.value.trim();
       if (!title) {
@@ -3025,14 +3031,12 @@
       const status = el.mStatus.value.trim();
       const shelf = el.mShelf.value.trim();
 
-      // Generate the next item number
       const maxItem = State.records.reduce((max, r) => {
         const n = parseInt(r.itemNo, 10) || 0;
         return n > max ? n : max;
       }, 0);
       const nextItem = String(maxItem + 1).padStart(3, '0');
 
-      // Generate a call number following the workbook convention
       const typeCode = extractCode(type, 'FIC');
       const genreCode = extractCode(genre, 'LIT');
       const surname = extractSurname(author).toUpperCase().substring(0, 3) || 'UNK';
@@ -3057,7 +3061,6 @@
       State.lastSync = nowISOString();
       State.lastError = '';
 
-      // Clear form
       el.mTitle.value = '';
       el.mAuthor.value = '';
       el.mVolume.value = '';
@@ -3076,8 +3079,8 @@
       return m ? m[1] : fallback;
     }
 
-    // --- Label design changes ---
-    [el.templateSelect, el.colorModeSelect, el.optShelf, el.optBarcode,
+    /* Label design changes (barcode is always on, so no toggle) */
+    [el.templateSelect, el.colorModeSelect, el.optShelf,
      el.optAuthorLastOnly, el.optCutline, el.optSpare, el.optItemTag].forEach(control => {
       control.addEventListener('change', () => {
         renderSheets();
@@ -3085,7 +3088,6 @@
       });
     });
 
-    // --- Filters ---
     const debouncedSearch = debounce(() => {
       State.filters.search = el.searchInput.value.trim();
       applyFilters();
@@ -3118,7 +3120,6 @@
       Cache.savePrefs();
     });
 
-    // Table header sorting
     $$('#catalogTable th[data-sort]').forEach(th => {
       th.addEventListener('click', () => {
         const key = th.dataset.sort;
@@ -3129,7 +3130,6 @@
           State.sortDir = 'asc';
         }
 
-        // Update header indicators
         $$('#catalogTable th[data-sort]').forEach(h => {
           h.classList.remove('sort-active');
           const arrow = h.querySelector('.sort-arrow');
@@ -3160,7 +3160,6 @@
       renderSheets();
     });
 
-    // --- Actions ---
     el.btnLoadSample.addEventListener('click', async () => {
       try {
         State.sourceUrl = CONFIG.SAMPLE_CATALOG_URL;
@@ -3182,7 +3181,6 @@
         startPolling();
         showToast(`Sample catalog loaded — ${records.length} books.`, 'success');
       } catch (err) {
-        // Fall back to a small built-in sample
         State.records = getBuiltinSample();
         State.source = 'local-sample';
         State.sourceLabel = 'Built-in Sample';
@@ -3240,7 +3238,6 @@
       if (prefs.template) el.templateSelect.value = prefs.template;
       if (prefs.colorMode) el.colorModeSelect.value = prefs.colorMode;
       if (typeof prefs.showShelf === 'boolean') el.optShelf.checked = prefs.showShelf;
-      if (typeof prefs.showBarcode === 'boolean') el.optBarcode.checked = prefs.showBarcode;
       if (typeof prefs.authorLastOnly === 'boolean') el.optAuthorLastOnly.checked = prefs.authorLastOnly;
       if (typeof prefs.showCutline === 'boolean') el.optCutline.checked = prefs.showCutline;
       if (typeof prefs.showSpare === 'boolean') el.optSpare.checked = prefs.showSpare;
@@ -3256,7 +3253,6 @@
 
       loadPreferences();
 
-      // Try to restore from cache first
       const cached = Cache.load();
       if (cached && cached.records && cached.records.length > 0) {
         State.records = cached.records;
@@ -3276,7 +3272,6 @@
         return;
       }
 
-      // No cache — load built-in sample
       State.records = getBuiltinSample();
       State.source = 'local-sample';
       State.sourceLabel = 'Built-in Sample';
@@ -3288,7 +3283,6 @@
       setSyncStatus('local');
     }
 
-    // Boot
     document.addEventListener('DOMContentLoaded', init);
 
   })();
