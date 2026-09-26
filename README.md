@@ -1,82 +1,242 @@
 📚 Personal Library Manager & Spine Studio
 
 <p align="center">
-  <strong>A lightweight library catalogue, digital-archive and spine-label toolkit.</strong>
+  <strong>A structured Excel catalogue + browser-based library and spine-label studio.</strong>
 </p>
 
 <p align="center">
-  <a href="https://masudranamondal1-lgtm.github.io/library-spine-studio/"><img src="https://img.shields.io/badge/🌐_Live_App-Open-2F6F6D?style=for-the-badge" alt="Live App"></a>
-  <a href="https://github.com/masudranamondal1-lgtm/library-spine-studio"><img src="https://img.shields.io/github/stars/masudranamondal1-lgtm/library-spine-studio?style=for-the-badge" alt="GitHub Stars"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-7A5C3E?style=for-the-badge" alt="MIT License"></a>
+  <a href="https://masudranamondal1-lgtm.github.io/library-spine-studio/">
+    <img src="https://img.shields.io/badge/🌐_LIVE_APP-OPEN-2F6F6D?style=for-the-badge" alt="Live App">
+  </a>
+  <a href="https://github.com/masudranamondal1-lgtm/library-spine-studio">
+    <img src="https://img.shields.io/github/stars/masudranamondal1-lgtm/library-spine-studio?style=for-the-badge" alt="GitHub Stars">
+  </a>
+  <a href="https://github.com/masudranamondal1-lgtm/library-spine-studio/blob/main/Personal%20Library%20Template.xlsx">
+    <img src="https://img.shields.io/badge/📊_EXCEL-WORKBOOK-8B5E3C?style=for-the-badge" alt="Excel Workbook">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/📜_LICENSE-MIT-6B4E71?style=for-the-badge" alt="MIT License">
+  </a>
 </p>
 
 <p align="center">
-  📚 Physical Collection · 💾 Digital Archive · 🏷️ Dublin Core · 🖨️ A4 Labels · 🔒 Local-First
+  📊 <strong>Excel Catalogue</strong> ·
+  🌐 <strong>Browser App</strong> ·
+  🏷️ <strong>Dublin Core</strong> ·
+  🖨️ <strong>A4 Labels</strong> ·
+  📚 <strong>Physical + Digital</strong>
 </p>
 
-<h2>🧭 Overview</h2>
+🧭 Overview
 
-Personal Library Manager & Spine Studio combines a structured Excel catalogue with a browser-based interface for searching, browsing, metadata lookup, and printing spine labels.
+Personal Library Manager & Spine Studio combines a structured Excel workbook with a browser-based application for cataloguing, searching, browsing, metadata lookup, and spine-label printing.
+
+🔄 One Workflow, Two Layers
+
+<table>
+<tr>
+<th>📊 Excel Workbook</th>
+<th>🌐 Spine Studio</th>
+</tr>
+<tr>
+<td>
+<strong>Catalogue & data layer</strong><br><br>
+Identifiers · Metadata · Classification · Locations · Circulation · Archive
+</td>
+<td>
+<strong>Interface & output layer</strong><br><br>
+Search · Filter · Browse · ISBN Lookup · Preview · Print
+</td>
+</tr>
+</table>
+
+📊 Excel Workbook
+       │
+       │  .xlsx / .csv
+       ▼
+🌐 Spine Studio
+       │
+       ├── 🔎 Search & Filter
+       ├── 📖 Browse Catalogue
+       ├── 📷 ISBN Lookup
+       └── 🖨️ Preview & Print
 
 [!IMPORTANT]
-Excel is the structured data layer. The web application is the discovery and printing layer.
+The Excel workbook is the catalogue of record. Edit your collection there, save it, and then load it into Spine Studio.
 
-It is designed for personal libraries, researchers, collectors, writers, and small libraries without requiring a database server or subscription.
+🔗 Project Links
 
-<h3>✨ Core Features</h3>
+Resource
 
-📚 Physical books, magazines, journals and periodicals
+Link
 
-💾 Digital resources including ebooks, scans, audio, video and datasets
+🌐 Live Application
 
-🗂️ Physical and digital archival objects
+Open Spine Studio
 
-🏷️ Dublin Core-based metadata
+📊 Excel Workbook
 
-🔢 Project-specific call numbers and author codes
+Download Personal Library Template.xlsx
 
-📍 Semi-controlled shelf/location management
+💻 GitHub Repository
 
-🔄 Basic circulation and member management
+View Repository
 
-🖨️ A4 spine-label printing
+🐛 Issues
 
-📷 ISBN scanning on supported mobile browsers
+Report a bug / suggest an improvement
 
-📤 CSV / JSON / interoperability-ready data
+📜 License
 
-🌐 Optional read-only Google Sheets source
+MIT License
 
-<h2>🚀 Quick Start</h2>
+🚀 Quick Start
 
-<h3>1. Prepare the workbook</h3>
+📊 1. Download the Excel workbook
 
-Download Personal Library Template.xlsx, open it in Excel or another compatible spreadsheet application, and enter your collection in the Catalog sheet.
+Download Personal Library Template.xlsx and open it in Microsoft Excel, Google Sheets, or LibreOffice Calc.
 
-Typical fields include:
+✍️ 2. Catalogue your collection
 
-Title · Creator · Type · Genre · Language · Volume · Publisher · ISBN · Location · Condition
+Open the Catalog sheet and enter your records.
 
-Save the workbook after editing so spreadsheet formulas are recalculated.
+Typical fields:
 
-<h3>2. Open Spine Studio</h3>
+Title · Creator · Type · Genre · Language · Volume · Location Type · Location Identifier
 
-🌐 https://masudranamondal1-lgtm.github.io/library-spine-studio/
+The workbook generates fields such as:
+
+Item ID · Author Code · Call Number · Circulation Status
+
+💾 3. Save the workbook
+
+The web application reads cached spreadsheet values. It does not evaluate Excel formulas itself.
+
+[!WARNING]
+Save the workbook after editing. This allows your spreadsheet application to recalculate the formulas before Spine Studio imports the file.
+
+🌐 4. Open Spine Studio
+
+Launch the Live Application →
 
 Choose Local File and load your .xlsx or .csv.
 
-<h3>3. Browse and print</h3>
+🖨️ 5. Browse and print
 
-Search or filter your collection, select a label style, preview the page, and print to A4 or save as PDF.
+Search, filter, select a label style, preview the page, and print to A4 or save as PDF.
 
 [!TIP]
-Always print a test page on ordinary paper before using adhesive label stock.
+Print a test page on ordinary paper before using adhesive label stock.
 
-<h2>🗂️ Workbook Architecture</h2>
+✨ Features
+
+📚 Collection Management
+
+Physical books, magazines, journals and periodicals
+
+Digital resources: PDF, EPUB, MOBI, DJVU, TXT, DOCX, HTML, Markdown, audio, video, images and datasets
+
+Archive objects: physical and digital, with provenance and digitisation information
+
+🏷️ Metadata
+
+Dublin Core as the primary metadata framework
+
+Mapping between catalogue fields and Dublin Core elements
+
+Project-specific extensions alongside standard metadata
+
+CSV and structured JSON export
+
+TEI-ready fields
+
+Preparation for bibliographic API enrichment
+
+🔢 Cataloguing
+
+Automatic item numbering
+
+Surname-aware author codes
+
+Manual author-code override
+
+Project call numbers:
+
+TYPE-GENRE-AUTHORCODE-ITEM-VOLUME
+
+Example:
+
+FIC-LIT-TAG-001-Vol1
+
+These are project-specific call numbers, not Dewey Decimal or Library of Congress classifications.
+
+📍 Locations
+
+A semi-controlled location model:
+
+Location Type
+
+Shelf · Magazine Rack · Journal Rack · Archive · Cabinet · Box · Other
+
+Location Identifier
+
+A2 · MR1 · ARCH-01 · BOX-07
+
+You do not need to pre-register every physical shelf.
+
+🔄 Circulation
+
+Loans and borrowers
+
+Checkout and due dates
+
+Returns
+
+Automatic overdue detection
+
+Configurable loan period
+
+🖨️ Printing
+
+A4 multi-label layout
+
+Standard Card
+
+Library Block
+
+Minimal Spine
+
+Shelf and accession information
+
+Optional colour-coded or monochrome output
+
+🌐 Google Sheets
+
+A published Google Sheet can be connected as a read-only catalogue source.
+
+Changes made in the web application are not automatically written back to the spreadsheet.
+
+📊 Excel Workbook
+
+The workbook is designed to work independently as a structured library-management system.
+
+🗂️ Workbook Structure
 
 Sheet
 
 Purpose
+
+README
+
+Workbook documentation
+
+Settings
+
+Configurable parameters
+
+Lookup_Codes
+
+Controlled vocabularies
 
 Catalog
 
@@ -90,29 +250,25 @@ Archive
 
 Physical and digital archival objects
 
-Dublin_Core
-
-Metadata mapping/export
-
 Circulation
 
-Loans and returns
+Loans and borrowers
 
 Members
 
-Borrowers
-
-Lookup_Codes
-
-Controlled vocabularies
+Borrower registry
 
 Spine_Labels
 
-Label data
+Derived label data
+
+Dublin_Core
+
+Metadata mapping and export
 
 Data_Quality
 
-Integrity checks
+Missing-data and integrity checks
 
 Dashboard
 
@@ -120,27 +276,25 @@ Collection overview
 
 JSON_Export
 
-Structured export
+Structured export view
 
-Settings
+The workbook can be used without the web application. The web application is an interface around the catalogue, not a replacement for it.
 
-Configuration
+🗂️ Collection Model
 
-The workbook is intended to remain the authoritative catalogue.
+📚 Physical Collection
 
-<h2>📚 Collection Model</h2>
+Books, magazines, journals, periodicals and other printed materials.
 
-<h3>Physical</h3>
+💾 Digital Collection
 
-Books, magazines, journals, periodicals, newsletters, printed reference material and other publications.
+Digital resources including:
 
-<h3>Digital</h3>
+PDF · EPUB · MOBI · DJVU · TXT · DOCX · HTML · XML · TEI XML · Markdown · Images · Audio · Video · Datasets
 
-PDF, EPUB, MOBI, DJVU, TXT, DOCX, HTML, XML, TEI XML, Markdown, images, audio, video, datasets and other digital resources.
+🗃️ Archive
 
-<h3>Archive</h3>
-
-The archive can contain both physical originals and digital surrogates, including:
+The archive supports both physical originals and digital surrogates, including:
 
 manuscripts
 
@@ -160,9 +314,7 @@ ephemera
 
 rare or historical printed material
 
-Records can include provenance, condition, location, digitisation status, OCR, rights and access information.
-
-<h2>🏷️ Metadata & Interoperability</h2>
+🏷️ Metadata & Interoperability
 
 Dublin Core is the primary metadata framework.
 
@@ -170,118 +322,42 @@ Core elements include:
 
 Title · Creator · Contributor · Publisher · Date · Subject · Description · Type · Format · Identifier · Source · Language · Relation · Coverage · Rights
 
-Project-specific catalogue fields remain available where Dublin Core alone is insufficient.
+The project is designed for:
 
-The system is designed for future:
+📤 CSV export
 
-CSV export
+🧾 JSON export
 
-JSON export
+📜 TEI workflows
 
-TEI workflows
+🔎 bibliographic API enrichment
 
-bibliographic API enrichment
+🔗 external identifiers
 
-external identifiers
+🗂️ digital-archive interoperability
 
-digital-archive interoperability
+📱 ISBN Scanner
 
-<h2>🔢 Call Numbers</h2>
+On supported mobile browsers, Spine Studio can scan an ISBN using browser barcode capabilities and request available bibliographic metadata through Google Books.
 
-The project uses a readable, project-specific structure:
+Google Books API documentation →
 
-TYPE-GENRE-AUTHOR-ITEM-VOLUME
+[!NOTE]
+External metadata should be reviewed before being added to the authoritative catalogue.
 
-Example:
+🔒 Privacy
 
-FIC-LIT-TAG-001-Vol1
+Local .xlsx and .csv files are processed in the browser.
 
-These are not Dewey Decimal or Library of Congress classifications.
+The basic local workflow does not require:
 
-Author codes can be generated automatically and manually overridden when necessary.
+an account
 
-[!WARNING]
-Permanent accession numbers should identify an item, not a spreadsheet row. Verify identifiers before sorting, deleting, or migrating records.
+a database server
 
-<h2>📍 Locations</h2>
+a subscription
 
-Location Type uses controlled values such as:
-
-Shelf · Magazine Rack · Journal Rack · Archive · Cabinet · Box · Other
-
-The actual Location Identifier remains user-defined:
-
-A2 · SHELF-03 · MR1 · ARCH-01 · BOX-07
-
-This keeps the system flexible as the physical library changes.
-
-<h2>🖨️ Spine Labels</h2>
-
-The web application provides three label styles:
-
-Standard Card
-
-Library Block
-
-Minimal Spine
-
-The print workflow targets A4 sheets with multiple labels per page.
-
-Recommended settings:
-
-Setting
-
-Value
-
-Paper
-
-A4
-
-Orientation
-
-Portrait
-
-Scale
-
-100% / Actual Size
-
-Browser headers
-
-Off
-
-Fit to page
-
-Off
-
-<h2>🌐 Web Application</h2>
-
-The browser application supports:
-
-🔎 Search and filtering
-
-📥 Excel / CSV import
-
-🌐 Published Google Sheets
-
-✍️ Manual local entry
-
-📷 ISBN scanning
-
-📖 Google Books metadata lookup
-
-🖨️ Label preview and printing
-
-📱 PWA installation
-
-💾 Browser caching where supported
-
-Google Sheets integration is read-only from the application.
-
-<h2>🔒 Privacy</h2>
-
-The local workflow does not require an account or application server. Local spreadsheet parsing happens in the browser.
-
-Optional network-connected features may contact:
+Optional features may connect to:
 
 Google Sheets
 
@@ -290,27 +366,58 @@ Google Books
 external CDN resources
 
 [!CAUTION]
-Never publish private borrower information, private notes, unpublished material, or other sensitive records in a public Google Sheet or GitHub repository.
+Do not publish private borrower information, private notes, unpublished material, or other sensitive records in a public Google Sheet or GitHub repository.
 
-<h2>🛠️ Technology</h2>
+💻 Compatibility
 
-Frontend: HTML5, CSS, Vanilla JavaScript
+Platform
 
-Spreadsheet parsing: SheetJS
+Support
 
-Workbook generation: Python + openpyxl
+🪟 Microsoft Excel
 
-Metadata lookup: Google Books API
+Full
 
-Hosting: GitHub Pages
+📊 Google Sheets
 
-Offline support: Service Worker / browser caching
+Catalogue and spreadsheet workflow
 
-License: MIT
+🟢 LibreOffice Calc
 
-No database server or build pipeline is required for the basic application.
+Catalogue workflow
 
-<h2>🐍 Generate the Workbook</h2>
+🌐 Chrome / Edge
+
+Full web-app support
+
+🦊 Firefox / Safari
+
+Web-app support
+
+📱 Mobile browsers
+
+Web-app support; ISBN scanning where supported
+
+The workbook uses formulas, validation and conditional formatting rather than VBA macros.
+
+🗂️ Project Structure
+
+library-spine-studio/
+├── index.html
+├── Personal Library Template.xlsx
+├── build_library.py
+├── manifest.json
+├── service-worker.js
+├── qr-code.png
+├── donate.html
+├── LICENSE
+└── README.md
+
+The web application is the front end. The workbook is the data layer.
+
+🐍 Generate a Workbook with Python
+
+For developers:
 
 pip install openpyxl
 python build_library.py
@@ -319,47 +426,29 @@ For a blank template:
 
 python build_library.py --blank
 
-<h2>🗺️ Roadmap</h2>
+🌍 Supported Languages
 
-The project is evolving toward a more complete personal library and digital-archive environment.
+The workbook and application support Unicode text, including:
 
-<h3>Current development</h3>
+English
 
-areas
+Bengali বাংলা
 
-🏷️ Stronger Dublin Core implementation
+Hindi हिन्दी
 
-💾 Improved digital-resource ingestion
+Other Unicode scripts
 
-🗂️ Richer archive relationships
+Bengali titles and author names are preserved as entered.
 
-🔗 Physical/digital object relationships
+🤝 Contributing
 
-🔎 Bibliographic API enrichment
-
-🆔 Stronger identifier management
-
-✅ Improved data-quality validation
-
-📤 Better CSV/JSON export
-
-📜 TEI interoperability
-
-📊 Improved collection analytics
-
-🖨️ More flexible label layouts
-
-The goal is not to reproduce a large institutional ILS. It is to create a portable, understandable, standards-aware library and archive system for serious personal collections.
-
-<h2>🤝 Contributing</h2>
-
-Bug reports, documentation improvements, and code contributions are welcome.
+Bug reports, documentation improvements and pull requests are welcome.
 
 When reporting an issue, include:
 
 What you were doing
 
-Browser/spreadsheet application
+Browser or spreadsheet application
 
 Workbook version
 
@@ -369,24 +458,77 @@ Actual behaviour
 
 Please do not upload private library data to public issues.
 
-<h2>📜 License</h2>
+🐛 Open a GitHub Issue →
 
-Released under the MIT License.
-
-See LICENSE for the complete terms.
-
-<h2>☕ Support</h2>
+☕ Support
 
 If the project is useful:
 
-Buy Me a Coffee: https://buymeacoffee.com/masudshaon
+☕ Buy Me a Coffee →
 
-GitHub Issues: https://github.com/masudranamondal1-lgtm/library-spine-studio/issues
+📜 License
 
-<h2>👤 Author</h2>
+Released under the MIT License.
+
+Read the full MIT License →
+
+🙏 Credits
+
+Built with:
+
+SheetJS — browser-side spreadsheet parsing
+
+Google Books API — optional ISBN lookup
+
+Python / openpyxl — workbook generation
+
+GitHub Pages — hosting
+
+Noto Sans Bengali / Nirmala UI — Unicode rendering
+
+Designed for personal and small-scale library use, not as a replacement for a full institutional ILS.
+
+📝 Changelog
+
+Version 1.0.5
+
+Extended catalogue field recognition
+
+Combined Location Type + Location Identifier for display
+
+Added empty-call-number warning
+
+Improved Catalog sheet detection
+
+Version 1.0.0
+
+Initial public release
+
+Physical, digital and archive cataloguing
+
+A4 spine-label printing
+
+Dublin Core metadata mapping
+
+🗺️ Next Steps
+
+📊 Download and populate the Excel workbook.
+
+🌐 Load it into Spine Studio.
+
+🔎 Search and organise your collection.
+
+🖨️ Generate and test your spine labels.
+
+🗂️ Keep the workbook as your authoritative catalogue.
+
+<h2 align="center">👤 Author</h2>
 
 <h3 align="center">Masud Rana Mondal</h3>
-<p align="center">Writer · Researcher · Digital Humanities · Publishing · Library & Archive Technology</p>
+
+<p align="center">
+  Writer · Researcher · Digital Humanities · Publishing · Library & Archive Technology
+</p>
 
 <p align="center">
   <a href="https://github.com/masudranamondal1-lgtm">
