@@ -2087,16 +2087,23 @@
        HEADER NORMALIZATION
        ======================================================================= */
     const HEADER_MAP = {
-      'item no.': 'itemNo', 'item no': 'itemNo', 'itemno': 'itemNo', 'item': 'itemNo', 'no.': 'itemNo',
+      'item no.': 'itemNo', 'item no': 'itemNo', 'itemno': 'itemNo',
+      'item': 'itemNo', 'item id': 'itemNo', 'no.': 'itemNo', 'id': 'itemNo',
       'accession / call number': 'callNumber', 'accession/call number': 'callNumber',
+      'accession number': 'callNumber',
       'call number': 'callNumber', 'call no.': 'callNumber', 'callno': 'callNumber',
       'digital call no.': 'callNumber', 'digital call number': 'callNumber',
-      'type': 'type', 'genre': 'genre', 'book title': 'title', 'title': 'title',
-      'volume no.': 'volume', 'volume': 'volume', 'vol': 'volume',
-      'author name': 'author', 'author': 'author',
+      'type': 'type', 'genre': 'genre',
       'language': 'language', 'lang': 'language',
-      'notes / status': 'status', 'notes/status': 'status', 'status': 'status', 'reading status': 'status',
-      'shelf location': 'shelf', 'shelf': 'shelf', 'location': 'shelf'
+      'book title': 'title', 'title': 'title',
+      'author name': 'author', 'author': 'author', 'creator': 'author',
+      'volume no.': 'volume', 'volume': 'volume', 'vol': 'volume',
+      'notes / status': 'status', 'notes/status': 'status',
+      'status': 'status', 'reading status': 'status',
+      'circulation status': 'status',
+      'shelf location': 'shelf', 'shelf': 'shelf', 'location': 'shelf',
+      'location type': 'locationType',
+      'location identifier': 'locationId'
     };
     function normalizeHeaderKey(h) {
       const key = safeText(h).toLowerCase().replace(/\s+/g, ' ').trim();
@@ -2106,14 +2113,21 @@
 
     function normalizeRecord(raw, headerMap) {
       const rec = { itemNo: '', callNumber: '', type: '', genre: '', title: '', volume: '', author: '', language: '', status: '', shelf: '' };
+      let locType = '';
+      let locId = '';
       headerMap.forEach((key, idx) => {
         if (!key) return;
         const val = safeText(raw[idx]);
         if (val === '') return;
         if (key === 'itemNo') rec.itemNo = val.replace(/^0+/, '').padStart(3, '0');
         else if (key === 'callNumber') rec.callNumber = val;
+        else if (key === 'locationType') locType = val;
+        else if (key === 'locationId') locId = val;
         else rec[key] = val;
       });
+      if (locType || locId) {
+        rec.shelf = [locType, locId].filter(Boolean).join(' ');
+      }
       return rec;
     }
     function validateRecord(rec) { return !!(rec.title || rec.callNumber); }
@@ -2136,13 +2150,17 @@
           try {
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, { type: 'array' });
-            let sheetName = workbook.SheetNames.find(n => n.toLowerCase() === 'catalog');
-            if (!sheetName) sheetName = workbook.SheetNames.find(n => {
-              const ws = workbook.Sheets[n];
-              if (!ws) return false;
-              const ref = ws['!ref'];
-              return ref && ref !== 'A1:A1';
-            }) || workbook.SheetNames[0];
+            const norm = s => String(s || '').toLowerCase().replace(/[\s_-]+/g, '');
+            let sheetName = workbook.SheetNames.find(n => norm(n) === 'catalog');
+            if (!sheetName) {
+              sheetName = workbook.SheetNames.find(n => {
+                const ws = workbook.Sheets[n];
+                if (!ws) return false;
+                const ref = ws['!ref'];
+                return ref && ref !== 'A1:A1';
+              });
+            }
+            if (!sheetName) sheetName = workbook.SheetNames[0];
             if (!sheetName) throw new Error('No readable worksheet found.');
 
             const worksheet = workbook.Sheets[sheetName];
@@ -2153,6 +2171,14 @@
               throw new Error('The worksheet does not look like a library catalog.');
             }
             const records = finalizeRecords(rows.slice(1).map(r => normalizeRecord(r, headerMap)));
+            const emptyCallCount = records.filter(r => !r.callNumber || r.callNumber === '—').length;
+            if (records.length > 0 && emptyCallCount === records.length) {
+              setTimeout(function() {
+                if (typeof showToast === 'function') {
+                  showToast('Call Numbers appear empty. Open the workbook in Excel, press Ctrl+S, then upload again.', 'error');
+                }
+              }, 400);
+            }
             resolve({ records, parser: 'excel', sheetName, headerMap });
           } catch (err) { reject(err); }
         };
