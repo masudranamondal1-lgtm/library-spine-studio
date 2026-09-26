@@ -11,7 +11,7 @@
    clients pick up the new app shell on their next visit.
    ========================================================================= */
 
-const SW_VERSION = 'v1.0.4';
+const SW_VERSION = 'v1.0.5';
 
 const SHELL_CACHE   = `plm-shell-${SW_VERSION}`;
 const RUNTIME_CACHE = `plm-runtime-${SW_VERSION}`;
