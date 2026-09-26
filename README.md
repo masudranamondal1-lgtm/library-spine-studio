@@ -1,12 +1,101 @@
-Personal Library Manager & Spine Studio
+📚 Personal Library Manager & Spine Studio
 
-A browser-based personal library cataloguing, discovery, and spine-label printing toolkit, backed by a structured Excel workbook.
+<p align="center">
+  <strong>A browser-based personal library cataloguing, discovery, and spine-label printing toolkit, backed by a structured Excel workbook.</strong>
+</p>
 
-Catalog books and other resources, generate consistent identifiers and call numbers, browse your collection in the browser, and prepare A4 spine labels without running a database server.
+<p align="center">
+  <a href="https://masudranamondal1-lgtm.github.io/library-spine-studio/"><img src="https://img.shields.io/badge/🌐_Live_App-Open-2F6F6D?style=for-the-badge" alt="Live App"></a>
+  <a href="https://github.com/masudranamondal1-lgtm/library-spine-studio"><img src="https://img.shields.io/github/stars/masudranamondal1-lgtm/library-spine-studio?style=for-the-badge&label=⭐%20Stars" alt="GitHub Stars"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-7A5C3E?style=for-the-badge" alt="MIT License"></a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/📚_Physical-Collection-8B5E3C?style=flat-square" alt="Physical Collection">
+  <img src="https://img.shields.io/badge/💾_Digital-Digital_Archive-4169A1?style=flat-square" alt="Digital Archive">
+  <img src="https://img.shields.io/badge/🗂️_Metadata-Dublin_Core-6B4E71?style=flat-square" alt="Dublin Core">
+  <img src="https://img.shields.io/badge/🖨️_Output-A4_Labels-5B7553?style=flat-square" alt="A4 Labels">
+</p>
+
+Catalogue books and other resources, generate consistent identifiers and call numbers, browse your collection in the browser, and prepare A4 spine labels without running a database server.
 
 Live application: https://masudranamondal1-lgtm.github.io/library-spine-studio/
 
+🧭 Contents
+
+
+
+Section
+
+
+
+🧭
+
 Overview
+
+Project purpose and architecture
+
+🧠
+
+Core Design Principles
+
+Data, metadata and privacy
+
+🚀
+
+Quick Start
+
+Get started quickly
+
+🗂️
+
+Workbook Architecture
+
+Excel data model
+
+📚
+
+Collection Types
+
+Physical, digital and archival resources
+
+🏷️
+
+Metadata
+
+Dublin Core and interoperability
+
+🔢
+
+Call Numbers
+
+Project classification system
+
+🖨️
+
+Spine Label Printing
+
+A4 printing workflow
+
+🌐
+
+Web Application Features
+
+Browser functionality
+
+🔒
+
+Privacy
+
+Local-first and external services
+
+🗺️
+
+Roadmap
+
+Future development
+
+🧭 Overview
 
 Personal Library Manager & Spine Studio is designed for personal libraries, researchers, collectors, writers, small libraries, and anyone who has accumulated enough books to discover that human memory is, regrettably, not a reliable cataloguing system.
 
@@ -24,17 +113,29 @@ Web application
 
 Search, browse, filter, import, ISBN-assisted lookup, spine-label preview, and A4 printing
 
-The workbook is the structured data layer. The browser application is the presentation and printing layer.
+[!IMPORTANT]
+The workbook is the structured data layer. The browser application is the presentation, discovery, and printing layer.
+
+[!TIP]
+Keep the workbook as the authoritative catalogue and use the web application as the interface around it.
 
 The application can work with local .xlsx and .csv files. It can also read a supported published Google Sheet when the user explicitly connects one.
 
-Project Status
+🚧 Project Status
+
+🟡 Development: Active
+📚 Architecture: Library + Digital Archive
+🏷️ Primary metadata: Dublin Core
+🌐 Frontend: HTML / CSS / Vanilla JavaScript
+📊 Workbook: Excel + openpyxl
+🚀 Hosting: GitHub Pages
+📜 License: MIT
 
 The project is under active development.
 
 The repository currently contains the web application, a blank Excel template, the workbook generator, PWA assets, and project documentation. The workbook architecture is being expanded from a simple book catalogue into a broader Personal Library Manager & Digital Archive model.
 
-Core Design Principles
+🧠 Core Design Principles
 
 Structured data first
 
@@ -62,7 +163,7 @@ Local-first operation
 
 Local Excel/CSV catalogues can be loaded directly into the browser. No dedicated application server is required for the basic workflow.
 
-How It Works
+🔄 How It Works
 
         Excel Workbook
              |
@@ -80,7 +181,7 @@ How It Works
 
 A supported published Google Sheet can also be used as a read-only source. The application does not automatically write changes back to the original Excel workbook or Google Sheet.
 
-Quick Start
+🚀 Quick Start
 
 1. Download the workbook
 
@@ -110,7 +211,7 @@ Use Local File and select the .xlsx file. Search, filter, sort, inspect records,
 
 Choose a label style, preview it, and print to A4 or save the output as PDF. Test alignment on ordinary paper before using adhesive stock.
 
-Workbook Architecture
+🗂️ Workbook Architecture
 
 The current workbook is designed as a multi-sheet collection-management system.
 
@@ -172,7 +273,7 @@ Structured export-oriented data
 
 The exact workbook version in the repository remains authoritative for the fields and formulas available in that release.
 
-Collection Types
+📚 Collection Types
 
 Physical Collection
 
@@ -190,7 +291,7 @@ The archive is not restricted to digitised material. It can contain physical arc
 
 Archival records can include provenance, acquisition, condition, physical/digital status, archive location, digitisation status, OCR status, rights, access level, and related-resource identifiers.
 
-Metadata
+🏷️ Metadata
 
 Dublin Core
 
@@ -234,7 +335,7 @@ The workbook is designed with future interoperability in mind, including CSV, JS
 
 TEI is treated as an interoperability and scholarly-text pathway rather than as a replacement for Dublin Core.
 
-Call Numbers
+🔢 Call Numbers
 
 The project uses a readable, project-specific structure:
 
@@ -246,7 +347,7 @@ FIC-LIT-TAG-001-Vol1
 
 These call numbers are project-specific. They are not official Dewey Decimal or Library of Congress classifications, and author abbreviations should not be confused with standard Cutter numbers.
 
-Author Codes and Identifiers
+✍️ Author Codes and Identifiers
 
 The workbook supports automatic author-code generation and manual override. For example, Rabindranath Tagore may produce TAG.
 
@@ -254,7 +355,7 @@ The project distinguishes between item identifiers, accession numbers, call numb
 
 A permanent accession number should identify the item rather than the current spreadsheet row. Do not assume that a row-derived formula remains stable after sorting, inserting, deleting, or migrating records.
 
-Locations
+📍 Locations
 
 The location model is intentionally semi-controlled.
 
@@ -264,13 +365,13 @@ Location Identifier: user-defined values such as A1, S3, MR1, JR2, ARCH-01, or B
 
 This keeps the system practical when the physical arrangement of a personal collection changes.
 
-Circulation
+🔄 Circulation
 
 The workbook includes a basic lending model covering Loan ID, Item ID, Member ID, borrower, checkout date, due date, return date, status, and notes. The default loan period is configurable.
 
 This is intended for personal and small-scale use, not as a replacement for a full institutional ILS.
 
-Spine Label Printing
+🖨️ Spine Label Printing
 
 The web application provides printable label layouts, including:
 
@@ -298,7 +399,7 @@ Adjust the layout if necessary.
 
 Do not use Fit to Page to conceal a dimensional mismatch.
 
-Web Application Features
+🌐 Web Application Features
 
 Catalog search
 
@@ -326,13 +427,13 @@ PWA installation support
 
 Browser-side caching where supported
 
-ISBN Scanner
+📷 ISBN Scanner
 
 On supported mobile browsers, the application can use the browser's barcode capabilities to detect ISBNs. When available, the ISBN can be used to request bibliographic metadata from Google Books.
 
 Camera permission, browser support, HTTPS/secure context, and a readable barcode are required. External metadata should always be checked before it becomes part of the authoritative catalog.
 
-Data Sources
+🔌 Data Sources
 
 Source
 
@@ -362,13 +463,13 @@ Google Sheets integration is read-only from the application's perspective. Chang
 
 Do not publish private borrower information or sensitive collection data to a public sheet.
 
-Privacy
+🔒 Privacy
 
 The basic local workflow does not require an account, database server, or subscription. Local spreadsheet parsing occurs in the browser.
 
 Optional network-connected features may communicate with third parties, including Google Sheets, Google Books, and external CDN resources used by the application. Users should therefore distinguish between local cataloguing and optional connected features.
 
-Technology
+🛠️ Technology
 
 Frontend: HTML5, CSS, Vanilla JavaScript
 
@@ -384,7 +485,7 @@ Workbook generation: Python and openpyxl
 
 The application has no dedicated backend or database server.
 
-Python Workbook Generator
+🐍 Python Workbook Generator
 
 To regenerate the workbook programmatically:
 
@@ -397,7 +498,7 @@ python build_library.py --blank
 
 The generator keeps workbook construction reproducible rather than requiring manual creation of every worksheet.
 
-Development
+💻 Development
 
 Clone the repository:
 
@@ -420,7 +521,7 @@ library-spine-studio/
 
 Open index.html for basic testing. Use a local HTTP server when testing service-worker/PWA behaviour.
 
-Repository Safety
+🛡️ Repository Safety
 
 The public repository should contain software and blank templates, not private personal catalogues.
 
@@ -442,7 +543,7 @@ credentials or API keys
 
 If a private workbook has previously been committed, deleting the current copy does not necessarily remove it from Git history. A history cleanup may be required.
 
-Roadmap
+🗺️ Roadmap
 
 The project is evolving toward a more complete personal library and digital-archive environment. Development areas include:
 
@@ -474,7 +575,7 @@ richer dashboard and collection analytics
 
 The goal is not to reproduce a large institutional library-management system. It is to create a portable, understandable, standards-aware personal library and archive system that can grow with a serious research collection.
 
-Contributing
+🤝 Contributing
 
 Bug reports, documentation improvements, and code contributions are welcome.
 
@@ -494,11 +595,45 @@ Screenshot or minimal example when useful
 
 Do not upload private library data to public issues.
 
-License
+🎨 Visual & Design Language
+
+The documentation uses a restrained library / archive / research palette.
+
+Colour
+
+Role
+
+🟩 #2F6F6D
+
+Primary application colour
+
+🟫 #7A5C3E
+
+Books / physical collection
+
+🟦 #4169A1
+
+Digital resources
+
+🟪 #6B4E71
+
+Metadata / scholarly layer
+
+🟨 #B8860B
+
+Warnings / attention
+
+⬛ #555555
+
+Neutral information
+
+The README uses badges, emoji section markers, GitHub callouts, tables, diagrams, and visual separators so it is easy to scan without becoming a fireworks display made of Markdown.
+
+📜 License
 
 Released under the MIT License. See LICENSE for the complete terms.
 
-Credits
+🙏 Credits
 
 The project uses or is compatible with:
 
@@ -510,7 +645,7 @@ GitHub Pages for static hosting
 
 Python / openpyxl for workbook generation
 
-Support
+☕ Support
 
 If the project is useful, support options are available through the application.
 
@@ -518,9 +653,12 @@ Buy Me a Coffee: https://buymeacoffee.com/masudshaon
 
 GitHub Issues: https://github.com/masudranamondal1-lgtm/library-spine-studio/issues
 
-Author
+👤 Author
 
-Masud Rana Mondal
+<p align="center">
+  <strong>Masud Shaon</strong><br>
+  Writer · Researcher · Digital Humanities · Publishing · Library & Archive Technology
+</p>
 
 Writer · Researcher · Digital Humanities · Publishing · Library & Archive Technology
 
