@@ -1,274 +1,527 @@
-# 📚 Personal Library Manager & Spine Studio
+Personal Library Manager & Spine Studio
 
-**Catalog your books. Generate consistent call numbers. Print library labels directly from your browser.**
+A browser-based personal library cataloguing, discovery, and spine-label printing toolkit, backed by a structured Excel workbook.
 
-[**🌐 Launch the live app**](https://masudranamondal1-lgtm.github.io/library-spine-studio/) · [**📥 Download the Excel workbook**](./Personal%20Library%20Catalogue%20%26%20Accession%20Number%20Generator%20(Enhanched).xlsx) · [**🐛 Report an issue**](https://github.com/masudranamondal1-lgtm/library-spine-studio/issues)
+Catalog books and other resources, generate consistent identifiers and call numbers, browse your collection in the browser, and prepare A4 spine labels without running a database server.
 
-A lightweight library-management toolkit for collectors, researchers, book lovers, schools, and small libraries. Use a structured Excel workbook to manage your catalog and generate call numbers, then use the browser-based Spine Studio to find books and prepare printable labels. No account or dedicated server required.
+Live application: https://masudranamondal1-lgtm.github.io/library-spine-studio/
 
-> **Two tools, one workflow:** Excel manages your catalog and classification; the web app handles discovery, import, label design, and printing.
+Overview
 
-## Contents
+Personal Library Manager & Spine Studio is designed for personal libraries, researchers, collectors, writers, small libraries, and anyone who has accumulated enough books to discover that human memory is, regrettably, not a reliable cataloguing system.
 
-- [Why this project exists](#why-this-project-exists)
-- [How it works](#how-it-works)
-- [Excel catalog and accession-number generator](#excel-catalog-and-accession-number-generator)
-- [Web application](#web-application)
-- [Quick start](#quick-start)
-- [Call-number format](#call-number-format)
-- [Printing spine labels](#printing-spine-labels)
-- [Data sources and synchronization](#data-sources-and-synchronization)
-- [Mobile ISBN scanner](#mobile-isbn-scanner)
-- [Technology and privacy](#technology-and-privacy)
-- [Troubleshooting](#troubleshooting)
-- [License](#license)
-- [Support](#support)
+The project separates the work into two complementary layers:
 
-## Why this project exists
+Layer
 
-A small library needs reliable identifiers, searchable records, and legible shelf labels. Full library-management systems can demand infrastructure and maintenance that a personal collection does not need; an unstructured spreadsheet, meanwhile, leaves too much room for inconsistent classifications and duplicate identifiers.
+Purpose
 
-**Personal Library Manager & Spine Studio** separates those jobs. The workbook applies a consistent classification and call-number format, while the web app makes the resulting catalog easier to browse and turn into printable labels. It is designed for a manageable workflow without requiring a database server or paid subscription.
+Excel workbook
 
-## How it works
+Structured cataloguing, identifiers, classification, locations, metadata, circulation, archive records, and data-quality management
 
-```text
-Enter or update books in the Excel workbook
-                    │
-                    ▼
-Generate item numbers and formatted call numbers
-                    │
-          ┌─────────┴─────────┐
-          ▼                   ▼
-   Import Excel/CSV     Publish to Google Sheets
-          │                   │
-          └─────────┬─────────┘
-                    ▼
-         Open the web application
-                    │
-                    ▼
-      Search, filter, and select books
-                    │
-                    ▼
-       Preview and print A4 labels
-```
+Web application
 
-The public Google Sheets connection is **read-only**. Changes made in the workbook or published sheet can be imported into the app; manual entries in the app are not automatically written back to Google Sheets.
+Search, browse, filter, import, ISBN-assisted lookup, spine-label preview, and A4 printing
 
-## Excel catalog and accession-number generator
+The workbook is the structured data layer. The browser application is the presentation and printing layer.
 
-**[📥 Download the Excel workbook](./Personal%20Library%20Catalogue%20%26%20Accession%20Number%20Generator%20(Enhanched).xlsx)**
+The application can work with local .xlsx and .csv files. It can also read a supported published Google Sheet when the user explicitly connects one.
 
-The workbook is the system's primary catalog and the source of its call-number conventions. Enter the book's bibliographic and classification information; its formulas generate the associated identifiers according to the configured rules.
+Project Status
 
-### What the workbook provides
+The project is under active development.
 
-- **Consistent item numbering:** three-digit, zero-padded item numbers such as `001` and `019`.
-- **Author codes:** an abbreviated author-surname component used in call numbers.
-- **Formatted call numbers:** a predictable combination of type, genre, author code, item number, and optional volume.
-- **Controlled vocabularies:** dropdown lists help keep classification, language, and status values consistent.
-- **Physical and digital catalogs:** separate records for printed books and electronic publications.
+The repository currently contains the web application, a blank Excel template, the workbook generator, PWA assets, and project documentation. The workbook architecture is being expanded from a simple book catalogue into a broader Personal Library Manager & Digital Archive model.
 
-> **Catalog integrity:** Automatic formulas reduce transcription errors, but they are not a substitute for checking uniqueness and maintaining an accession register. Before sorting, deleting rows, or importing records from another collection, verify that existing identifiers remain stable. A permanent accession number should not be reassigned merely because a row moves.
+Core Design Principles
 
-### Workbook sheets
+Structured data first
 
-| Worksheet | Purpose |
-|---|---|
-| `Catalog` | Physical books, bibliographic details, classification, item numbers, call numbers, and shelf locations. |
-| `Digital_Catalog` | PDFs, EPUBs, audiobooks, digital formats, OCR status, and storage links. |
-| `Lookup_Codes` | Controlled values for classification and data-entry dropdowns. |
+The Excel workbook is not merely a list of books. It is intended to be a structured collection-management layer.
 
-The downloadable workbook may include additional dashboard or label-layout sheets; consult the version you download for its complete worksheet list.
+Dublin Core first
 
-### Use the workbook
+Dublin Core is the primary interoperability metadata framework. The workbook preserves bibliographic and archival information in a form that can later be exported or transformed into other standards and formats.
 
-1. [Download the template](./Personal%20Library%20Catalogue%20%26%20Accession%20Number%20Generator%20(Enhanched).xlsx).
-2. Open it in Microsoft Excel, or another spreadsheet application that supports its formulas and validation rules.
-3. Enter each book's title, author, type, genre, and other available details.
-4. Check the generated item number and call number; assign a shelf location.
-5. Save the `.xlsx` file for local import, or upload it to Google Sheets for cloud-based reading.
+Physical and digital collections together
 
-**Compatibility note:** Spreadsheet formulas and data validation can behave differently in LibreOffice and Google Sheets. Verify generated identifiers after converting the workbook.
+The project supports books, magazines, journals, periodicals, manuscripts, photographs, newspaper clippings, maps, posters, pamphlets, ephemera, PDFs, ebooks, scanned documents, audio, video, images, datasets, and other digital resources.
 
-## Web application
+A physical object and its digital surrogate can be represented as related records rather than being forced into the same storage model.
 
-**[🌐 Open Spine Studio](https://masudranamondal1-lgtm.github.io/library-spine-studio/)**
+Human-readable identifiers
 
-The browser application reads catalog data from a published Google Sheet, a local Excel/CSV file, or manual entry. It provides a searchable catalog and a dedicated label-preview and print interface.
+The project uses project-specific identifiers and call numbers. It does not claim to implement Dewey Decimal Classification or Library of Congress Classification.
 
-| Feature | Description |
-|---|---|
-| **Search and filters** | Find books by title, author, call number, type, genre, language, status, or shelf, as supported by your catalog. |
-| **Three label styles** | Choose Standard Card, Library Block, or Minimal Spine. |
-| **A4 print layout** | Arrange up to 30 labels on each sheet, with optional spare positions. |
-| **Google Sheets refresh** | Check the published catalog approximately every 12 seconds while connected. |
-| **Local import** | Read supported `.xlsx` and `.csv` files in the browser. |
-| **Manual entry** | Add books to the current local working catalog without modifying the cloud source. |
-| **ISBN lookup** | On supported mobile browsers, scan an ISBN and retrieve available metadata through Google Books. |
-| **Offline access** | Use cached catalog data and previously cached application resources where available. |
+Semi-controlled physical locations
 
-### Label templates
+Location Type uses controlled values such as Shelf, Magazine Rack, Journal Rack, Archive, Cabinet, Box, and Other. The actual Location Identifier remains user-defined, for example A2, MR1, ARCH-01, or BOX-07.
 
-- **Standard Card:** call number, item number, title, author, volume, and optional shelf badge.
-- **Library Block:** stacked call-number presentation, metadata, and an optional decorative barcode.
-- **Minimal Spine:** a compact design for narrower book spines.
+Local-first operation
 
-A decorative barcode is **not** a guaranteed scannable inventory barcode. Use a validated barcode standard and test it with a scanner before relying on it for circulation or inventory.
+Local Excel/CSV catalogues can be loaded directly into the browser. No dedicated application server is required for the basic workflow.
 
-## Quick start
+How It Works
 
-1. **Prepare your catalog.** [Download the workbook](./Personal%20Library%20Catalogue%20%26%20Accession%20Number%20Generator%20(Enhanched).xlsx), enter your books, and check the generated call numbers.
-2. **Open the app.** Visit [Personal Library Manager & Spine Studio](https://masudranamondal1-lgtm.github.io/library-spine-studio/).
-3. **Choose a data source.** Import your `.xlsx`/`.csv` file, connect a published Google Sheet, or enter books manually.
-4. **Find your books.** Search and filter the catalog, then choose a label template and appearance settings.
-5. **Preview and print.** Start with a plain-paper test sheet, check the alignment against your actual adhesive stock, and print the labels.
+        Excel Workbook
+             |
+             | .xlsx / .csv
+             v
+      +------------------+
+      |   Spine Studio   |
+      | Search / Browse  |
+      | Filter / ISBN    |
+      | Labels / Print   |
+      +--------+---------+
+               |
+               v
+          A4 Spine Labels
 
-### Install on your device
+A supported published Google Sheet can also be used as a read-only source. The application does not automatically write changes back to the original Excel workbook or Google Sheet.
 
-| Platform | Installation |
-|---|---|
-| Android, Chrome | Open the site, then choose **Install app** or **Add to Home screen** from the browser menu, if offered. |
-| iPhone/iPad, Safari | Open the site, tap **Share**, then **Add to Home Screen**. |
-| Desktop, Chrome/Edge | Use the install icon in the address bar, if available. |
+Quick Start
 
-Installation and full offline operation depend on browser support and successful caching of the application and its external resources. A home-screen shortcut alone does not guarantee offline functionality.
+1. Download the workbook
 
-## Call-number format
+Download Personal Library Template.xlsx from the repository.
 
-The workbook uses an adapted classification pattern:
+2. Open the workbook
 
-```text
+Use Microsoft Excel, LibreOffice Calc, or another compatible spreadsheet application.
+
+3. Enter your collection
+
+Use the Catalog sheet for physical items. Typical fields include Title, Creator, Type, Genre, Language, Volume, Publisher, Publication Year, ISBN/ISSN, Location, Condition, Acquisition information, Rights, Notes, and Description.
+
+4. Save the workbook
+
+Save after editing so spreadsheet formulas are recalculated and cached values are available to the browser application.
+
+5. Open Spine Studio
+
+Visit https://masudranamondal1-lgtm.github.io/library-spine-studio/
+
+6. Import the workbook
+
+Use Local File and select the .xlsx file. Search, filter, sort, inspect records, and prepare labels.
+
+7. Print
+
+Choose a label style, preview it, and print to A4 or save the output as PDF. Test alignment on ordinary paper before using adhesive stock.
+
+Workbook Architecture
+
+The current workbook is designed as a multi-sheet collection-management system.
+
+Sheet
+
+Purpose
+
+README
+
+Workbook documentation
+
+Settings
+
+Configurable library and metadata parameters
+
+Lookup_Codes
+
+Controlled vocabularies and dropdown values
+
+Catalog
+
+Physical collection and bibliographic records
+
+Digital_Catalog
+
+Digital resources and digital-resource metadata
+
+Archive
+
+Archival objects, including physical and digital material
+
+Circulation
+
+Loans, borrowers, due dates, and returns
+
+Members
+
+Borrower/member records
+
+Spine_Labels
+
+Derived label data
+
+Dublin_Core
+
+Dublin Core mapping and metadata/export structure
+
+Data_Quality
+
+Missing-data and integrity checks
+
+Dashboard
+
+Collection-level summary information
+
+JSON_Export
+
+Structured export-oriented data
+
+The exact workbook version in the repository remains authoritative for the fields and formulas available in that release.
+
+Collection Types
+
+Physical Collection
+
+The physical catalog can represent books, magazines, journals, periodicals, newsletters, annuals, special issues, and other printed resources. Records can include identifiers, call numbers, bibliographic metadata, physical location, condition, acquisition information, and circulation status.
+
+Digital Collection
+
+The digital catalog is intended for PDF, EPUB, MOBI, DJVU, TXT, DOCX, HTML, XML, TEI XML, Markdown, JPG, PNG, TIFF, WebP, MP3, WAV, FLAC, M4A, MP4, MKV, MOV, WebM, datasets, spreadsheets, presentations, websites, software/code, and other digital resources.
+
+Digital records can include format, MIME type, file extension, file size, storage path, URI, OCR status, searchability, rights, access level, checksum, preservation status, reading/usage status, and relationships to physical or archival records.
+
+Archive
+
+The archive is not restricted to digitised material. It can contain physical archival objects such as newspaper clippings, manuscripts, photographs, posters, maps, pamphlets, brochures, personal papers, ephemera, rare printed materials, and historical books, as well as their digital surrogates.
+
+Archival records can include provenance, acquisition, condition, physical/digital status, archive location, digitisation status, OCR status, rights, access level, and related-resource identifiers.
+
+Metadata
+
+Dublin Core
+
+Dublin Core is the project's primary metadata framework. The implementation is intended to support core elements such as:
+
+Title
+
+Creator
+
+Contributor
+
+Publisher
+
+Date
+
+Subject
+
+Description
+
+Type
+
+Format
+
+Identifier
+
+Source
+
+Language
+
+Relation
+
+Coverage
+
+Rights
+
+Project-specific cataloguing fields remain available where collection management requires information beyond the core Dublin Core vocabulary.
+
+Interoperability
+
+The workbook is designed with future interoperability in mind, including CSV, JSON, Dublin Core, TEI-related workflows, bibliographic APIs, external identifiers, and future digital-archive platforms.
+
+TEI is treated as an interoperability and scholarly-text pathway rather than as a replacement for Dublin Core.
+
+Call Numbers
+
+The project uses a readable, project-specific structure:
+
 TYPE-GENRE-AUTHOR-ITEM-VOLUME
-```
 
-For example, `FIC-LIT-TAG-001-Vol1` identifies a fiction/literature item using the author code `TAG`, item number `001`, and volume `1`. For a single-volume work, the volume suffix may be omitted, as in `NF-HIS-HAR-019`.
+Example:
 
-| Component | Example | Meaning |
-|---|---|---|
-| Type | `NF` | Non-fiction |
-| Genre | `HIS` | History |
-| Author code | `HAR` | Code derived from Harari |
-| Item number | `019` | Catalog item sequence |
-| Volume | `Vol1` | Optional volume designation |
+FIC-LIT-TAG-001-Vol1
 
-These are **project-specific call numbers**, not official Library of Congress or Dewey Decimal classifications. An abbreviated surname is also not necessarily a standard Cutter number.
+These call numbers are project-specific. They are not official Dewey Decimal or Library of Congress classifications, and author abbreviations should not be confused with standard Cutter numbers.
 
-## Printing spine labels
+Author Codes and Identifiers
 
-The print layout targets **A4 portrait** with **3 columns × 10 rows**, or up to **30 labels per sheet**. The intended label size is **70 × 25.4 mm**.
+The workbook supports automatic author-code generation and manual override. For example, Rabindranath Tagore may produce TAG.
 
-### Recommended browser settings
+The project distinguishes between item identifiers, accession numbers, call numbers, ISBN/ISSN, DOI, URI, and other external identifiers.
 
-| Setting | Value |
-|---|---|
-| Paper | A4 |
-| Orientation | Portrait |
-| Scale | 100% / Actual size |
-| Margins | None, if the application supplies its own print margins |
-| Background graphics | On, for colored accents and guides |
-| Browser headers and footers | Off |
-| Fit to page | Off |
+A permanent accession number should identify the item rather than the current spreadsheet row. Do not assume that a row-derived formula remains stable after sorting, inserting, deleting, or migrating records.
 
-**Important physical-fit check:** Three labels measuring 70 mm across already occupy the entire 210 mm width of A4 paper. They cannot also have horizontal gaps or left/right margins. Similarly, ten 25.4 mm labels plus nine 2.2 mm gaps require 273.8 mm before top and bottom margins. The dimensions of the actual sticker stock and the application's print CSS must agree. Do not assume every product advertised as “30-up” uses the same geometry.
+Locations
 
-**Before using adhesive sheets:**
+The location model is intentionally semi-controlled.
 
-1. Print a complete test page on plain A4 paper at 100% scale.
-2. Measure the first and last labels and compare the printout with your sticker stock.
-3. Hold the test print behind the sticker sheet against a light source to check alignment.
-4. Adjust the print layout or select matching stock if the edges drift. Do not use *Fit to page* to disguise a dimensional mismatch.
+Location Type: Shelf, Magazine Rack, Journal Rack, Archive, Cabinet, Box, Other.
 
-A printer's non-printable margins may prevent true edge-to-edge output even when the browser is set to zero margins.
+Location Identifier: user-defined values such as A1, S3, MR1, JR2, ARCH-01, or BOX-04.
 
-## Data sources and synchronization
+This keeps the system practical when the physical arrangement of a personal collection changes.
 
-| Source | Update behavior | Persistence |
-|---|---|---|
-| **Published Google Sheets** | Read-only polling, approximately every 12 seconds | Browser cache after successful fetch |
-| **Local Excel / CSV** | Import when selected or dropped; re-import after external changes | Browser cache, subject to browser storage limits |
-| **Manual entry** | Immediate changes to the local working catalog | Session/in-memory unless explicitly saved or exported |
-| **Cached catalog** | Last successfully cached records, when available | Browser storage |
+Circulation
 
-### Connect Google Sheets
+The workbook includes a basic lending model covering Loan ID, Item ID, Member ID, borrower, checkout date, due date, return date, status, and notes. The default loan period is configurable.
 
-1. Upload the workbook to Google Drive and open it as a Google Sheet.
-2. Publish the relevant catalog worksheet to the web, or configure a supported public view link.
-3. Copy the published URL into the app's Google Sheets source field.
-4. Connect and confirm the displayed book count and last-sync status.
+This is intended for personal and small-scale use, not as a replacement for a full institutional ILS.
 
-**Privacy warning:** Publishing a sheet can make its contents accessible to anyone with the link, or more widely depending on the publishing settings. Do not publish borrowers' personal details, private notes, or other sensitive records. Consider a separate, public-safe catalog sheet.
+Spine Label Printing
 
-Cloud synchronization is **Sheets → App only**. Local changes do not write back to Google Sheets. If cloud data is refreshed, review any unsaved local changes before replacing the working catalog.
+The web application provides printable label layouts, including:
 
-## Mobile ISBN scanner
+Standard Card
 
-On supported mobile browsers, the scanner uses the browser's native `BarcodeDetector` API to read an ISBN from a book's barcode. When a code is detected, the app can request matching bibliographic metadata from the [Google Books API](https://developers.google.com/books).
+Library Block
 
-Camera scanning requires browser support, camera permission, and a secure context such as HTTPS. Availability varies by browser and device; use manual ISBN entry when scanning is unavailable. Metadata returned by Google Books may be incomplete or incorrect, so review it before adding a record.
+Minimal Spine
 
-## Technology and privacy
+The application targets A4 printing with multiple labels per page.
 
-- **Frontend:** semantic HTML5, CSS custom properties, and vanilla JavaScript (ES2020+).
-- **Spreadsheet import:** [SheetJS](https://sheetjs.com/) for client-side workbook parsing.
-- **Cloud catalog:** published Google Sheets CSV endpoints.
-- **ISBN metadata:** [Google Books API](https://developers.google.com/books).
-- **Local persistence:** browser storage for cached data and preferences.
-- **Offline support:** service-worker caching where supported and successfully installed.
-- **Hosting:** static files on GitHub Pages, with no application backend or build step.
+Before printing on adhesive stock:
 
-The app does not require an account or its own database server. **Local spreadsheet parsing happens in the browser**, but connecting to Google Sheets, using Google Books, or loading CDN resources necessarily makes requests to those third-party services. Offline use is limited to resources already available locally or cached.
+Print a test page on ordinary A4 paper.
 
-## Troubleshooting
+Use 100% / Actual Size.
 
-<details>
-<summary><strong>My Google Sheet will not load.</strong></summary>
+Disable browser headers and footers.
 
-Check that the relevant worksheet is published or accessible through a supported public link. Confirm the URL and worksheet name, and test the published CSV endpoint directly. Browser/network restrictions can also prevent access.
+Check paper size and orientation.
 
-</details>
+Compare the printout against the actual label sheet.
 
-<details>
-<summary><strong>My labels are misaligned.</strong></summary>
+Adjust the layout if necessary.
 
-Use A4 paper, 100% scale, no browser headers/footers, and a plain-paper test. Verify the actual label width, height, gaps, and sheet margins. Different 30-up products may have incompatible dimensions.
+Do not use Fit to Page to conceal a dimensional mismatch.
 
-</details>
+Web Application Features
 
-<details>
-<summary><strong>Bengali text appears as boxes.</strong></summary>
+Catalog search
 
-Use UTF-8 CSV files and ensure the device has a Bengali-capable font, such as [Noto Sans Bengali](https://fonts.google.com/noto/specimen/Noto+Sans+Bengali). Check the browser's print preview before printing.
+Filtering and sorting
 
-</details>
+Local Excel import
 
-<details>
-<summary><strong>The app still shows an older version.</strong></summary>
+CSV import
 
-Reload the page. If the app uses a service worker, an older cached version may remain active until the updated worker installs. Developers should update the service-worker cache version when deploying changes; users may need to close and reopen the app or clear its site data.
+Read-only Google Sheets source support
 
-</details>
+Manual local entry
 
-<details>
-<summary><strong>My call numbers are blank or duplicated.</strong></summary>
+ISBN scanning on supported mobile browsers
 
-Check the required workbook fields and formulas, particularly the title, classification values, author, and item-number sequence. Verify that formula cells were not overwritten and that existing identifiers have not been regenerated after sorting or deleting records.
+Google Books metadata lookup where available
 
-</details>
+Call-number and location display
 
-<details>
-<summary><strong>ISBN scanning is unavailable.</strong></summary>
+Label preview
 
-Check camera permissions, HTTPS, and browser support for `BarcodeDetector`. Use manual ISBN entry if the device does not support camera detection.
+A4 print layout
 
-</details>
+PWA installation support
 
-## License
+Browser-side caching where supported
 
-Released under the **MIT License**. See [LICENSE](./LICENSE) for the complete terms.
+ISBN Scanner
 
-## Support
+On supported mobile browsers, the application can use the browser's barcode capabilities to detect ISBNs. When available, the ISBN can be used to request bibliographic metadata from Google Books.
 
-If this project helps you organize your books, consider sharing it with another reader or supporting its development through the **📖 Buy me a book** button in the app or [Buy Me a Coffee](https://buymeacoffee.com/masudshaon).
+Camera permission, browser support, HTTPS/secure context, and a readable barcode are required. External metadata should always be checked before it becomes part of the authoritative catalog.
 
-Found a bug or have an idea? [Open a GitHub issue](https://github.com/masudranamondal1-lgtm/library-spine-studio/issues).
+Data Sources
+
+Source
+
+Behaviour
+
+Local Excel
+
+Import an .xlsx file in the browser
+
+Local CSV
+
+Import a .csv file in the browser
+
+Published Google Sheet
+
+Read-only external catalog source
+
+Manual entry
+
+Local working records in the application
+
+Cached catalog
+
+Previously available data where browser storage permits
+
+Google Sheets integration is read-only from the application's perspective. Changes made in the application are not automatically written back to the source sheet.
+
+Do not publish private borrower information or sensitive collection data to a public sheet.
+
+Privacy
+
+The basic local workflow does not require an account, database server, or subscription. Local spreadsheet parsing occurs in the browser.
+
+Optional network-connected features may communicate with third parties, including Google Sheets, Google Books, and external CDN resources used by the application. Users should therefore distinguish between local cataloguing and optional connected features.
+
+Technology
+
+Frontend: HTML5, CSS, Vanilla JavaScript
+
+Spreadsheet parsing: SheetJS
+
+Metadata lookup: Google Books API
+
+Hosting: GitHub Pages
+
+Offline/PWA: Web App Manifest and Service Worker
+
+Workbook generation: Python and openpyxl
+
+The application has no dedicated backend or database server.
+
+Python Workbook Generator
+
+To regenerate the workbook programmatically:
+
+pip install openpyxl
+python build_library.py
+
+To generate a blank template:
+
+python build_library.py --blank
+
+The generator keeps workbook construction reproducible rather than requiring manual creation of every worksheet.
+
+Development
+
+Clone the repository:
+
+git clone https://github.com/masudranamondal1-lgtm/library-spine-studio.git
+cd library-spine-studio
+
+Main project files:
+
+library-spine-studio/
+├── .github/
+├── index.html
+├── Personal Library Template.xlsx
+├── build_library.py
+├── manifest.json
+├── service-worker.js
+├── donate.html
+├── qr-code.png
+├── LICENSE
+└── README.md
+
+Open index.html for basic testing. Use a local HTTP server when testing service-worker/PWA behaviour.
+
+Repository Safety
+
+The public repository should contain software and blank templates, not private personal catalogues.
+
+Do not commit:
+
+personal library workbooks
+
+borrower/member information
+
+private notes
+
+private archival metadata
+
+unpublished manuscripts
+
+private file paths
+
+credentials or API keys
+
+If a private workbook has previously been committed, deleting the current copy does not necessarily remove it from Git history. A history cleanup may be required.
+
+Roadmap
+
+The project is evolving toward a more complete personal library and digital-archive environment. Development areas include:
+
+stronger Dublin Core implementation
+
+improved digital-resource ingestion
+
+richer archive relationships
+
+physical/digital object relationships
+
+bibliographic API enrichment
+
+stronger identifier management
+
+improved data-quality validation
+
+structured CSV/JSON export
+
+TEI interoperability workflows
+
+metadata reconciliation
+
+tighter catalog-to-web-app integration
+
+more flexible label layouts
+
+richer dashboard and collection analytics
+
+The goal is not to reproduce a large institutional library-management system. It is to create a portable, understandable, standards-aware personal library and archive system that can grow with a serious research collection.
+
+Contributing
+
+Bug reports, documentation improvements, and code contributions are welcome.
+
+When reporting a problem, include:
+
+What you were trying to do
+
+Browser or spreadsheet application used
+
+Workbook version
+
+Expected result
+
+Actual result
+
+Screenshot or minimal example when useful
+
+Do not upload private library data to public issues.
+
+License
+
+Released under the MIT License. See LICENSE for the complete terms.
+
+Credits
+
+The project uses or is compatible with:
+
+SheetJS for browser-side spreadsheet parsing
+
+Google Books API for optional ISBN metadata lookup
+
+GitHub Pages for static hosting
+
+Python / openpyxl for workbook generation
+
+Support
+
+If the project is useful, support options are available through the application.
+
+Buy Me a Coffee: https://buymeacoffee.com/masudshaon
+
+GitHub Issues: https://github.com/masudranamondal1-lgtm/library-spine-studio/issues
+
+Author
+
+Masud Rana Mondal
+
+Writer · Researcher · Digital Humanities · Publishing · Library & Archive Technology
+
+GitHub: https://github.com/masudranamondal1-lgtm
