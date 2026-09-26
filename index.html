@@ -926,24 +926,24 @@
     }
     .scan-actions .btn { flex: 1; justify-content: center; min-width: 120px; }
 
-    /* Scanner is mobile-only: hidden on desktop */
-    #btnOpenScanner {
-      display: none !important;
+    /* ============================================================
+       MOBILE DETECTION — dual-signal strategy
+       Trigger on: narrow viewport OR any touch-primary device.
+       The touch signal (pointer: coarse + hover: none) catches
+       phones in landscape, "Desktop site" mode, and any case
+       where the viewport is misleadingly wide.
+       ============================================================ */
+
+    /* Scanner button: hidden by default, shown on mobile */
+    #btnOpenScanner { display: none !important; }
+    @media (max-width: 768px), (hover: none) and (pointer: coarse) {
+      #btnOpenScanner { display: inline-flex !important; }
     }
-    @media (max-width: 768px) {
-      #btnOpenScanner {
-        display: inline-flex !important;
-      }
-    }
-    /* Safety net: hide the entire scanner dialog on desktop */
-    @media (min-width: 769px) {
-      .scan-dialog {
-        display: none !important;
-      }
-      .scan-dialog::backdrop {
-        display: none !important;
-        background: transparent !important;
-      }
+
+    /* Scanner dialog: hidden on true desktops */
+    @media (min-width: 769px) and (hover: hover) and (pointer: fine) {
+      .scan-dialog { display: none !important; }
+      .scan-dialog::backdrop { display: none !important; background: transparent !important; }
     }
 
     .scan-manual {
@@ -974,7 +974,7 @@
       .theme-switcher button .theme-label { display: none; }
       .theme-switcher button { padding: 6px 9px; min-height: 36px; }
     }
-    @media (max-width: 640px) {
+    @media (max-width: 640px), (hover: none) and (pointer: coarse) {
       .app-header { padding: 10px 14px; }
       .brand-text strong { font-size: 0.95rem; }
       .brand-text small { font-size: 0.72rem; }
@@ -1009,7 +1009,7 @@
     /* ========== MOBILE NAVIGATION (Bottom Tabs) ========== */
     .mobile-nav { display: none; }
 
-    @media (max-width: 768px) {
+    @media (max-width: 768px), (hover: none) and (pointer: coarse) {
       body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
 
       .mobile-nav {
@@ -1038,15 +1038,9 @@
         width: 24px; height: 24px;
         transition: color 0.14s;
       }
-      .mobile-nav button.active {
-        color: var(--accent);
-      }
-      .mobile-nav button.active svg {
-        color: var(--accent);
-      }
-      .mobile-nav button:active {
-        background: rgba(255, 255, 255, 0.08);
-      }
+      .mobile-nav button.active { color: var(--accent); }
+      .mobile-nav button.active svg { color: var(--accent); }
+      .mobile-nav button:active { background: rgba(255, 255, 255, 0.08); }
       .mobile-nav button .tab-label {
         font-size: 0.68rem;
         letter-spacing: 0.02em;
@@ -1721,8 +1715,7 @@
       LABEL_HEIGHT_MM: 25.4,
       SPARE_LABEL_TEXT: '+ Spare Label',
       GOOGLE_BOOKS_API: 'https://www.googleapis.com/books/v1/volumes',
-      SCAN_INTERVAL_MS: 350,
-      MOBILE_BREAKPOINT: 768
+      SCAN_INTERVAL_MS: 350
     };
 
     const TYPE_COLORS = {
@@ -1730,6 +1723,20 @@
       'DRA': '#a85c1a', 'REF': '#5a6270', 'GRA': '#a83232',
       'DEFAULT': '#2c4a7c'
     };
+
+    /* =======================================================================
+       MOBILE DETECTION — dual signal (pointer capability + narrow viewport)
+       ======================================================================= */
+    function isTouchMobileDevice() {
+      // Primary: pointer capability — reliable across orientations, desktop-site mode,
+      // and even when the layout viewport widens due to content overflow.
+      try {
+        if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return true;
+      } catch (e) {}
+      // Fallback: narrow viewport (covers desktop browser windows and non-touch small screens).
+      if (window.innerWidth <= 768) return true;
+      return false;
+    }
 
     /* =======================================================================
        STATE
@@ -1919,7 +1926,7 @@
         btn.classList.toggle('active', btn.getAttribute('data-mobile-tab') === view);
       });
       try { localStorage.setItem(CONFIG.MOBILE_VIEW_KEY, view); } catch (e) {}
-      if (window.innerWidth <= CONFIG.MOBILE_BREAKPOINT) window.scrollTo(0, 0);
+      if (isTouchMobileDevice()) window.scrollTo(0, 0);
     }
 
     function initMobileNav() {
@@ -2569,14 +2576,14 @@
 
     /* =======================================================================
        SCANNER — Barcode detection + Google Books lookup
-       Mobile-only feature. Hidden on desktop via CSS.
+       Mobile-only feature. Hidden on desktop via CSS + guarded in JS.
        ======================================================================= */
     const Scanner = {
       stream: null,
       detector: null,
       scanTimer: null,
       active: false,
-      closed: false,          // ← set true in close(), guards against late getUserMedia resolves
+      closed: false,
       lastIsbn: null,
       lastBook: null,
 
@@ -2585,8 +2592,8 @@
       },
 
       async open() {
-        // Guard: mobile only
-        if (window.innerWidth > CONFIG.MOBILE_BREAKPOINT) return;
+        // Guard: only allow on touch mobile devices (pointer capability based).
+        if (!isTouchMobileDevice()) return;
 
         this.closed = false;
 
@@ -2615,13 +2622,11 @@
         this.lastBook = null;
 
         try {
-          // Prefer rear camera
           const stream = await navigator.mediaDevices.getUserMedia({
             video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
             audio: false
           });
 
-          // Guard: if user closed the dialog while we were waiting, kill the stream
           if (this.closed) {
             stream.getTracks().forEach(t => t.stop());
             return;
@@ -2631,7 +2636,6 @@
           el.scanVideo.srcObject = this.stream;
           await el.scanVideo.play();
 
-          // Guard again: user may have closed during play()
           if (this.closed) {
             this.stream.getTracks().forEach(t => t.stop());
             this.stream = null;
@@ -2680,7 +2684,6 @@
       },
 
       async handleDetected(rawValue) {
-        // Normalize: ISBN can be digits only, 10 or 13 length
         const cleaned = rawValue.replace(/[^0-9Xx]/g, '');
         if (cleaned.length !== 10 && cleaned.length !== 13) return;
 
@@ -2691,7 +2694,6 @@
         el.scanStatus.className = 'scan-status';
         el.scanStatusText.textContent = `Found barcode: ${cleaned}. Looking up book…`;
 
-        // Vibrate for feedback on supported devices
         if (navigator.vibrate) navigator.vibrate(50);
 
         await this.lookupIsbn(cleaned);
@@ -2781,8 +2783,7 @@
     };
 
     function openScanner() {
-      // Scanner is mobile-only. On desktop, do nothing (button is hidden anyway).
-      if (window.innerWidth > CONFIG.MOBILE_BREAKPOINT) return;
+      if (!isTouchMobileDevice()) return;
       Scanner.open();
     }
 
