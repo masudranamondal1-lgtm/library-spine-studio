@@ -864,10 +864,48 @@ for kind, text in readme_lines:
     row += 1
 
 # ═════════════════════════════════════════════════════════════════
+# STRIP SAMPLE DATA IF --blank
+# ═════════════════════════════════════════════════════════════════
+import sys
+blank_mode = "--blank" in sys.argv
+
+if blank_mode:
+    # Catalog: clear rows 2..end (keep formulas, clear input cells)
+    cat = wb["Catalog"]
+    for r in range(2, ROWS_CAT + 2):
+        for col in (2, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                    21, 22, 23, 24, 25, 27, 28, 29, 30, 31, 32, 33):
+            cat.cell(r, col).value = None
+
+    # Digital_Catalog: same treatment
+    dig = wb["Digital_Catalog"]
+    for r in range(2, ROWS_DIG + 2):
+        for col in range(3, len(dig_cols) + 1):
+            dig.cell(r, col).value = None
+
+    # Archive: clear data rows
+    arc = wb["Archive"]
+    for r in range(2, ROWS_ARC + 2):
+        for col in range(2, len(arc_cols) + 1):
+            arc.cell(r, col).value = None
+
+    # Members: keep M001? No — clear all.
+    mem = wb["Members"]
+    for r in range(2, ROWS_MEM + 2):
+        for col in range(1, 8):
+            mem.cell(r, col).value = None
+
+    # Circulation: already empty except formulas
+    print("Blank mode: sample data stripped.")
+
+# ═════════════════════════════════════════════════════════════════
 # SAVE
 # ═════════════════════════════════════════════════════════════════
 wb.active = 0
-out = "Personal Library Manager & Digital Archive.xlsx"
+if blank_mode:
+    out = "Personal Library Template.xlsx"
+else:
+    out = "Personal Library Manager & Digital Archive.xlsx"
 wb.save(out)
 print(f"Workbook written: {out}")
 print(f"Sheets: {wb.sheetnames}")
