@@ -1,7 +1,7 @@
 📚 Personal Library Manager & Spine Studio
 
 <p align="center">
-  <strong>A browser-based personal library cataloguing, discovery, and spine-label printing toolkit, backed by a structured Excel workbook.</strong>
+  <strong>A lightweight library catalogue, digital-archive and spine-label toolkit.</strong>
 </p>
 
 <p align="center">
@@ -11,329 +11,180 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/📚_Physical-Collection-8B5E3C?style=flat-square" alt="Physical Collection">
-  <img src="https://img.shields.io/badge/💾_Digital-Digital_Archive-4169A1?style=flat-square" alt="Digital Archive">
-  <img src="https://img.shields.io/badge/🗂️_Metadata-Dublin_Core-6B4E71?style=flat-square" alt="Dublin Core">
-  <img src="https://img.shields.io/badge/🖨️_Output-A4_Labels-5B7553?style=flat-square" alt="A4 Labels">
+  📚 Physical Collection · 💾 Digital Archive · 🏷️ Dublin Core · 🖨️ A4 Labels · 🔒 Local-First
 </p>
-
-Catalogue books and other resources, generate consistent identifiers and call numbers, browse your collection in the browser, and prepare A4 spine labels without running a database server.
-
-Live application: https://masudranamondal1-lgtm.github.io/library-spine-studio/
-
-🧭 Contents
-
-
-
-Section
-
-
-
-🧭
-
-Overview
-
-Project purpose and architecture
-
-🧠
-
-Core Design Principles
-
-Data, metadata and privacy
-
-🚀
-
-Quick Start
-
-Get started quickly
-
-🗂️
-
-Workbook Architecture
-
-Excel data model
-
-📚
-
-Collection Types
-
-Physical, digital and archival resources
-
-🏷️
-
-Metadata
-
-Dublin Core and interoperability
-
-🔢
-
-Call Numbers
-
-Project classification system
-
-🖨️
-
-Spine Label Printing
-
-A4 printing workflow
-
-🌐
-
-Web Application Features
-
-Browser functionality
-
-🔒
-
-Privacy
-
-Local-first and external services
-
-🗺️
-
-Roadmap
-
-Future development
 
 🧭 Overview
 
-Personal Library Manager & Spine Studio is designed for personal libraries, researchers, collectors, writers, small libraries, and anyone who has accumulated enough books to discover that human memory is, regrettably, not a reliable cataloguing system.
-
-The project separates the work into two complementary layers:
-
-Layer
-
-Purpose
-
-Excel workbook
-
-Structured cataloguing, identifiers, classification, locations, metadata, circulation, archive records, and data-quality management
-
-Web application
-
-Search, browse, filter, import, ISBN-assisted lookup, spine-label preview, and A4 printing
+Personal Library Manager & Spine Studio combines a structured Excel catalogue with a browser-based interface for searching, browsing, metadata lookup, and printing spine labels.
 
 [!IMPORTANT]
-The workbook is the structured data layer. The browser application is the presentation, discovery, and printing layer.
+Excel is the structured data layer. The web application is the discovery and printing layer.
 
-[!TIP]
-Keep the workbook as the authoritative catalogue and use the web application as the interface around it.
+It is designed for personal libraries, researchers, collectors, writers, and small libraries without requiring a database server or subscription.
 
-The application can work with local .xlsx and .csv files. It can also read a supported published Google Sheet when the user explicitly connects one.
+✨ Core Features
 
-🚧 Project Status
+📚 Physical books, magazines, journals and periodicals
 
-🟡 Development: Active
-📚 Architecture: Library + Digital Archive
-🏷️ Primary metadata: Dublin Core
-🌐 Frontend: HTML / CSS / Vanilla JavaScript
-📊 Workbook: Excel + openpyxl
-🚀 Hosting: GitHub Pages
-📜 License: MIT
+💾 Digital resources including ebooks, scans, audio, video and datasets
 
-The project is under active development.
+🗂️ Physical and digital archival objects
 
-The repository currently contains the web application, a blank Excel template, the workbook generator, PWA assets, and project documentation. The workbook architecture is being expanded from a simple book catalogue into a broader Personal Library Manager & Digital Archive model.
+🏷️ Dublin Core-based metadata
 
-🧠 Core Design Principles
+🔢 Project-specific call numbers and author codes
 
-Structured data first
+📍 Semi-controlled shelf/location management
 
-The Excel workbook is not merely a list of books. It is intended to be a structured collection-management layer.
+🔄 Basic circulation and member management
 
-Dublin Core first
+🖨️ A4 spine-label printing
 
-Dublin Core is the primary interoperability metadata framework. The workbook preserves bibliographic and archival information in a form that can later be exported or transformed into other standards and formats.
+📷 ISBN scanning on supported mobile browsers
 
-Physical and digital collections together
+📤 CSV / JSON / interoperability-ready data
 
-The project supports books, magazines, journals, periodicals, manuscripts, photographs, newspaper clippings, maps, posters, pamphlets, ephemera, PDFs, ebooks, scanned documents, audio, video, images, datasets, and other digital resources.
-
-A physical object and its digital surrogate can be represented as related records rather than being forced into the same storage model.
-
-Human-readable identifiers
-
-The project uses project-specific identifiers and call numbers. It does not claim to implement Dewey Decimal Classification or Library of Congress Classification.
-
-Semi-controlled physical locations
-
-Location Type uses controlled values such as Shelf, Magazine Rack, Journal Rack, Archive, Cabinet, Box, and Other. The actual Location Identifier remains user-defined, for example A2, MR1, ARCH-01, or BOX-07.
-
-Local-first operation
-
-Local Excel/CSV catalogues can be loaded directly into the browser. No dedicated application server is required for the basic workflow.
-
-🔄 How It Works
-
-        Excel Workbook
-             |
-             | .xlsx / .csv
-             v
-      +------------------+
-      |   Spine Studio   |
-      | Search / Browse  |
-      | Filter / ISBN    |
-      | Labels / Print   |
-      +--------+---------+
-               |
-               v
-          A4 Spine Labels
-
-A supported published Google Sheet can also be used as a read-only source. The application does not automatically write changes back to the original Excel workbook or Google Sheet.
+🌐 Optional read-only Google Sheets source
 
 🚀 Quick Start
 
-1. Download the workbook
+1. Prepare the workbook
 
-Download Personal Library Template.xlsx from the repository.
+Download Personal Library Template.xlsx, open it in Excel or another compatible spreadsheet application, and enter your collection in the Catalog sheet.
 
-2. Open the workbook
+Typical fields include:
 
-Use Microsoft Excel, LibreOffice Calc, or another compatible spreadsheet application.
+Title · Creator · Type · Genre · Language · Volume · Publisher · ISBN · Location · Condition
 
-3. Enter your collection
+Save the workbook after editing so spreadsheet formulas are recalculated.
 
-Use the Catalog sheet for physical items. Typical fields include Title, Creator, Type, Genre, Language, Volume, Publisher, Publication Year, ISBN/ISSN, Location, Condition, Acquisition information, Rights, Notes, and Description.
+2. Open Spine Studio
 
-4. Save the workbook
+🌐 https://masudranamondal1-lgtm.github.io/library-spine-studio/
 
-Save after editing so spreadsheet formulas are recalculated and cached values are available to the browser application.
+Choose Local File and load your .xlsx or .csv.
 
-5. Open Spine Studio
+3. Browse and print
 
-Visit https://masudranamondal1-lgtm.github.io/library-spine-studio/
+Search or filter your collection, select a label style, preview the page, and print to A4 or save as PDF.
 
-6. Import the workbook
-
-Use Local File and select the .xlsx file. Search, filter, sort, inspect records, and prepare labels.
-
-7. Print
-
-Choose a label style, preview it, and print to A4 or save the output as PDF. Test alignment on ordinary paper before using adhesive stock.
+[!TIP]
+Always print a test page on ordinary paper before using adhesive label stock.
 
 🗂️ Workbook Architecture
-
-The current workbook is designed as a multi-sheet collection-management system.
 
 Sheet
 
 Purpose
 
-README
-
-Workbook documentation
-
-Settings
-
-Configurable library and metadata parameters
-
-Lookup_Codes
-
-Controlled vocabularies and dropdown values
-
 Catalog
 
-Physical collection and bibliographic records
+Physical collection
 
 Digital_Catalog
 
-Digital resources and digital-resource metadata
+Digital resources
 
 Archive
 
-Archival objects, including physical and digital material
-
-Circulation
-
-Loans, borrowers, due dates, and returns
-
-Members
-
-Borrower/member records
-
-Spine_Labels
-
-Derived label data
+Physical and digital archival objects
 
 Dublin_Core
 
-Dublin Core mapping and metadata/export structure
+Metadata mapping/export
+
+Circulation
+
+Loans and returns
+
+Members
+
+Borrowers
+
+Lookup_Codes
+
+Controlled vocabularies
+
+Spine_Labels
+
+Label data
 
 Data_Quality
 
-Missing-data and integrity checks
+Integrity checks
 
 Dashboard
 
-Collection-level summary information
+Collection overview
 
 JSON_Export
 
-Structured export-oriented data
+Structured export
 
-The exact workbook version in the repository remains authoritative for the fields and formulas available in that release.
+Settings
 
-📚 Collection Types
+Configuration
 
-Physical Collection
+The workbook is intended to remain the authoritative catalogue.
 
-The physical catalog can represent books, magazines, journals, periodicals, newsletters, annuals, special issues, and other printed resources. Records can include identifiers, call numbers, bibliographic metadata, physical location, condition, acquisition information, and circulation status.
+📚 Collection Model
 
-Digital Collection
+Physical
 
-The digital catalog is intended for PDF, EPUB, MOBI, DJVU, TXT, DOCX, HTML, XML, TEI XML, Markdown, JPG, PNG, TIFF, WebP, MP3, WAV, FLAC, M4A, MP4, MKV, MOV, WebM, datasets, spreadsheets, presentations, websites, software/code, and other digital resources.
+Books, magazines, journals, periodicals, newsletters, printed reference material and other publications.
 
-Digital records can include format, MIME type, file extension, file size, storage path, URI, OCR status, searchability, rights, access level, checksum, preservation status, reading/usage status, and relationships to physical or archival records.
+Digital
+
+PDF, EPUB, MOBI, DJVU, TXT, DOCX, HTML, XML, TEI XML, Markdown, images, audio, video, datasets and other digital resources.
 
 Archive
 
-The archive is not restricted to digitised material. It can contain physical archival objects such as newspaper clippings, manuscripts, photographs, posters, maps, pamphlets, brochures, personal papers, ephemera, rare printed materials, and historical books, as well as their digital surrogates.
+The archive can contain both physical originals and digital surrogates, including:
 
-Archival records can include provenance, acquisition, condition, physical/digital status, archive location, digitisation status, OCR status, rights, access level, and related-resource identifiers.
+manuscripts
 
-🏷️ Metadata
+newspaper clippings
 
-Dublin Core
+photographs
 
-Dublin Core is the project's primary metadata framework. The implementation is intended to support core elements such as:
+maps
 
-Title
+posters
 
-Creator
+pamphlets
 
-Contributor
+personal papers
 
-Publisher
+ephemera
 
-Date
+rare or historical printed material
 
-Subject
+Records can include provenance, condition, location, digitisation status, OCR, rights and access information.
 
-Description
+🏷️ Metadata & Interoperability
 
-Type
+Dublin Core is the primary metadata framework.
 
-Format
+Core elements include:
 
-Identifier
+Title · Creator · Contributor · Publisher · Date · Subject · Description · Type · Format · Identifier · Source · Language · Relation · Coverage · Rights
 
-Source
+Project-specific catalogue fields remain available where Dublin Core alone is insufficient.
 
-Language
+The system is designed for future:
 
-Relation
+CSV export
 
-Coverage
+JSON export
 
-Rights
+TEI workflows
 
-Project-specific cataloguing fields remain available where collection management requires information beyond the core Dublin Core vocabulary.
+bibliographic API enrichment
 
-Interoperability
+external identifiers
 
-The workbook is designed with future interoperability in mind, including CSV, JSON, Dublin Core, TEI-related workflows, bibliographic APIs, external identifiers, and future digital-archive platforms.
-
-TEI is treated as an interoperability and scholarly-text pathway rather than as a replacement for Dublin Core.
+digital-archive interoperability
 
 🔢 Call Numbers
 
@@ -345,35 +196,28 @@ Example:
 
 FIC-LIT-TAG-001-Vol1
 
-These call numbers are project-specific. They are not official Dewey Decimal or Library of Congress classifications, and author abbreviations should not be confused with standard Cutter numbers.
+These are not Dewey Decimal or Library of Congress classifications.
 
-✍️ Author Codes and Identifiers
+Author codes can be generated automatically and manually overridden when necessary.
 
-The workbook supports automatic author-code generation and manual override. For example, Rabindranath Tagore may produce TAG.
-
-The project distinguishes between item identifiers, accession numbers, call numbers, ISBN/ISSN, DOI, URI, and other external identifiers.
-
-A permanent accession number should identify the item rather than the current spreadsheet row. Do not assume that a row-derived formula remains stable after sorting, inserting, deleting, or migrating records.
+[!WARNING]
+Permanent accession numbers should identify an item, not a spreadsheet row. Verify identifiers before sorting, deleting, or migrating records.
 
 📍 Locations
 
-The location model is intentionally semi-controlled.
+Location Type uses controlled values such as:
 
-Location Type: Shelf, Magazine Rack, Journal Rack, Archive, Cabinet, Box, Other.
+Shelf · Magazine Rack · Journal Rack · Archive · Cabinet · Box · Other
 
-Location Identifier: user-defined values such as A1, S3, MR1, JR2, ARCH-01, or BOX-04.
+The actual Location Identifier remains user-defined:
 
-This keeps the system practical when the physical arrangement of a personal collection changes.
+A2 · SHELF-03 · MR1 · ARCH-01 · BOX-07
 
-🔄 Circulation
+This keeps the system flexible as the physical library changes.
 
-The workbook includes a basic lending model covering Loan ID, Item ID, Member ID, borrower, checkout date, due date, return date, status, and notes. The default loan period is configurable.
+🖨️ Spine Labels
 
-This is intended for personal and small-scale use, not as a replacement for a full institutional ILS.
-
-🖨️ Spine Label Printing
-
-The web application provides printable label layouts, including:
+The web application provides three label styles:
 
 Standard Card
 
@@ -381,93 +225,72 @@ Library Block
 
 Minimal Spine
 
-The application targets A4 printing with multiple labels per page.
+The print workflow targets A4 sheets with multiple labels per page.
 
-Before printing on adhesive stock:
+Recommended settings:
 
-Print a test page on ordinary A4 paper.
+Setting
 
-Use 100% / Actual Size.
+Value
 
-Disable browser headers and footers.
+Paper
 
-Check paper size and orientation.
+A4
 
-Compare the printout against the actual label sheet.
+Orientation
 
-Adjust the layout if necessary.
+Portrait
 
-Do not use Fit to Page to conceal a dimensional mismatch.
+Scale
 
-🌐 Web Application Features
+100% / Actual Size
 
-Catalog search
+Browser headers
 
-Filtering and sorting
+Off
 
-Local Excel import
+Fit to page
 
-CSV import
+Off
 
-Read-only Google Sheets source support
+🌐 Web Application
 
-Manual local entry
+The browser application supports:
 
-ISBN scanning on supported mobile browsers
+🔎 Search and filtering
 
-Google Books metadata lookup where available
+📥 Excel / CSV import
 
-Call-number and location display
+🌐 Published Google Sheets
 
-Label preview
+✍️ Manual local entry
 
-A4 print layout
+📷 ISBN scanning
 
-PWA installation support
+📖 Google Books metadata lookup
 
-Browser-side caching where supported
+🖨️ Label preview and printing
 
-📷 ISBN Scanner
+📱 PWA installation
 
-On supported mobile browsers, the application can use the browser's barcode capabilities to detect ISBNs. When available, the ISBN can be used to request bibliographic metadata from Google Books.
+💾 Browser caching where supported
 
-Camera permission, browser support, HTTPS/secure context, and a readable barcode are required. External metadata should always be checked before it becomes part of the authoritative catalog.
-
-🔌 Data Sources
-
-Source
-
-Behaviour
-
-Local Excel
-
-Import an .xlsx file in the browser
-
-Local CSV
-
-Import a .csv file in the browser
-
-Published Google Sheet
-
-Read-only external catalog source
-
-Manual entry
-
-Local working records in the application
-
-Cached catalog
-
-Previously available data where browser storage permits
-
-Google Sheets integration is read-only from the application's perspective. Changes made in the application are not automatically written back to the source sheet.
-
-Do not publish private borrower information or sensitive collection data to a public sheet.
+Google Sheets integration is read-only from the application.
 
 🔒 Privacy
 
-The basic local workflow does not require an account, database server, or subscription. Local spreadsheet parsing occurs in the browser.
+The local workflow does not require an account or application server. Local spreadsheet parsing happens in the browser.
 
-Optional network-connected features may communicate with third parties, including Google Sheets, Google Books, and external CDN resources used by the application. Users should therefore distinguish between local cataloguing and optional connected features.
+Optional network-connected features may contact:
+
+Google Sheets
+
+Google Books
+
+external CDN resources
+
+[!CAUTION]
+Never publish private borrower information, private notes, unpublished material, or other sensitive records in a public Google Sheet or GitHub repository.
 
 🛠️ Technology
 
@@ -475,179 +298,84 @@ Frontend: HTML5, CSS, Vanilla JavaScript
 
 Spreadsheet parsing: SheetJS
 
+Workbook generation: Python + openpyxl
+
 Metadata lookup: Google Books API
 
 Hosting: GitHub Pages
 
-Offline/PWA: Web App Manifest and Service Worker
+Offline support: Service Worker / browser caching
 
-Workbook generation: Python and openpyxl
+License: MIT
 
-The application has no dedicated backend or database server.
+No database server or build pipeline is required for the basic application.
 
-🐍 Python Workbook Generator
-
-To regenerate the workbook programmatically:
+🐍 Generate the Workbook
 
 pip install openpyxl
 python build_library.py
 
-To generate a blank template:
+For a blank template:
 
 python build_library.py --blank
 
-The generator keeps workbook construction reproducible rather than requiring manual creation of every worksheet.
-
-💻 Development
-
-Clone the repository:
-
-git clone https://github.com/masudranamondal1-lgtm/library-spine-studio.git
-cd library-spine-studio
-
-Main project files:
-
-library-spine-studio/
-├── .github/
-├── index.html
-├── Personal Library Template.xlsx
-├── build_library.py
-├── manifest.json
-├── service-worker.js
-├── donate.html
-├── qr-code.png
-├── LICENSE
-└── README.md
-
-Open index.html for basic testing. Use a local HTTP server when testing service-worker/PWA behaviour.
-
-🛡️ Repository Safety
-
-The public repository should contain software and blank templates, not private personal catalogues.
-
-Do not commit:
-
-personal library workbooks
-
-borrower/member information
-
-private notes
-
-private archival metadata
-
-unpublished manuscripts
-
-private file paths
-
-credentials or API keys
-
-If a private workbook has previously been committed, deleting the current copy does not necessarily remove it from Git history. A history cleanup may be required.
-
 🗺️ Roadmap
 
-The project is evolving toward a more complete personal library and digital-archive environment. Development areas include:
+The project is evolving toward a more complete personal library and digital-archive environment.
 
-stronger Dublin Core implementation
+Current development areas
 
-improved digital-resource ingestion
+🏷️ Stronger Dublin Core implementation
 
-richer archive relationships
+💾 Improved digital-resource ingestion
 
-physical/digital object relationships
+🗂️ Richer archive relationships
 
-bibliographic API enrichment
+🔗 Physical/digital object relationships
 
-stronger identifier management
+🔎 Bibliographic API enrichment
 
-improved data-quality validation
+🆔 Stronger identifier management
 
-structured CSV/JSON export
+✅ Improved data-quality validation
 
-TEI interoperability workflows
+📤 Better CSV/JSON export
 
-metadata reconciliation
+📜 TEI interoperability
 
-tighter catalog-to-web-app integration
+📊 Improved collection analytics
 
-more flexible label layouts
+🖨️ More flexible label layouts
 
-richer dashboard and collection analytics
-
-The goal is not to reproduce a large institutional library-management system. It is to create a portable, understandable, standards-aware personal library and archive system that can grow with a serious research collection.
+The goal is not to reproduce a large institutional ILS. It is to create a portable, understandable, standards-aware library and archive system for serious personal collections.
 
 🤝 Contributing
 
 Bug reports, documentation improvements, and code contributions are welcome.
 
-When reporting a problem, include:
+When reporting an issue, include:
 
-What you were trying to do
+What you were doing
 
-Browser or spreadsheet application used
+Browser/spreadsheet application
 
 Workbook version
 
-Expected result
+Expected behaviour
 
-Actual result
+Actual behaviour
 
-Screenshot or minimal example when useful
-
-Do not upload private library data to public issues.
-
-🎨 Visual & Design Language
-
-The documentation uses a restrained library / archive / research palette.
-
-Colour
-
-Role
-
-🟩 #2F6F6D
-
-Primary application colour
-
-🟫 #7A5C3E
-
-Books / physical collection
-
-🟦 #4169A1
-
-Digital resources
-
-🟪 #6B4E71
-
-Metadata / scholarly layer
-
-🟨 #B8860B
-
-Warnings / attention
-
-⬛ #555555
-
-Neutral information
-
-The README uses badges, emoji section markers, GitHub callouts, tables, diagrams, and visual separators so it is easy to scan without becoming a fireworks display made of Markdown.
+Please do not upload private library data to public issues.
 
 📜 License
 
-Released under the MIT License. See LICENSE for the complete terms.
+Released under the MIT License.
 
-🙏 Credits
-
-The project uses or is compatible with:
-
-SheetJS for browser-side spreadsheet parsing
-
-Google Books API for optional ISBN metadata lookup
-
-GitHub Pages for static hosting
-
-Python / openpyxl for workbook generation
+See LICENSE for the complete terms.
 
 ☕ Support
 
-If the project is useful, support options are available through the application.
+If the project is useful:
 
 Buy Me a Coffee: https://buymeacoffee.com/masudshaon
 
@@ -656,10 +384,12 @@ GitHub Issues: https://github.com/masudranamondal1-lgtm/library-spine-studio/iss
 👤 Author
 
 <p align="center">
-  <strong>Masud Shaon</strong><br>
+  <strong>Masud Rana Mondal</strong><br>
   Writer · Researcher · Digital Humanities · Publishing · Library & Archive Technology
 </p>
 
-Writer · Researcher · Digital Humanities · Publishing · Library & Archive Technology
-
-GitHub: https://github.com/masudranamondal1-lgtm
+<p align="center">
+  <a href="https://github.com/masudranamondal1-lgtm">
+    <img src="https://img.shields.io/badge/GitHub-Masud%20Rana-181717?style=for-the-badge&logo=github" alt="GitHub">
+  </a>
+</p>
