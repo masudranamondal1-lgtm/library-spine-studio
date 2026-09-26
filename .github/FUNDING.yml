@@ -1,4 +1,6 @@
+# These are supported funding model platforms
+
 github: masudranamondal1-lgtm
-buy_me_a_book: masudranamondal
+buy_me_a_coffee: masudranamondal
 custom:
-  - "upi://pay?pa=masudranamandal-1@okicici&pn=Library%20Studio&cu=INR"
+  - "https://masudranamondal1-lgtm.github.io/library-spine-studio/donate.html"
