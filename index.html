@@ -324,7 +324,7 @@
       display: block; font-size: var(--fs-micro);
       color: var(--text-muted); margin-top: 8px; line-height: 1.45;
     }
-        .donate-alt {
+    .donate-alt {
       display: flex; align-items: center; gap: 14px;
       padding: 14px 18px;
       background: var(--surface-alt);
@@ -573,7 +573,7 @@
       border-radius: var(--radius); background: var(--surface);
       transition: var(--theme-transition);
     }
-    .catalog-table { width: 100%; min-width: 820px; font-size: var(--fs-small); }
+    .catalog-table { width: 100%; min-width: 960px; font-size: var(--fs-small); }
     .catalog-table thead {
       background: var(--table-header-bg);
       position: sticky; top: 0; z-index: 5;
@@ -967,21 +967,11 @@
     }
     .scan-actions .btn { flex: 1; justify-content: center; min-width: 120px; }
 
-    /* ============================================================
-       MOBILE DETECTION — dual-signal strategy
-       Trigger on: narrow viewport OR any touch-primary device.
-       The touch signal (pointer: coarse + hover: none) catches
-       phones in landscape, "Desktop site" mode, and any case
-       where the viewport is misleadingly wide.
-       ============================================================ */
-
-    /* Scanner button: hidden by default, shown on mobile */
+    /* Scanner is mobile-only: hidden on desktop */
     #btnOpenScanner { display: none !important; }
     @media (max-width: 768px), (hover: none) and (pointer: coarse) {
       #btnOpenScanner { display: inline-flex !important; }
     }
-
-    /* Scanner dialog: hidden on true desktops */
     @media (min-width: 769px) and (hover: hover) and (pointer: fine) {
       .scan-dialog { display: none !important; }
       .scan-dialog::backdrop { display: none !important; background: transparent !important; }
@@ -1051,14 +1041,112 @@
     .mobile-nav { display: none; }
 
     @media (max-width: 768px), (hover: none) and (pointer: coarse) {
-      body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+      body { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
 
+      /* ============================================================
+         MOBILE TYPOGRAPHY & SPACING — larger, thumb-friendly
+         ============================================================ */
+      html { font-size: 17px; }
+
+      /* Layout padding */
+      .main-pane, .sidebar { padding: 16px; padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
+
+      /* Panel padding & spacing */
+      .panel { padding: 16px; border-radius: 10px; }
+      .panel-head { margin-bottom: 16px; }
+      .panel-head h2 { font-size: 0.85rem; letter-spacing: 0.06em; }
+      .panel-head .count-badge { font-size: 0.78rem; padding: 5px 12px; }
+
+      /* Form fields — bigger labels, bigger inputs */
+      .field { margin-bottom: 18px; }
+      .field label {
+        font-size: 0.88rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--text);
+      }
+      .field input[type="text"],
+      .field input[type="url"],
+      .field input[type="search"],
+      .field input[type="file"],
+      .field select,
+      .field textarea {
+        padding: 14px 16px;
+        min-height: 52px;
+        font-size: 1.05rem;
+        border-radius: 10px;
+      }
+      .field textarea { min-height: 120px; font-size: 1rem; }
+
+      /* Toolbar — stack everything full width */
+      .toolbar { gap: 12px; }
+      .toolbar .field { flex: 1 1 100%; min-width: 0; }
+      .toolbar .field label { font-size: 0.82rem; }
+      .toolbar .field input,
+      .toolbar .field select {
+        min-height: 50px;
+        font-size: 1rem;
+        padding: 12px 14px;
+      }
+      .toolbar .btn { min-height: 48px; padding: 12px 20px; font-size: 0.95rem; width: 100%; }
+
+      /* Stats bar */
+      .stats-bar {
+        font-size: 0.9rem;
+        padding: 14px 16px;
+        gap: 12px 24px;
+        border-radius: 10px;
+      }
+
+      /* Catalog table */
+      .catalog-table { font-size: 0.95rem; }
+      .catalog-table th {
+        font-size: 0.78rem;
+        padding: 14px 12px;
+        letter-spacing: 0.05em;
+      }
+      .catalog-table td {
+        padding: 14px 12px;
+        font-size: 0.95rem;
+      }
+      .catalog-table .cell-call { font-size: 0.95rem; }
+
+      /* Sync status */
+      .sync-status { padding: 14px 16px; font-size: 1rem; border-radius: 10px; }
+      .sync-status .sync-meta strong { font-size: 1rem; }
+      .sync-status .sync-meta small { font-size: 0.85rem; }
+
+      /* Tabs */
+      .tab { padding: 12px 16px; font-size: 0.95rem; }
+      .tabs { gap: 6px; }
+
+      /* Buttons */
+      .btn-sm { min-height: 48px; font-size: 0.92rem; padding: 12px 18px; border-radius: 8px; }
+
+      /* Empty state */
+      .empty-state { padding: 40px 20px; }
+      .empty-state h3 { font-size: 1.3rem; }
+      .empty-state p { font-size: 1rem; }
+
+      /* Add Book panel */
+      #btnOpenScanner {
+        min-height: 56px;
+        font-size: 1.05rem;
+        padding: 16px;
+        border-radius: 10px;
+      }
+
+      /* Header */
+      .app-header { padding: 12px 16px; }
+      .brand-text strong { font-size: 1rem; }
+
+      /* Bottom nav — taller for modern phones */
       .mobile-nav {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         position: fixed;
         bottom: 0; left: 0; right: 0;
-        height: 72px;
+        height: 76px;
         padding-bottom: env(safe-area-inset-bottom);
         background: var(--header-bg);
         border-top: 1px solid var(--header-border);
@@ -1068,30 +1156,31 @@
       .mobile-nav button {
         display: flex; flex-direction: column;
         align-items: center; justify-content: center;
-        gap: 3px; background: transparent; border: none;
+        gap: 4px; background: transparent; border: none;
         color: var(--header-btn-text);
-        font-size: 0.7rem; font-weight: 600;
-        padding: 6px 2px; min-height: 56px;
+        font-size: 0.75rem; font-weight: 600;
+        padding: 8px 2px; min-height: 56px;
         transition: color 0.14s, background 0.14s;
         position: relative;
       }
       .mobile-nav button svg {
-        width: 24px; height: 24px;
+        width: 26px; height: 26px;
         transition: color 0.14s;
       }
       .mobile-nav button.active { color: var(--accent); }
       .mobile-nav button.active svg { color: var(--accent); }
       .mobile-nav button:active { background: rgba(255, 255, 255, 0.08); }
       .mobile-nav button .tab-label {
-        font-size: 0.68rem;
+        font-size: 0.72rem;
+        font-weight: 600;
         letter-spacing: 0.02em;
       }
 
       /* View switching */
       .app-body {
         display: block !important;
-        min-height: calc(100vh - 56px - 72px);
-        min-height: calc(100dvh - 56px - 72px);
+        min-height: calc(100vh - 56px - 76px);
+        min-height: calc(100dvh - 56px - 76px);
       }
 
       .sidebar,
@@ -1121,24 +1210,16 @@
       body[data-mobile-view="data"] .sidebar { display: block; }
       body[data-mobile-view="data"] .sidebar .panel { display: block; }
 
-      /* Adjust padding for mobile bottom nav */
-      .main-pane,
-      .sidebar {
-        padding: 14px;
-        padding-bottom: calc(14px + env(safe-area-inset-bottom));
-      }
+      /* Sidebar panel padding on mobile */
+      .sidebar .panel { padding: 18px; }
 
-      /* Larger touch targets on mobile */
-      .toolbar .field input,
-      .toolbar .field select {
-        min-height: 44px;
-        font-size: var(--fs-body);
-      }
+      /* Table wrapper */
+      .table-wrap { border-radius: 10px; }
 
-      /* When catalog view: table takes full width */
+      /* Catalog view: table full width */
       body[data-mobile-view="catalog"] .catalog-table {
         min-width: 100%;
-        font-size: var(--fs-meta);
+        font-size: 0.95rem;
       }
     }
 
@@ -1319,12 +1400,13 @@
               <label for="mType">Type</label>
               <select id="mType">
                 <option value="">—</option>
-                <option value="Fiction (FIC)">Fiction (FIC)</option>
-                <option value="Non-Fiction (NF)">Non-Fiction (NF)</option>
-                <option value="Poetry (POE)">Poetry (POE)</option>
-                <option value="Drama (DRA)">Drama (DRA)</option>
-                <option value="Reference (REF)">Reference (REF)</option>
-                <option value="Graphic Novel (GRA)">Graphic Novel (GRA)</option>
+                <option value="Book">Book</option>
+                <option value="Magazine">Magazine</option>
+                <option value="Journal">Journal</option>
+                <option value="Periodical">Periodical</option>
+                <option value="Newspaper">Newspaper</option>
+                <option value="Manuscript">Manuscript</option>
+                <option value="Other">Other</option>
               </select>
             </div>
             <div class="field">
@@ -1341,6 +1423,7 @@
                 <option value="Mystery / Thriller (THR)">Mystery / Thriller (THR)</option>
                 <option value="Religion & Mythology (REL)">Religion & Mythology (REL)</option>
                 <option value="Art & Cinema (ART)">Art & Cinema (ART)</option>
+                <option value="Other">Other</option>
               </select>
             </div>
           </div>
@@ -1558,6 +1641,8 @@
                     <th data-sort="volume">Vol <span class="sort-arrow">↕</span></th>
                     <th data-sort="author">Author <span class="sort-arrow">↕</span></th>
                     <th data-sort="language">Lang <span class="sort-arrow">↕</span></th>
+                    <th data-sort="isbn">ISBN <span class="sort-arrow">↕</span></th>
+                    <th data-sort="publicationYear">Year <span class="sort-arrow">↕</span></th>
                     <th data-sort="type">Type <span class="sort-arrow">↕</span></th>
                     <th data-sort="genre">Genre <span class="sort-arrow">↕</span></th>
                     <th data-sort="status">Status <span class="sort-arrow">↕</span></th>
@@ -1643,7 +1728,6 @@
     </div>
   </dialog>
 
-  <!-- ==================== SCANNER MODAL (mobile-only) ==================== -->
   <dialog class="scan-dialog" id="scanDialog" aria-labelledby="scanTitle">
     <div class="scan-inner">
       <div class="scan-header">
@@ -1706,7 +1790,6 @@
     </div>
   </dialog>
 
-  <!-- ==================== MOBILE NAV ==================== -->
   <nav class="mobile-nav no-print" aria-label="Mobile navigation">
     <button type="button" data-mobile-tab="catalog" class="active" aria-label="Catalog">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1785,12 +1868,9 @@
        MOBILE DETECTION — dual signal (pointer capability + narrow viewport)
        ======================================================================= */
     function isTouchMobileDevice() {
-      // Primary: pointer capability — reliable across orientations, desktop-site mode,
-      // and even when the layout viewport widens due to content overflow.
       try {
         if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return true;
       } catch (e) {}
-      // Fallback: narrow viewport (covers desktop browser windows and non-touch small screens).
       if (window.innerWidth <= 768) return true;
       return false;
     }
@@ -1887,7 +1967,6 @@
       sheetContainer: $('#sheetContainer'),
       previewMeta: $('#previewMeta'),
       toastRegion: $('#toastRegion'),
-      // Scanner
       scanDialog: $('#scanDialog'),
       scanVideo: $('#scanVideo'),
       scanStatus: $('#scanStatus'),
@@ -1993,7 +2072,6 @@
       } catch (e) {}
       document.body.setAttribute('data-mobile-view', State.mobileView);
 
-      // Sync the "active" class on initial load
       $$('[data-mobile-tab]').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-mobile-tab') === State.mobileView);
       });
@@ -2084,26 +2162,68 @@
     }
 
     /* =======================================================================
-       HEADER NORMALIZATION
+       HEADER NORMALIZATION — Extended for full workbook schema
        ======================================================================= */
     const HEADER_MAP = {
+      // Identifiers
       'item no.': 'itemNo', 'item no': 'itemNo', 'itemno': 'itemNo',
       'item': 'itemNo', 'item id': 'itemNo', 'no.': 'itemNo', 'id': 'itemNo',
+      'resource id': 'itemNo',
       'accession / call number': 'callNumber', 'accession/call number': 'callNumber',
       'accession number': 'callNumber',
       'call number': 'callNumber', 'call no.': 'callNumber', 'callno': 'callNumber',
       'digital call no.': 'callNumber', 'digital call number': 'callNumber',
-      'type': 'type', 'genre': 'genre',
+      // Title & authorship
+      'title': 'title', 'book title': 'title',
+      'subtitle': 'subtitle',
+      'creator': 'author', 'author': 'author', 'author name': 'author',
+      'editor': 'editor',
+      'translator': 'translator',
+      'author code': 'authorCode',
+      'author code override': 'authorCodeOverride',
+      // Classification
+      'type': 'type', 'resource type': 'type',
+      'genre': 'genre',
       'language': 'language', 'lang': 'language',
-      'book title': 'title', 'title': 'title',
-      'author name': 'author', 'author': 'author', 'creator': 'author',
-      'volume no.': 'volume', 'volume': 'volume', 'vol': 'volume',
-      'notes / status': 'status', 'notes/status': 'status',
-      'status': 'status', 'reading status': 'status',
-      'circulation status': 'status',
-      'shelf location': 'shelf', 'shelf': 'shelf', 'location': 'shelf',
+      'volume': 'volume', 'volume no.': 'volume', 'vol': 'volume',
+      'edition': 'edition',
+      // Publication
+      'publisher': 'publisher',
+      'publication place': 'publicationPlace',
+      'publication year': 'publicationYear', 'year': 'publicationYear',
+      'isbn': 'isbn',
+      'issn': 'issn',
+      'pages': 'pages',
+      'series': 'series',
+      // Location
       'location type': 'locationType',
-      'location identifier': 'locationId'
+      'location identifier': 'locationId',
+      'shelf location': 'shelf', 'shelf': 'shelf', 'location': 'shelf',
+      // Status & condition
+      'circulation status': 'status',
+      'reading status': 'status', 'reading/usage status': 'status',
+      'status': 'status',
+      'notes / status': 'status', 'notes/status': 'status',
+      'condition': 'condition',
+      // Acquisition
+      'acquisition date': 'acquisitionDate',
+      'acquisition type': 'acquisitionType',
+      'price': 'price',
+      'donor/vendor': 'donor', 'donor': 'donor',
+      // Metadata
+      'notes': 'notes',
+      'rights': 'rights',
+      'description': 'description',
+      // Digital-specific
+      'format': 'format',
+      'ocr status': 'ocrStatus',
+      'storage path': 'storagePath', 'storage path / link': 'storagePath',
+      'file size (bytes)': 'fileSize',
+      'mime type': 'mimeType',
+      'file extension': 'fileExtension',
+      'date added': 'dateAdded',
+      'date created': 'dateCreated',
+      'checksum': 'checksum'
     };
     function normalizeHeaderKey(h) {
       const key = safeText(h).toLowerCase().replace(/\s+/g, ' ').trim();
@@ -2112,7 +2232,30 @@
     function normalizeHeaders(row) { return row.map(normalizeHeaderKey); }
 
     function normalizeRecord(raw, headerMap) {
-      const rec = { itemNo: '', callNumber: '', type: '', genre: '', title: '', volume: '', author: '', language: '', status: '', shelf: '' };
+      const rec = {
+        // Core identifiers
+        itemNo: '', callNumber: '',
+        // Title & authorship
+        title: '', subtitle: '', author: '', authorCode: '', authorCodeOverride: '',
+        editor: '', translator: '',
+        // Classification
+        type: '', genre: '', language: '', volume: '', edition: '',
+        // Publication
+        publisher: '', publicationPlace: '', publicationYear: '',
+        isbn: '', issn: '', pages: '', series: '',
+        // Location
+        shelf: '',
+        // Status & condition
+        status: '', condition: '',
+        // Acquisition
+        acquisitionDate: '', acquisitionType: '', price: '', donor: '',
+        // Metadata
+        notes: '', rights: '', description: '',
+        // Digital
+        format: '', ocrStatus: '', storagePath: '', fileSize: '',
+        mimeType: '', fileExtension: '', dateAdded: '', dateCreated: '',
+        checksum: ''
+      };
       let locType = '';
       let locId = '';
       headerMap.forEach((key, idx) => {
@@ -2123,7 +2266,7 @@
         else if (key === 'callNumber') rec.callNumber = val;
         else if (key === 'locationType') locType = val;
         else if (key === 'locationId') locId = val;
-        else rec[key] = val;
+        else if (key in rec) rec[key] = val;
       });
       if (locType || locId) {
         rec.shelf = [locType, locId].filter(Boolean).join(' ');
@@ -2170,7 +2313,27 @@
             if (!headerMap.includes('title') && !headerMap.includes('callNumber')) {
               throw new Error('The worksheet does not look like a library catalog.');
             }
-            const records = finalizeRecords(rows.slice(1).map(r => normalizeRecord(r, headerMap)));
+            let allRecords = rows.slice(1).map(r => normalizeRecord(r, headerMap));
+            allRecords.forEach(r => { if (!r.format) r.format = 'Physical'; });
+
+            // Also read Digital_Catalog if present
+            const digName = workbook.SheetNames.find(n => norm(n) === 'digitalcatalog');
+            if (digName && digName !== sheetName) {
+              try {
+                const digWs = workbook.Sheets[digName];
+                const digRows = XLSX.utils.sheet_to_json(digWs, { header: 1, defval: '', raw: false });
+                if (digRows && digRows.length >= 2) {
+                  const digHeaderMap = normalizeHeaders(digRows[0]);
+                  const digRecs = digRows.slice(1).map(r => normalizeRecord(r, digHeaderMap));
+                  digRecs.forEach(r => { if (!r.format || r.format === 'Physical') r.format = 'Digital'; });
+                  allRecords = allRecords.concat(digRecs);
+                }
+              } catch (e) {
+                console.warn('[Excel] Could not read Digital_Catalog sheet:', e);
+              }
+            }
+
+            const records = finalizeRecords(allRecords);
             const emptyCallCount = records.filter(r => !r.callNumber || r.callNumber === '—').length;
             if (records.length > 0 && emptyCallCount === records.length) {
               setTimeout(function() {
@@ -2199,6 +2362,7 @@
               throw new Error('The CSV file does not look like a library catalog.');
             }
             const records = finalizeRecords(rows.slice(1).map(r => normalizeRecord(r, headerMap)));
+            records.forEach(r => { if (!r.format) r.format = 'Physical'; });
             resolve({ records, parser: 'csv', sheetName: '(CSV file)', headerMap });
           } catch (err) { reject(err); }
         };
@@ -2217,7 +2381,7 @@
       });
       const str = JSON.stringify(sorted.map(r => ({
         i: r.itemNo, c: r.callNumber, t: r.title, a: r.author, v: r.volume,
-        l: r.language, s: r.status, sh: r.shelf, ty: r.type, g: r.genre
+        l: r.language, s: r.status, sh: r.shelf, ty: r.type, g: r.genre, f: r.format
       })));
       let hash = 0x811c9dc5;
       for (let i = 0; i < str.length; i++) {
@@ -2293,6 +2457,7 @@
         throw new Error('The fetched sheet does not look like a library catalog.');
       }
       const records = finalizeRecords(rows.slice(1).map(r => normalizeRecord(r, headerMap)));
+      records.forEach(r => { if (!r.format) r.format = 'Physical'; });
       return { records, parser: 'google-sheets-csv', headerMap };
     }
 
@@ -2390,7 +2555,7 @@
         if (f.status && rec.status !== f.status) return false;
         if (f.shelf && rec.shelf !== f.shelf) return false;
         if (q) {
-          const hay = [rec.title, rec.author, rec.callNumber, rec.itemNo, rec.genre, rec.type, rec.shelf, rec.language, rec.status].join(' ').toLowerCase();
+          const hay = [rec.title, rec.subtitle, rec.author, rec.callNumber, rec.itemNo, rec.genre, rec.type, rec.shelf, rec.language, rec.status, rec.isbn, rec.publisher].join(' ').toLowerCase();
           if (!hay.includes(q)) return false;
         }
         return true;
@@ -2428,8 +2593,8 @@
 
     function updateStats() {
       const total = State.records.length, shown = State.filtered.length;
-      const physical = State.records.filter(r => !r.callNumber.startsWith('DIG-')).length;
-      const digital = total - physical;
+      const digital = State.records.filter(r => r.format === 'Digital' || (r.callNumber && r.callNumber.startsWith('DIG-'))).length;
+      const physical = total - digital;
       el.statTotal.textContent = total;
       el.statShown.textContent = shown;
       el.statPhysical.textContent = physical;
@@ -2460,6 +2625,8 @@
           <td class="cell-muted">${escapeHtml(rec.volume)}</td>
           <td class="cell-muted" title="${escapeHtml(rec.author)}">${escapeHtml(truncate(rec.author, 24))}</td>
           <td class="cell-muted${langClass}">${escapeHtml(rec.language)}</td>
+          <td class="cell-muted" title="${escapeHtml(rec.isbn)}">${escapeHtml(truncate(rec.isbn, 14))}</td>
+          <td class="cell-muted">${escapeHtml(rec.publicationYear)}</td>
           <td class="cell-muted">${escapeHtml(shortType(rec.type))}</td>
           <td class="cell-muted">${escapeHtml(shortGenre(rec.genre))}</td>
           <td class="cell-muted">${escapeHtml(rec.status)}</td>
@@ -2658,8 +2825,7 @@
     }
 
     /* =======================================================================
-       SCANNER — Barcode detection + Google Books lookup
-       Mobile-only feature. Hidden on desktop via CSS + guarded in JS.
+       SCANNER — with focus improvements + double-read confirmation
        ======================================================================= */
     const Scanner = {
       stream: null,
@@ -2669,13 +2835,60 @@
       closed: false,
       lastIsbn: null,
       lastBook: null,
+      _pendingCode: null,
+      _pendingAt: 0,
 
       isSupported() {
         return typeof window.BarcodeDetector === 'function' && !!navigator.mediaDevices;
       },
 
+      async _getScanStream() {
+        const constraints = {
+          audio: false,
+          video: {
+            facingMode: { ideal: 'environment' },
+            width: { ideal: 1920 },
+            height: { ideal: 1080 },
+            focusMode: { ideal: 'continuous' },
+            exposureMode: { ideal: 'continuous' },
+            whiteBalanceMode: { ideal: 'continuous' },
+            zoom: { ideal: 1.0 }
+          }
+        };
+        return navigator.mediaDevices.getUserMedia(constraints);
+      },
+
+      async _applyTrackConstraints(stream) {
+        try {
+          const track = stream.getVideoTracks()[0];
+          if (!track || typeof track.applyConstraints !== 'function') return;
+          const caps = track.getCapabilities ? track.getCapabilities() : {};
+          const advanced = [];
+          if (caps.focusMode && caps.focusMode.includes && caps.focusMode.includes('continuous')) {
+            advanced.push({ focusMode: 'continuous' });
+          }
+          if (caps.exposureMode && caps.exposureMode.includes && caps.exposureMode.includes('continuous')) {
+            advanced.push({ exposureMode: 'continuous' });
+          }
+          if (advanced.length) {
+            await track.applyConstraints({ advanced });
+          }
+        } catch (e) {
+          // Non-fatal
+        }
+      },
+
+      _confirmRead(code) {
+        const now = Date.now();
+        if (this._pendingCode === code && (now - this._pendingAt) < 1500) {
+          return true;
+        }
+        this._pendingCode = code;
+        this._pendingAt = now;
+        return false;
+      },
+
       async open() {
-        // Guard: only allow on touch mobile devices (pointer capability based).
         if (!isTouchMobileDevice()) return;
 
         this.closed = false;
@@ -2696,19 +2909,18 @@
           el.scanDialog.setAttribute('open', '');
         }
 
-        // Reset state
         el.scanResult.hidden = true;
         el.manualIsbn.value = '';
         el.scanStatus.className = 'scan-status';
         el.scanStatusText.textContent = 'Starting camera…';
         this.lastIsbn = null;
         this.lastBook = null;
+        this._pendingCode = null;
+        this._pendingAt = 0;
 
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
-            audio: false
-          });
+          const stream = await this._getScanStream();
+          await this._applyTrackConstraints(stream);
 
           if (this.closed) {
             stream.getTracks().forEach(t => t.stop());
@@ -2757,7 +2969,7 @@
               }
             }
           } catch (err) {
-            // Silent — barcode detection throws when no barcode present
+            // Silent
           }
         }, CONFIG.SCAN_INTERVAL_MS);
       },
@@ -2770,7 +2982,10 @@
         const cleaned = rawValue.replace(/[^0-9Xx]/g, '');
         if (cleaned.length !== 10 && cleaned.length !== 13) return;
 
+        if (!this._confirmRead(cleaned)) return;
+
         this.lastIsbn = cleaned;
+        this._pendingCode = null;
         this.stopScanning();
         this.active = false;
 
@@ -2830,6 +3045,7 @@
       async scanAgain() {
         this.lastIsbn = null;
         this.lastBook = null;
+        this._pendingCode = null;
         el.scanResult.hidden = true;
         el.scanStatus.className = 'scan-status scan-active';
         el.scanStatusText.textContent = 'Scanning… point camera at barcode';
@@ -2853,6 +3069,7 @@
         this.active = false;
         this.lastIsbn = null;
         this.lastBook = null;
+        this._pendingCode = null;
         this.stopScanning();
         if (this.stream) {
           this.stream.getTracks().forEach(t => t.stop());
@@ -2998,7 +3215,17 @@
       const volTag = volume ? `-${volume.replace(/\s+/g, '')}` : '';
       const callNumber = `${typeCode}-${genreCode}-${surname}-${nextItem}${volTag}`;
 
-      State.records.push({ itemNo: nextItem, callNumber, type, genre, title, volume, author, language, status, shelf });
+      State.records.push({
+        itemNo: nextItem, callNumber, type, genre, title, subtitle: '', volume,
+        author, authorCode: '', authorCodeOverride: '', editor: '', translator: '',
+        edition: '', publisher: '', publicationPlace: '', publicationYear: '',
+        isbn: '', issn: '', pages: '', series: '',
+        language, status, shelf, condition: '',
+        acquisitionDate: '', acquisitionType: '', price: '', donor: '',
+        notes: '', rights: '', description: '',
+        format: 'Physical', ocrStatus: '', storagePath: '', fileSize: '',
+        mimeType: '', fileExtension: '', dateAdded: '', dateCreated: '', checksum: ''
+      });
       State.checksum = calculateDatasetHash(State.records);
       State.lastSync = nowISOString();
       State.lastError = '';
@@ -3143,13 +3370,13 @@
        ======================================================================= */
     function getBuiltinSample() {
       return [
-        { itemNo: '001', callNumber: 'FIC-LIT-TEG-001-Vol1', type: 'Fiction (FIC)', genre: 'Literature (LIT)', title: 'Rabindra Rachanabali', volume: 'Vol 1', author: 'Rabindranath Tagore', language: 'Bengali', status: 'Reading', shelf: 'Shelf A2' },
-        { itemNo: '002', callNumber: 'FIC-LIT-TEG-002-Vol2', type: 'Fiction (FIC)', genre: 'Literature (LIT)', title: 'Rabindra Rachanabali', volume: 'Vol 2', author: 'Rabindranath Tagore', language: 'Bengali', status: 'Reading', shelf: 'Shelf A2' },
-        { itemNo: '003', callNumber: 'FIC-LIT-TEG-003-Vol3', type: 'Fiction (FIC)', genre: 'Literature (LIT)', title: 'Rabindra Rachanabali', volume: 'Vol 3', author: 'Rabindranath Tagore', language: 'Bengali', status: 'Reading', shelf: 'Shelf A2' },
-        { itemNo: '019', callNumber: 'NF-HIS-HAR-019', type: 'Non-Fiction (NF)', genre: 'History (HIS)', title: 'Sapiens: A Brief History of Humankind', volume: '', author: 'Yuval Noah Harari', language: 'English', status: 'Read', shelf: 'Shelf B1' },
-        { itemNo: '020', callNumber: 'FIC-LIT-HER-020', type: 'Fiction (FIC)', genre: 'Literature (LIT)', title: 'Dune', volume: '', author: 'Frank Herbert', language: 'English', status: 'Read', shelf: 'Shelf A1' },
-        { itemNo: '021', callNumber: 'POE-LIT-ELI-021', type: 'Poetry (POE)', genre: 'Literature (LIT)', title: 'The Waste Land and Other Poems', volume: '', author: 'T.S. Eliot', language: 'English', status: 'Read', shelf: 'Shelf C1' },
-        { itemNo: '022', callNumber: 'FIC-LIT-LEE-022', type: 'Fiction (FIC)', genre: 'Literature (LIT)', title: 'To Kill a Mockingbird', volume: '', author: 'Harper Lee', language: 'English', status: 'Read', shelf: 'Shelf A1' }
+        { itemNo: '001', callNumber: 'FIC-LIT-TEG-001-Vol1', type: 'Book', genre: 'Literature (LIT)', title: 'Rabindra Rachanabali', subtitle: '', volume: 'Vol 1', author: 'Rabindranath Tagore', authorCode: 'TAG', authorCodeOverride: '', editor: '', translator: '', edition: '', publisher: '', publicationPlace: '', publicationYear: '', isbn: '', issn: '', pages: '', series: '', language: 'Bengali', status: 'Reading', shelf: 'Shelf A2', condition: '', acquisitionDate: '', acquisitionType: '', price: '', donor: '', notes: '', rights: '', description: '', format: 'Physical', ocrStatus: '', storagePath: '', fileSize: '', mimeType: '', fileExtension: '', dateAdded: '', dateCreated: '', checksum: '' },
+        { itemNo: '002', callNumber: 'FIC-LIT-TEG-002-Vol2', type: 'Book', genre: 'Literature (LIT)', title: 'Rabindra Rachanabali', subtitle: '', volume: 'Vol 2', author: 'Rabindranath Tagore', authorCode: 'TAG', authorCodeOverride: '', editor: '', translator: '', edition: '', publisher: '', publicationPlace: '', publicationYear: '', isbn: '', issn: '', pages: '', series: '', language: 'Bengali', status: 'Reading', shelf: 'Shelf A2', condition: '', acquisitionDate: '', acquisitionType: '', price: '', donor: '', notes: '', rights: '', description: '', format: 'Physical', ocrStatus: '', storagePath: '', fileSize: '', mimeType: '', fileExtension: '', dateAdded: '', dateCreated: '', checksum: '' },
+        { itemNo: '003', callNumber: 'FIC-LIT-TEG-003-Vol3', type: 'Book', genre: 'Literature (LIT)', title: 'Rabindra Rachanabali', subtitle: '', volume: 'Vol 3', author: 'Rabindranath Tagore', authorCode: 'TAG', authorCodeOverride: '', editor: '', translator: '', edition: '', publisher: '', publicationPlace: '', publicationYear: '', isbn: '', issn: '', pages: '', series: '', language: 'Bengali', status: 'Reading', shelf: 'Shelf A2', condition: '', acquisitionDate: '', acquisitionType: '', price: '', donor: '', notes: '', rights: '', description: '', format: 'Physical', ocrStatus: '', storagePath: '', fileSize: '', mimeType: '', fileExtension: '', dateAdded: '', dateCreated: '', checksum: '' },
+        { itemNo: '019', callNumber: 'NF-HIS-HAR-019', type: 'Book', genre: 'History (HIS)', title: 'Sapiens: A Brief History of Humankind', subtitle: '', volume: '', author: 'Yuval Noah Harari', authorCode: 'HAR', authorCodeOverride: '', editor: '', translator: '', edition: '', publisher: '', publicationPlace: '', publicationYear: '', isbn: '', issn: '', pages: '', series: '', language: 'English', status: 'Read', shelf: 'Shelf B1', condition: '', acquisitionDate: '', acquisitionType: '', price: '', donor: '', notes: '', rights: '', description: '', format: 'Physical', ocrStatus: '', storagePath: '', fileSize: '', mimeType: '', fileExtension: '', dateAdded: '', dateCreated: '', checksum: '' },
+        { itemNo: '020', callNumber: 'FIC-LIT-HER-020', type: 'Book', genre: 'Literature (LIT)', title: 'Dune', subtitle: '', volume: '', author: 'Frank Herbert', authorCode: 'HER', authorCodeOverride: '', editor: '', translator: '', edition: '', publisher: '', publicationPlace: '', publicationYear: '', isbn: '', issn: '', pages: '', series: '', language: 'English', status: 'Read', shelf: 'Shelf A1', condition: '', acquisitionDate: '', acquisitionType: '', price: '', donor: '', notes: '', rights: '', description: '', format: 'Physical', ocrStatus: '', storagePath: '', fileSize: '', mimeType: '', fileExtension: '', dateAdded: '', dateCreated: '', checksum: '' },
+        { itemNo: '021', callNumber: 'POE-LIT-ELI-021', type: 'Book', genre: 'Literature (LIT)', title: 'The Waste Land and Other Poems', subtitle: '', volume: '', author: 'T.S. Eliot', authorCode: 'ELI', authorCodeOverride: '', editor: '', translator: '', edition: '', publisher: '', publicationPlace: '', publicationYear: '', isbn: '', issn: '', pages: '', series: '', language: 'English', status: 'Read', shelf: 'Shelf C1', condition: '', acquisitionDate: '', acquisitionType: '', price: '', donor: '', notes: '', rights: '', description: '', format: 'Physical', ocrStatus: '', storagePath: '', fileSize: '', mimeType: '', fileExtension: '', dateAdded: '', dateCreated: '', checksum: '' },
+        { itemNo: '022', callNumber: 'FIC-LIT-LEE-022', type: 'Book', genre: 'Literature (LIT)', title: 'To Kill a Mockingbird', subtitle: '', volume: '', author: 'Harper Lee', authorCode: 'LEE', authorCodeOverride: '', editor: '', translator: '', edition: '', publisher: '', publicationPlace: '', publicationYear: '', isbn: '', issn: '', pages: '', series: '', language: 'English', status: 'Read', shelf: 'Shelf A1', condition: '', acquisitionDate: '', acquisitionType: '', price: '', donor: '', notes: '', rights: '', description: '', format: 'Physical', ocrStatus: '', storagePath: '', fileSize: '', mimeType: '', fileExtension: '', dateAdded: '', dateCreated: '', checksum: '' }
       ];
     }
 
@@ -3259,7 +3486,6 @@
         });
       }
 
-      // Ensure camera is released when dialog closes
       if (el.scanDialog) {
         el.scanDialog.addEventListener('close', () => {
           Scanner.closed = true;
