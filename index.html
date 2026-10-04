@@ -29,8 +29,13 @@
 
   <title>Personal Library Manager &amp; Spine Studio</title>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+  <script>
+    /* Fallback CDN if jsDelivr is blocked or serves a stale path. */
+    if (typeof qrcode !== 'function') {
+      document.write('<scr' + 'ipt src="https://unpkg.com/qrcode-generator@1.4.4/qrcode.js"><\/scr' + 'ipt>');
+    }
+  </script>
   <style>
     :root, [data-theme="light"] {
       color-scheme: light;
@@ -1051,12 +1056,12 @@
     .block-qr { width: 7mm; height: 7mm; margin: 0.3mm 0; }
     .strip-qr { width: 5.5mm; height: 5.5mm; margin: 0.3mm 0; }
     .spine-qr {
-      width: 11mm; height: 11mm;
-      margin: 1mm auto;
+      width: 9mm; height: 9mm;
+      margin: 0.6mm auto;
       flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       background: #ffffff;
-      padding: 0.5mm;
+      padding: 0.4mm;
       border-radius: 1px;
     }
     .spine-qr svg { width: 100%; height: 100%; display: block; }
@@ -2029,7 +2034,7 @@
         </section>
 
         <!-- ===== A4 print preview ===== -->
-        <section class="preview-section" aria-label="Print preview" hidden>
+        <section class="preview-section" aria-label="Print preview">
           <div class="preview-header">
             <h2>Print Preview — A4 Labels</h2>
             <div class="preview-meta" id="previewMeta">Sheet 1 of 1 · 30 labels per page</div>
@@ -2799,16 +2804,21 @@
       }
     };
 
-    /* =====================================================================
-       GOOGLE SHEETS
+        /* =====================================================================
+       GOOGLE SHEETS — robust candidate builder + fetch
        ===================================================================== */
-    /* Builds CORS-safe CSV candidates. Published links are tried first; then
-       gviz/tq (which does send CORS headers); then /export. */
+    /*
+       Google's published-sheet CSV endpoint is CORS-safe when the request
+       includes both `gid` and `single=true` (no redirect). When Google
+       redirects to doc-XX-sheets.googleusercontent.com, CORS often fails,
+       so we try the direct form first and log every attempt.
+    */
     function buildSheetCandidates(input, sheetName) {
       if (!input) throw new Error('Please paste your Google Sheets link.');
       const raw = String(input).trim();
       let gid = null, pubId = null, sheetId = null;
 
+      /* Bare sheet ID */
       if (/^[a-zA-Z0-9_-]{20,}$/.test(raw) && raw.indexOf('/') === -1) {
         sheetId = raw;
       } else {
@@ -2817,7 +2827,7 @@
         let parsed;
         try { parsed = new URL(url); } catch (e) { throw new Error('That is not a valid URL.'); }
         const host = parsed.hostname.toLowerCase();
-        if (host.indexOf('google.com') === -1) {
+        if (!host.endsWith('google.com')) {
           throw new Error('Only Google Sheets links are supported.');
         }
         gid = parsed.searchParams.get('gid');
@@ -2826,10 +2836,12 @@
           if (hm) gid = hm[1];
         }
         const path = parsed.pathname;
+        /* Published ID: /spreadsheets/d/e/<pubId>/... */
         const pm = path.match(/\/spreadsheets\/d\/e\/([a-zA-Z0-9_-]+)/);
         if (pm) {
           pubId = pm[1];
         } else {
+          /* Standard sheet: /spreadsheets/d/<sheetId>/... */
           const sm = path.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
           if (sm) sheetId = sm[1];
         }
@@ -2837,100 +2849,89 @@
       }
 
       const out = [];
+
       if (pubId) {
-        let pub = 'https://docs.google.com/spreadsheets/d/e/' + pubId + '/pub?output=csv';
-        if (gid) pub += '&gid=' + gid + '&single=true';
-        out.push(pub);
-        out.push('https://docs.google.com/spreadsheets/d/e/' + pubId + '/pub?output=csv');
+        /* Preferred form — direct, no redirect, sends CORS headers. */
+        if (gid) {
+          out.push(`https://docs.google.com/spreadsheets/d/e/${pubId}/pub?gid=${gid}&single=true&output=csv`);
+          out.push(`https://docs.google.com/spreadsheets/d/e/${pubId}/pub?gid=${gid}&output=csv`);
+        }
+        out.push(`https://docs.google.com/spreadsheets/d/e/${pubId}/pub?output=csv`);
+        out.push(`https://docs.google.com/spreadsheets/d/e/${pubId}/pub?output=csv&single=true`);
       }
+
       if (sheetId) {
         const q = [];
         if (gid) q.push('gid=' + gid);
         if (sheetName) q.push('sheet=' + encodeURIComponent(sheetName));
         const qs = q.length ? '&' + q.join('&') : '';
+        /* gviz serves CORS headers reliably. */
         out.push('https://docs.google.com/spreadsheets/d/' + sheetId + '/gviz/tq?tqx=out:csv' + qs);
         out.push('https://docs.google.com/spreadsheets/d/' + sheetId + '/export?format=csv' + qs);
         out.push('https://docs.google.com/spreadsheets/d/' + sheetId + '/pub?output=csv' + qs);
       }
+
+      /* Debug trail visible in the Diagnostics panel. */
+      console.info('[Sheets] Candidate URLs:', out);
       return out;
     }
 
     function fetchSheetCsv(candidates) {
       const list = Array.isArray(candidates) ? candidates.slice() : [candidates];
+      const failures = [];
       let i = 0;
+
       function attempt() {
         if (i >= list.length) {
-          return Promise.reject(new Error(State.lastError || 'Could not reach that sheet.'));
+          const summary = failures
+            .map((f, idx) => `#${idx + 1} ${f.status} — ${f.detail}`)
+            .join('\n');
+          State.lastError = 'All sheet URLs failed:\n' + summary;
+          const err = new Error(
+            'Could not reach the sheet. This usually means the sheet is not shared publicly ' +
+            '(File → Share → Anyone with the link → Viewer), or the "Publish to web" link has expired.\n' +
+            'Details: ' + summary.replace(/\n/g, ' · ')
+          );
+          return Promise.reject(err);
         }
         const url = list[i++];
-        return fetch(url, { mode: 'cors', cache: 'no-cache', redirect: 'follow' })
+        console.info('[Sheets] Trying:', url);
+
+        return fetch(url, {
+          method: 'GET',
+          mode: 'cors',
+          cache: 'no-store',
+          redirect: 'follow',
+          credentials: 'omit',
+          headers: { 'Accept': 'text/csv, text/plain, */*' }
+        })
           .then(res => {
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            return res.text();
-          })
-          .then(text => {
-            const t = (text || '').trim();
-            if (!t) throw new Error('The sheet came back empty.');
-            if (t.charAt(0) === '<') {
-              throw new Error('Google returned a web page, not CSV. Use a "Publish to web" link or share the sheet as "Anyone with the link".');
-            }
-            return text;
+            if (!res.ok) throw new Error('HTTP ' + res.status + ' ' + res.statusText);
+            return res.text().then(text => {
+              const t = (text || '').trim();
+              if (!t) throw new Error('Empty response');
+              /* Google serves share-wall HTML when a sheet is not public. */
+              if (t.charAt(0) === '<') {
+                throw new Error('Server returned HTML (share wall) — sheet is not published/visible.');
+              }
+              /* Sanity: CSV should contain at least one comma in the first line. */
+              const firstLine = t.split(/\r?\n/, 1)[0];
+              if (firstLine.indexOf(',') === -1 && firstLine.indexOf(';') === -1) {
+                throw new Error('Response is not CSV (no delimiter in first row).');
+              }
+              return text;
+            });
           })
           .catch(err => {
-            State.lastError = err.message;
+            const msg = err && err.message ? err.message : String(err);
+            failures.push({ url, status: 'FAILED', detail: msg });
+            State.lastError = msg;
+            console.warn('[Sheets] Failed:', url, msg);
             return attempt();
           });
       }
+
       return attempt();
-    }
-
-    function recordsFromCsv(csvText) {
-      const rows = parseCSV(csvText);
-      if (rows.length < 2) throw new Error('Sheet has no data.');
-      const map = normalizeHeaders(rows[0]);
-      if (!map.includes('title') && !map.includes('callNumber')) {
-        throw new Error('Sheet does not look like a catalog.');
-      }
-      const books = finalizeRecords(rows.slice(1).map(r => normalizeRecord(r, map)));
-      books.forEach(r => { if (!r.format) r.format = 'Physical'; });
-      return books;
-    }
-
-    function syncFromGoogle() {
-      if (State.isFetching || !State.sourceUrl) return Promise.resolve();
-      let candidates;
-      try {
-        candidates = buildSheetCandidates(State.sourceUrl, State.sheetName || '');
-      } catch (err) {
-        State.lastError = err.message;
-        setSyncStatus('offline');
-        return Promise.resolve();
-      }
-      State.isFetching = true;
-      setSyncStatus('fetching');
-      return fetchSheetCsv(candidates)
-        .then(text => {
-          State.books = recordsFromCsv(text);
-          State.lastSync = nowISOString();
-          State.lastError = '';
-          refreshUI();
-          setSyncStatus('online');
-        })
-        .catch(err => {
-          State.lastError = err.message;
-          setSyncStatus('offline');
-        })
-        .then(() => { State.isFetching = false; });
-    }
-
-    function startPolling() {
-      stopPolling();
-      if (State.source === 'google-sheets' && State.sourceUrl) {
-        State.syncTimer = setInterval(syncFromGoogle, CONFIG.POLL_INTERVAL_MS);
-      }
-    }
-    function stopPolling() {
-      if (State.syncTimer) { clearInterval(State.syncTimer); State.syncTimer = null; }
     }
 
     /* =====================================================================
@@ -3636,7 +3637,7 @@
       return list;
     }
 
-    function buildSpineLabel(rec) {
+        function buildSpineLabel(rec) {
       const node = document.createElement('div');
       node.className = 'spine-label';
       node.style.width = Spine.width + 'mm';
@@ -3671,10 +3672,32 @@
         });
       }
       node.appendChild(textEl);
+
+      /* Real QR code (or decorative barcode if QR mode is 'None') */
+      const qrSvg = buildQrSvg(buildQrContent(rec));
+      if (qrSvg) {
+        const qrWrap = document.createElement('div');
+        qrWrap.className = 'spine-qr';
+        qrWrap.setAttribute('aria-hidden', 'true');
+        qrWrap.innerHTML = qrSvg;
+        node.appendChild(qrWrap);
+      } else {
+        const bc = document.createElement('div');
+        bc.className = 'barcode strip-barcode';
+        bc.setAttribute('aria-hidden', 'true');
+        node.appendChild(bc);
+      }
+
+      const foot = document.createElement('div');
+      foot.className = 'spine-foot';
+      const itemTag = rec.itemNo ? `<span class="l-item">#${escapeHtml(rec.itemNo)}</span>` : '';
+      const shelf = rec.shelf ? `<span class="l-shelf">${escapeHtml(rec.shelf)}</span>` : '';
+      foot.innerHTML = itemTag + shelf;
+      node.appendChild(foot);
+
       node.title = [rec.callNumber, rec.author, rec.title].filter(Boolean).join(' — ');
       return node;
     }
-
     function renderSpines() {
       const sheet = el.spineSheet;
       if (!sheet) return;
@@ -4173,12 +4196,12 @@
 
         let candidates;
         try { candidates = buildSheetCandidates(url, name); }
-        catch (err) {
+               .catch(err => {
           State.lastError = err.message;
-          showToast(err.message, 'error');
           setSyncStatus('offline');
-          return;
-        }
+          console.error('[Sheets] Sync failed:', err.message);
+          updateDiagnostics();
+        })
 
         State.sourceUrl = url;
         State.sheetName = name;
@@ -4221,8 +4244,7 @@
 
       /* Print (main A4) */
       if (el.btnPrint) el.btnPrint.addEventListener('click', () => {
-        const preview = $('.preview-section');
-        if (preview) preview.hidden = false;
+        /* Preview is now always visible; just print. */
         window.print();
       });
 
