@@ -271,7 +271,7 @@
     .btn-support:hover { background: linear-gradient(135deg, #c96844 0%, #9a4a30 100%); border-color: #9a4a30; }
     .btn-sm { padding: 8px 14px; min-height: 40px; font-size: var(--fs-meta); }
 
-    /* ========== DONATION MODAL ========== */
+    /* Donation modal */
     .donate-dialog {
       border: none; border-radius: 14px; padding: 0;
       max-width: 700px; width: calc(100vw - 32px);
@@ -645,7 +645,6 @@
     .empty-state h3 { font-size: var(--fs-heading); font-weight: 700; color: var(--text-soft); margin-bottom: 8px; }
     .empty-state p { font-size: var(--fs-small); max-width: 400px; margin: 0 auto 20px; line-height: 1.5; }
 
-    /* ===== Archive cards ===== */
     .archive-filters { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
     .archive-filters .filter-chip {
       padding: 8px 14px; font-size: 0.82rem; font-weight: 600;
@@ -730,7 +729,7 @@
     }
     .archive-link:hover { background: var(--primary); color: var(--primary-text); }
 
-    /* ===== Spine Studio ===== */
+    /* Spine Studio */
     .spine-panel { margin-top: 20px; }
     .spine-panel .panel-head { margin-bottom: 10px; }
     .spine-hint { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px; }
@@ -790,8 +789,16 @@
     .spine-part-itemNo, .spine-part-publicationYear, .spine-part-shelf {
       font-weight: 500; opacity: 0.85;
     }
+    .spine-foot {
+      flex-shrink: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 2px; font-size: 5.6pt; padding: 0.6mm 1mm;
+      border-top: 0.4px solid #d9d5ce;
+    }
+    .spine-foot .l-shelf { font-size: 5.6pt; padding: 0.4px 3px; }
+    .spine-foot .l-item { font-size: 5.6pt; padding: 0.4px 3px; }
 
-    /* ===== Print preview sheet ===== */
+    /* A4 preview */
     .preview-header {
       display: flex; align-items: center; justify-content: space-between;
       gap: 14px; margin-bottom: 16px; flex-wrap: wrap;
@@ -974,7 +981,6 @@
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
     }
 
-    /* Vertical spine template (24-up, Books panel only) */
     .label-spine {
       position: relative; overflow: hidden;
       background: #ffffff; color: var(--print-ink);
@@ -1041,7 +1047,7 @@
     .block-barcode { margin-top: 0.6mm; }
     .strip-barcode { margin: 0.4mm 0; }
 
-    /* Real QR (dark-mode safe: always black on white) */
+    /* Real QR (always black on white) */
     .l-qr {
       width: 6mm; height: 6mm;
       margin: 0.3mm auto 0.4mm;
@@ -1443,34 +1449,37 @@
         width: 210mm;
         font-size: 11pt;
       }
-      .app-header, .sidebar, .collection-tabs, .preview-header, .toolbar,
-      .stats-bar, .table-wrap, .toast-region,
+
+      /* Default: hide app chrome and the Spine Studio panel; print A4 preview */
+      .app-header, .sidebar, .catalog-section, .collection-tabs,
+      .preview-header, .toolbar, .stats-bar, .table-wrap, .toast-region,
       .donate-dialog, .donate-dialog::backdrop,
       .scan-dialog, .scan-dialog::backdrop,
-      .mobile-nav, .no-print,
-      .spine-panel > .panel-head,
-      .spine-hint, .spine-toolbar, .spine-fields, .spine-actions {
+      .mobile-nav, .no-print {
         display: none !important;
       }
       .app-body { display: block !important; }
       .main-pane {
-        padding: 0 !important; max-height: none !important;
-        overflow: visible !important; background: #ffffff !important;
+        padding: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        background: #ffffff !important;
       }
-      .catalog-section, .collection-view[data-collection-view="books"] > .panel:not(.spine-panel) { display: none !important; }
-      .collection-view[data-collection-view="books"] { display: block !important; }
-      .spine-panel { display: block !important; border: none !important; box-shadow: none !important; padding: 0 !important; background: transparent !important; }
-      .spine-preview-wrap { border: none !important; background: #fff !important; padding: 10mm !important; overflow: visible !important; }
-      .spine-sheet { overflow: visible !important; }
-      .spine-label { break-inside: avoid; page-break-inside: avoid; border-color: #c8c8c8 !important; }
+      .preview-section { display: block !important; }
       .sheet-scroll { display: block !important; gap: 0 !important; }
       .a4-sheet {
-        width: 210mm !important; height: 297mm !important;
-        box-shadow: none !important; border: none !important;
-        margin: 0 !important; padding: 10mm 9mm 8mm 9mm !important;
-        page-break-after: always; break-after: page;
-        page-break-inside: avoid; break-inside: avoid;
-        overflow: hidden; background: #ffffff !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+        padding: 10mm 9mm 8mm 9mm !important;
+        page-break-after: always;
+        break-after: page;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        overflow: hidden;
+        background: #ffffff !important;
       }
       .a4-sheet:last-child { page-break-after: auto; break-after: auto; }
       .label-grid { grid-auto-rows: 25.4mm; column-gap: 3.5mm; row-gap: 2.2mm; }
@@ -1491,12 +1500,42 @@
         border-color: transparent !important;
       }
       .barcode { opacity: 0.9 !important; }
-      /* QR codes always black-on-white for reliable scanning */
       .l-qr, .spine-qr, .block-qr, .strip-qr {
         background: #ffffff !important;
         box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
       }
       .l-qr svg path, .spine-qr svg path { fill: #000000 !important; }
+
+      /* Spine Studio "Print Labels" mode */
+      body.print-spines .preview-section { display: none !important; }
+      body.print-spines .catalog-section { display: block !important; }
+      body.print-spines .collection-tabs { display: none !important; }
+      body.print-spines .collection-view { display: block !important; }
+      body.print-spines .collection-view > .panel:not(.spine-panel) { display: none !important; }
+      body.print-spines .spine-panel {
+        display: block !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        background: transparent !important;
+      }
+      body.print-spines .spine-panel > .panel-head,
+      body.print-spines .spine-hint,
+      body.print-spines .spine-toolbar,
+      body.print-spines .spine-fields,
+      body.print-spines .spine-actions { display: none !important; }
+      body.print-spines .spine-preview-wrap {
+        border: none !important;
+        background: #ffffff !important;
+        padding: 10mm !important;
+        overflow: visible !important;
+      }
+      body.print-spines .spine-sheet { overflow: visible !important; }
+      body.print-spines .spine-label {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        border-color: #c8c8c8 !important;
+      }
     }
   </style>
 </head>
@@ -1812,7 +1851,6 @@
             </button>
           </div>
 
-          <!-- ===== Books view ===== -->
           <div class="collection-view active" data-collection-view="books">
             <div class="panel" style="margin-bottom:20px;">
               <div class="panel-head">
@@ -1899,7 +1937,6 @@
               </div>
             </div>
 
-            <!-- ===== Spine Studio (Books only) ===== -->
             <div class="panel spine-panel">
               <div class="panel-head">
                 <h2>Spine Studio — Label Generator</h2>
@@ -1980,7 +2017,6 @@
             </div>
           </div>
 
-          <!-- ===== Digital view ===== -->
           <div class="collection-view" data-collection-view="digital">
             <div class="panel">
               <div class="panel-head">
@@ -2013,7 +2049,6 @@
             </div>
           </div>
 
-          <!-- ===== Archive view ===== -->
           <div class="collection-view" data-collection-view="archive">
             <div class="panel">
               <div class="panel-head">
@@ -2033,7 +2068,6 @@
           </div>
         </section>
 
-        <!-- ===== A4 print preview ===== -->
         <section class="preview-section" aria-label="Print preview">
           <div class="preview-header">
             <h2>Print Preview — A4 Labels</h2>
@@ -2046,7 +2080,6 @@
     </div>
   </div>
 
-  <!-- ===== Donation modal ===== -->
   <dialog class="donate-dialog" id="donateDialog" aria-labelledby="donateTitle">
     <div class="donate-inner">
       <button class="donate-close" id="btnDonateClose" type="button" aria-label="Close donation dialog">
@@ -2099,7 +2132,6 @@
     </div>
   </dialog>
 
-  <!-- ===== Scanner modal ===== -->
   <dialog class="scan-dialog" id="scanDialog" aria-labelledby="scanTitle">
     <div class="scan-inner">
       <div class="scan-header">
@@ -2208,7 +2240,6 @@
   <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="false"></div>
 
   <script>
-  /* Global error trap — surfaces any script failure as a red toast */
   window.onerror = function (msg, url, line, col, err) {
     try {
       var t = document.getElementById('toastRegion');
@@ -2256,9 +2287,6 @@
       'DEFAULT': '#2c4a7c'
     };
 
-    /* =====================================================================
-       MOBILE DETECTION
-       ===================================================================== */
     function isTouchMobileDevice() {
       try {
         if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return true;
@@ -2267,9 +2295,6 @@
       return false;
     }
 
-    /* =====================================================================
-       STATE — split Books / Digital / Archive
-       ===================================================================== */
     const State = {
       books: [],
       booksFiltered: [],
@@ -2292,9 +2317,6 @@
       mobileView: 'catalog'
     };
 
-    /* =====================================================================
-       DOM
-       ===================================================================== */
     const $ = (sel, root) => (root || document).querySelector(sel);
     const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
 
@@ -2404,9 +2426,6 @@
       btnManualIsbn: $('#btnManualIsbn')
     };
 
-    /* =====================================================================
-       UTILITIES
-       ===================================================================== */
     function escapeHtml(str) {
       if (str == null) return '';
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
@@ -2444,9 +2463,6 @@
       }, 3600);
     }
 
-    /* =====================================================================
-       THEME
-       ===================================================================== */
     const Theme = {
       mq: window.matchMedia('(prefers-color-scheme: dark)'),
       getChoice() { return document.documentElement.getAttribute('data-theme-choice') || 'system'; },
@@ -2474,9 +2490,6 @@
       }
     };
 
-    /* =====================================================================
-       MOBILE VIEW
-       ===================================================================== */
     function setMobileView(view) {
       State.mobileView = view;
       document.body.setAttribute('data-mobile-view', view);
@@ -2507,9 +2520,6 @@
       });
     }
 
-    /* =====================================================================
-       COLLECTION TABS
-       ===================================================================== */
     function setCollection(view) {
       var btns = $$('[data-collection-tab]');
       btns.forEach(b => b.classList.toggle('active', b.getAttribute('data-collection-tab') === view));
@@ -2517,9 +2527,6 @@
       views.forEach(v => v.classList.toggle('active', v.getAttribute('data-collection-view') === view));
     }
 
-    /* =====================================================================
-       CSV PARSER
-       ===================================================================== */
     function parseCSV(text) {
       if (!text) return [];
       if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
@@ -2546,9 +2553,6 @@
       return rows.filter(r => r.some(c => c.trim() !== ''));
     }
 
-    /* =====================================================================
-       HEADER NORMALIZATION — full workbook schema
-       ===================================================================== */
     const HEADER_MAP = {
       'item no.': 'itemNo', 'item no': 'itemNo', 'itemno': 'itemNo',
       'item': 'itemNo', 'item id': 'itemNo', 'no.': 'itemNo', 'id': 'itemNo',
@@ -2649,9 +2653,6 @@
       });
     }
 
-    /* =====================================================================
-       FILE PARSERS
-       ===================================================================== */
     function parseExcelFile(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -2723,9 +2724,6 @@
       });
     }
 
-    /* =====================================================================
-       HASHING
-       ===================================================================== */
     function calculateDatasetHash(records) {
       const sorted = [...records].sort((a, b) => {
         const ka = (a.itemNo || '') + '|' + (a.callNumber || '') + '|' + (a.title || '');
@@ -2744,9 +2742,6 @@
       return hash.toString(16).padStart(8, '0');
     }
 
-    /* =====================================================================
-       CACHE
-       ===================================================================== */
     const Cache = {
       save() {
         try {
@@ -2804,21 +2799,14 @@
       }
     };
 
-        /* =====================================================================
-       GOOGLE SHEETS — robust candidate builder + fetch
+    /* =====================================================================
+       GOOGLE SHEETS
        ===================================================================== */
-    /*
-       Google's published-sheet CSV endpoint is CORS-safe when the request
-       includes both `gid` and `single=true` (no redirect). When Google
-       redirects to doc-XX-sheets.googleusercontent.com, CORS often fails,
-       so we try the direct form first and log every attempt.
-    */
     function buildSheetCandidates(input, sheetName) {
       if (!input) throw new Error('Please paste your Google Sheets link.');
       const raw = String(input).trim();
       let gid = null, pubId = null, sheetId = null;
 
-      /* Bare sheet ID */
       if (/^[a-zA-Z0-9_-]{20,}$/.test(raw) && raw.indexOf('/') === -1) {
         sheetId = raw;
       } else {
@@ -2836,12 +2824,10 @@
           if (hm) gid = hm[1];
         }
         const path = parsed.pathname;
-        /* Published ID: /spreadsheets/d/e/<pubId>/... */
         const pm = path.match(/\/spreadsheets\/d\/e\/([a-zA-Z0-9_-]+)/);
         if (pm) {
           pubId = pm[1];
         } else {
-          /* Standard sheet: /spreadsheets/d/<sheetId>/... */
           const sm = path.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
           if (sm) sheetId = sm[1];
         }
@@ -2851,7 +2837,6 @@
       const out = [];
 
       if (pubId) {
-        /* Preferred form — direct, no redirect, sends CORS headers. */
         if (gid) {
           out.push(`https://docs.google.com/spreadsheets/d/e/${pubId}/pub?gid=${gid}&single=true&output=csv`);
           out.push(`https://docs.google.com/spreadsheets/d/e/${pubId}/pub?gid=${gid}&output=csv`);
@@ -2865,13 +2850,11 @@
         if (gid) q.push('gid=' + gid);
         if (sheetName) q.push('sheet=' + encodeURIComponent(sheetName));
         const qs = q.length ? '&' + q.join('&') : '';
-        /* gviz serves CORS headers reliably. */
         out.push('https://docs.google.com/spreadsheets/d/' + sheetId + '/gviz/tq?tqx=out:csv' + qs);
         out.push('https://docs.google.com/spreadsheets/d/' + sheetId + '/export?format=csv' + qs);
         out.push('https://docs.google.com/spreadsheets/d/' + sheetId + '/pub?output=csv' + qs);
       }
 
-      /* Debug trail visible in the Diagnostics panel. */
       console.info('[Sheets] Candidate URLs:', out);
       return out;
     }
@@ -2910,11 +2893,9 @@
             return res.text().then(text => {
               const t = (text || '').trim();
               if (!t) throw new Error('Empty response');
-              /* Google serves share-wall HTML when a sheet is not public. */
               if (t.charAt(0) === '<') {
                 throw new Error('Server returned HTML (share wall) — sheet is not published/visible.');
               }
-              /* Sanity: CSV should contain at least one comma in the first line. */
               const firstLine = t.split(/\r?\n/, 1)[0];
               if (firstLine.indexOf(',') === -1 && firstLine.indexOf(';') === -1) {
                 throw new Error('Response is not CSV (no delimiter in first row).');
@@ -2932,6 +2913,59 @@
       }
 
       return attempt();
+    }
+
+    function recordsFromCsv(csvText) {
+      const rows = parseCSV(csvText);
+      if (rows.length < 2) throw new Error('Sheet has no data.');
+      const map = normalizeHeaders(rows[0]);
+      if (!map.includes('title') && !map.includes('callNumber')) {
+        throw new Error('Sheet does not look like a catalog.');
+      }
+      const books = finalizeRecords(rows.slice(1).map(r => normalizeRecord(r, map)));
+      books.forEach(r => { if (!r.format) r.format = 'Physical'; });
+      return books;
+    }
+
+    function syncFromGoogle() {
+      if (State.isFetching || !State.sourceUrl) return Promise.resolve();
+      let candidates;
+      try {
+        candidates = buildSheetCandidates(State.sourceUrl, State.sheetName || '');
+      } catch (err) {
+        State.lastError = err.message;
+        setSyncStatus('offline');
+        return Promise.resolve();
+      }
+      State.isFetching = true;
+      setSyncStatus('fetching');
+      return fetchSheetCsv(candidates)
+        .then(text => {
+          State.books = recordsFromCsv(text);
+          State.lastSync = nowISOString();
+          State.lastError = '';
+          refreshUI();
+          setSyncStatus('online');
+          Cache.save();
+        })
+        .catch(err => {
+          State.lastError = err.message;
+          setSyncStatus('offline');
+          console.error('[Sheets] Sync failed:', err.message);
+          updateDiagnostics();
+        })
+        .then(() => { State.isFetching = false; });
+    }
+
+    function startPolling() {
+      stopPolling();
+      if (State.source === 'google-sheets' && State.sourceUrl) {
+        State.syncTimer = setInterval(syncFromGoogle, CONFIG.POLL_INTERVAL_MS);
+      }
+    }
+
+    function stopPolling() {
+      if (State.syncTimer) { clearInterval(State.syncTimer); State.syncTimer = null; }
     }
 
     /* =====================================================================
@@ -3036,9 +3070,6 @@
       if (el.catalogCount) el.catalogCount.textContent = `${shown} book${shown === 1 ? '' : 's'}`;
     }
 
-    /* =====================================================================
-       RENDER — BOOKS TABLE
-       ===================================================================== */
     function renderCatalogTable() {
       const tbody = el.catalogBody;
       if (!tbody) return;
@@ -3077,9 +3108,6 @@
     function shortType(t) { if (!t) return ''; const m = t.match(/\(([^)]+)\)/); return m ? m[1] : t; }
     function shortGenre(g) { if (!g) return ''; const m = g.match(/\(([^)]+)\)/); return m ? m[1] : g; }
 
-    /* =====================================================================
-       RENDER — DIGITAL TABLE
-       ===================================================================== */
     function renderDigital() {
       const tbody = el.digitalBody;
       if (!tbody) return;
@@ -3117,9 +3145,6 @@
       if (el.digitalCount) el.digitalCount.textContent = `${rows.length} resource${rows.length === 1 ? '' : 's'}`;
     }
 
-    /* =====================================================================
-       RENDER — ARCHIVE CARDS
-       ===================================================================== */
     function detectMediaType(url, hint) {
       if (!url) return 'none';
       const u = String(url).toLowerCase();
@@ -3291,9 +3316,6 @@
       grid.appendChild(frag);
     }
 
-    /* =====================================================================
-       COUNTS
-       ===================================================================== */
     function updateCounts() {
       if (el.tabCountBooks) el.tabCountBooks.textContent = State.books.length;
       if (el.tabCountDigital) el.tabCountDigital.textContent = State.digital.length;
@@ -3334,9 +3356,6 @@
       return '';
     }
 
-    /* =====================================================================
-       SPINE TEXT FITTER (vertical spine template)
-       ===================================================================== */
     function spineCharBudget(heightMm, fontPt) {
       const usableMm = Math.max(6, heightMm - 8);
       const charMm = fontPt * 0.3528 * 0.62;
@@ -3374,9 +3393,6 @@
       return parts;
     }
 
-    /* =====================================================================
-       LABEL ENGINE
-       ===================================================================== */
     function getLabelAccent(rec) {
       const mode = el.colorModeSelect.value;
       if (mode === 'navy') return '#1e3a5f';
@@ -3543,7 +3559,7 @@
     }
 
     /* =====================================================================
-       SPINE STUDIO (independent panel inside Books)
+       SPINE STUDIO
        ===================================================================== */
     const Spine = {
       source: 'filtered',
@@ -3604,7 +3620,6 @@
       const SEP = 3;
       const totalOf = l => l.reduce((n, x) => n + x.text.length, 0) + (l.length > 1 ? (l.length - 1) * SEP : 0);
 
-      // 1. Shrink title first
       for (let i = 0; i < list.length; i++) {
         if (list[i].key !== 'title') continue;
         const room = budget - (totalOf(list) - list[i].text.length);
@@ -3615,7 +3630,6 @@
         break;
       }
 
-      // 2. Drop optional fields, lowest priority first
       const dropOrder = ['itemNo', 'shelf', 'publicationYear', 'author'];
       let guard = 0;
       while (totalOf(list) > budget && list.length > 1 && guard++ < 10) {
@@ -3629,7 +3643,6 @@
         if (!removed) break;
       }
 
-      // 3. Last resort — clip
       if (list.length && totalOf(list) > budget) {
         const room2 = budget - (totalOf(list) - list[0].text.length);
         list[0].text = list[0].text.slice(0, Math.max(3, room2 - 1)) + '…';
@@ -3637,7 +3650,7 @@
       return list;
     }
 
-        function buildSpineLabel(rec) {
+    function buildSpineLabel(rec) {
       const node = document.createElement('div');
       node.className = 'spine-label';
       node.style.width = Spine.width + 'mm';
@@ -3673,7 +3686,6 @@
       }
       node.appendChild(textEl);
 
-      /* Real QR code (or decorative barcode if QR mode is 'None') */
       const qrSvg = buildQrSvg(buildQrContent(rec));
       if (qrSvg) {
         const qrWrap = document.createElement('div');
@@ -3698,6 +3710,7 @@
       node.title = [rec.callNumber, rec.author, rec.title].filter(Boolean).join(' — ');
       return node;
     }
+
     function renderSpines() {
       const sheet = el.spineSheet;
       if (!sheet) return;
@@ -3817,9 +3830,6 @@
       if (el.labelCount) el.labelCount.textContent = `${bookCount} label${bookCount === 1 ? '' : 's'}`;
     }
 
-    /* =====================================================================
-       PIPELINE
-       ===================================================================== */
     function refreshUI() {
       applyFilters();
       renderCatalogTable();
@@ -4179,12 +4189,10 @@
     }
 
     function wireEvents() {
-      /* Collection tabs */
       $$('[data-collection-tab]').forEach(btn => {
         btn.addEventListener('click', () => setCollection(btn.getAttribute('data-collection-tab')));
       });
 
-      /* Sidebar source tabs */
       if (el.tabCloudBtn) el.tabCloudBtn.addEventListener('click', () => switchSourceTab('cloud'));
       if (el.tabFileBtn) el.tabFileBtn.addEventListener('click', () => switchSourceTab('file'));
 
@@ -4195,13 +4203,15 @@
         if (!url) { showToast('Please paste your Google Sheets link.', 'error'); return; }
 
         let candidates;
-        try { candidates = buildSheetCandidates(url, name); }
-               .catch(err => {
+        try {
+          candidates = buildSheetCandidates(url, name);
+        } catch (err) {
           State.lastError = err.message;
+          showToast(err.message, 'error');
           setSyncStatus('offline');
-          console.error('[Sheets] Sync failed:', err.message);
           updateDiagnostics();
-        })
+          return;
+        }
 
         State.sourceUrl = url;
         State.sheetName = name;
@@ -4236,19 +4246,15 @@
           });
       });
 
-      /* Refresh */
       if (el.btnRefresh) el.btnRefresh.addEventListener('click', () => {
         if (State.source === 'google-sheets' && State.sourceUrl) syncFromGoogle();
         else { refreshUI(); showToast('Re-rendered.', 'success'); }
       });
 
-      /* Print (main A4) */
       if (el.btnPrint) el.btnPrint.addEventListener('click', () => {
-        /* Preview is now always visible; just print. */
         window.print();
       });
 
-      /* File input + drop zone */
       if (el.dropZone) el.dropZone.addEventListener('click', () => el.fileInput.click());
       if (el.fileInput) el.fileInput.addEventListener('change', e => {
         const file = e.target.files && e.target.files[0];
@@ -4275,7 +4281,6 @@
         });
       }
 
-      /* Search (debounced) */
       if (el.searchInput) {
         const debouncedSearch = debounce(() => {
           State.filters.search = el.searchInput.value.trim();
@@ -4288,7 +4293,6 @@
         el.searchInput.addEventListener('input', debouncedSearch);
       }
 
-      /* Filters */
       [el.filterType, el.filterGenre, el.filterLanguage, el.filterStatus, el.filterShelf].forEach(sel => {
         if (!sel) return;
         sel.addEventListener('change', () => {
@@ -4305,7 +4309,6 @@
         });
       });
 
-      /* Sort */
       if (el.sortSelect) el.sortSelect.addEventListener('change', () => {
         State.sortKey = el.sortSelect.value;
         applyFilters();
@@ -4315,7 +4318,6 @@
         Cache.savePrefs();
       });
 
-      /* Sortable table headers */
       $$('#catalogTable th[data-sort]').forEach(th => {
         th.addEventListener('click', () => {
           const key = th.dataset.sort;
@@ -4337,7 +4339,6 @@
         });
       });
 
-      /* Reset filters */
       if (el.btnResetFilters) el.btnResetFilters.addEventListener('click', () => {
         el.searchInput.value = '';
         el.filterType.value = '';
@@ -4353,17 +4354,14 @@
         renderSheets();
       });
 
-      /* Add manual */
       if (el.btnAddManual) el.btnAddManual.addEventListener('click', addManualBook);
 
-      /* Label design + QR */
       [el.templateSelect, el.colorModeSelect, el.qrModeSelect,
        el.optShelf, el.optAuthorLastOnly, el.optCutline, el.optSpare, el.optItemTag
       ].filter(Boolean).forEach(c => {
         c.addEventListener('change', () => { renderSpines(); renderSheets(); Cache.savePrefs(); });
       });
 
-      /* Spine Studio controls */
       const spineNums = [
         [el.spineWidth, 'width'], [el.spineHeight, 'height'],
         [el.spineFont, 'fontSize'], [el.spineGap, 'gap'], [el.spineCopies, 'copies']
@@ -4412,7 +4410,6 @@
         setTimeout(cleanup, 1500);
       });
 
-      /* Actions */
       if (el.btnLoadSample) el.btnLoadSample.addEventListener('click', loadSample);
       if (el.btnClearCache) el.btnClearCache.addEventListener('click', () => {
         Cache.clear();
@@ -4431,7 +4428,6 @@
         showToast('All views cleared.', 'success');
       });
 
-      /* Mobile nav */
       $$('[data-mobile-tab]').forEach(btn => {
         btn.addEventListener('click', () => {
           const tab = btn.getAttribute('data-mobile-tab');
@@ -4440,7 +4436,6 @@
         });
       });
 
-      /* Donation modal */
       (function () {
         const dialog = document.getElementById('donateDialog');
         if (!dialog) return;
@@ -4465,7 +4460,6 @@
         });
       })();
 
-      /* Scanner handlers */
       if (el.btnOpenScanner) el.btnOpenScanner.addEventListener('click', openScanner);
       if (el.btnScanClose) el.btnScanClose.addEventListener('click', () => Scanner.close());
       if (el.btnScanAgain) el.btnScanAgain.addEventListener('click', () => Scanner.scanAgain());
@@ -4495,9 +4489,6 @@
       });
     }
 
-    /* =====================================================================
-       PREFERENCES
-       ===================================================================== */
     function loadPreferences() {
       const prefs = Cache.loadPrefs();
       if (!prefs) return;
@@ -4533,9 +4524,6 @@
       }
     }
 
-    /* =====================================================================
-       INIT
-       ===================================================================== */
     function init() {
       try {
         if (el.pollIntervalLabel) {
@@ -4576,9 +4564,6 @@
       }
     }
 
-    /* =====================================================================
-       PWA
-       ===================================================================== */
     (function initPWA() {
       const isHttp = location.protocol === 'http:' || location.protocol === 'https:';
       if (!isHttp) return;
