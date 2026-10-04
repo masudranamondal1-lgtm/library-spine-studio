@@ -1,17 +1,6 @@
 """
-Personal Library Manager & Digital Archive — Complete Workbook Generator
-=========================================================================
-
-Typography: Garamond, Baskerville Old Face, Book Antiqua, Courier New
-Colour:     DarkSlateBlue (#483D8B), Brown (#A52A2A), Aquamarine (#7FFFD4)
-
-Usage:
-    python build_library.py            → full workbook with sample data
-    python build_library.py --blank    → blank template
-
-Requires: openpyxl
-    pip install openpyxl
-"""
+Personal Library Manager & Digital Archive — Workbook Generator
+================================================================
 
 Three separate Item Type vocabularies:
     Catalog         — books and print (Book, Magazine, Journal, …)
